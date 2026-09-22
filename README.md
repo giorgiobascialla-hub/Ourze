@@ -2,17 +2,24 @@
 
 **HDR, DLSS & graphics mods. Simplified.**
 
-Created by **[Ourze on YouTube](https://www.youtube.com/channel/UC6GhuzwBEJESlCX4VRlbTHw)**.
-
-<img src="assets/ourze-channel.jpg" alt="Ourze channel logo" width="100">
-
 [Download HDLSS 1.0.0](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0) · [Release assets and presentation](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0)
 
-A portable Windows desktop app for managing supported graphics components per game, with component checks, backups and recovery in one place.
+HDLSS was created to help configure DLSS 5 and Neural Rendering in compatible games. It brings supported community OptiScaler builds, component checks, backups and recovery into a portable Windows app, with additional HDR tools. It is an independent project; the integrated community injector builds are not official NVIDIA releases.
 
 <img src="assets/brand-logo.png" alt="HDLSS" width="420">
 
 [![Watch the presentation](assets/presentation.png)](https://github.com/giorgiobascialla-hub/Ourze/releases/download/v1.0.0/HDLSS-Presentation.mp4)
+
+## App screenshots
+
+### Game library
+![HDLSS game library](assets/library.jpg)
+
+### HDR settings
+![HDLSS HDR settings](assets/hdr.jpg)
+
+### DLSS components
+![HDLSS DLSS components](assets/dlss.jpg)
 
 ## What you can do
 
@@ -62,3 +69,4 @@ Include the app version, Windows version, GPU/driver, game and selected componen
 HDLSS is independent and is not affiliated with NVIDIA, Valve, Microsoft, Epic Games, ReShade, RenoDX or the OptiScaler authors. Component downloads retain their authors' terms. See [component sources](docs/SOURCES.txt). Third-party injectors, models and game files are not bundled.
 
 No open-source license has been selected for HDLSS in this package. Public source availability alone does not grant a reuse license. Third-party trademarks and game artwork belong to their respective owners.
+
