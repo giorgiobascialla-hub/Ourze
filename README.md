@@ -1,6 +1,6 @@
 # HDLSS
 
-**HDR, DLSS & graphics mods. Simplified.**
+**DLSS 5 & Neural Rendering for compatible games.**
 
 [Download HDLSS 1.0.0](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0) · [Release assets and presentation](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0)
 
@@ -69,4 +69,5 @@ Include the app version, Windows version, GPU/driver, game and selected componen
 HDLSS is independent and is not affiliated with NVIDIA, Valve, Microsoft, Epic Games, ReShade, RenoDX or the OptiScaler authors. Component downloads retain their authors' terms. See [component sources](docs/SOURCES.txt). Third-party injectors, models and game files are not bundled.
 
 No open-source license has been selected for HDLSS in this package. Public source availability alone does not grant a reuse license. Third-party trademarks and game artwork belong to their respective owners.
+
 
