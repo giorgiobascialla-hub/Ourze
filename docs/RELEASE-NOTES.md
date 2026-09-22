@@ -19,3 +19,5 @@ English and Windows update
 - Windows x64 optimized build; .NET Framework 4.8. Existing per-monitor DPI and long-path declarations retained.
 - This is not a hardware certification or an FPS benchmark. Feature support remains specific to GPU, driver, game, display and component build. ARM64 and 32-bit operation have not been validated.
 - Passed clean/invalid/saved language tests, WPF UI smoke tests and DLL management regression tests on the available Windows machine.
+
+Presentation update: DLSS 5 naming is consistent across app labels, screenshots, documentation, narration and subtitles. Original external product names and technical identifiers are retained. UI and DLL tests passed; all six languages rendered at windowed and maximized sizes.

@@ -56,7 +56,7 @@ public static class DlssLibraries {
   var f=new TrustFile{Size=(uint)Marshal.SizeOf(typeof(TrustFile)),Path=path};IntPtr mem=Marshal.AllocHGlobal(Marshal.SizeOf(typeof(TrustFile)));try{Marshal.StructureToPtr(f,mem,false);var d=new TrustData{Size=(uint)Marshal.SizeOf(typeof(TrustData)),UI=2,Choice=1,File=mem,Flags=0x1000};Guid id=new Guid("00AAC56B-CD44-11d0-8CC2-00C04FC295EE");int hr=WinVerifyTrust(new IntPtr(-1),ref id,ref d);if(hr!=0)throw new Exception("Firma digitale non verificabile (0x"+hr.ToString("X8")+"). DLL non applicata.");var cert=new X509Certificate2(X509Certificate.CreateFromSignedFile(path));if(cert.Subject.IndexOf("NVIDIA",StringComparison.OrdinalIgnoreCase)<0)throw new Exception("La DLL non risulta firmata da NVIDIA.");}finally{Marshal.DestroyStructure(mem,typeof(TrustFile));Marshal.FreeHGlobal(mem);}}
  public static void ValidateTarget(Game g,DlssLibrary target){
   if(g.ProtectedInstall)throw new Exception(g.Evidence);
-  if(target==null||!Names.Contains(target.File,StringComparer.OrdinalIgnoreCase))throw new Exception("Seleziona una DLL DLSS supportata.");
+  if(target==null||!Names.Contains(target.File,StringComparer.OrdinalIgnoreCase))throw new Exception("Seleziona una DLL DLSS 5 supportata.");
   string path=DlssCore.Safe(g.Root,target.Relative);
   if(!String.Equals(path,System.IO.Path.GetFullPath(target.Path),StringComparison.OrdinalIgnoreCase)||!String.Equals(System.IO.Path.GetFileName(path),target.File,StringComparison.OrdinalIgnoreCase))throw new Exception("La DLL selezionata non corrisponde al percorso del gioco.");
   if(!DlssCore.Pe64(path))throw new Exception("La DLL del gioco non è leggibile come componente x64. Nessuna modifica: verifica i permessi o ripara i file dal launcher.");

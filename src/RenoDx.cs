@@ -47,7 +47,7 @@ public static class RenoDx {
  }
  public static DlssPlan InstallAddon(Game g,string source){
   string name=Path.GetFileName(source);if(!Regex.IsMatch(name,@"^renodx-[a-zA-Z0-9_-]+\.addon64$",RegexOptions.IgnoreCase)||!DlssCore.Pe64(source))throw new Exception("Scegli un add-on RenoDX x64 originale, con nome renodx-….addon64.");
-  if(Regex.IsMatch(name,"dlss|neural",RegexOptions.IgnoreCase))throw new Exception("Questa sezione gestisce gli add-on HDR; non installa un secondo sistema DLSS/Neural Rendering.");
+  if(Regex.IsMatch(name,"dlss|neural",RegexOptions.IgnoreCase))throw new Exception("Questa sezione gestisce gli add-on HDR; non installa un secondo sistema DLSS 5/Neural Rendering.");
   var scan=DlssCore.Inspect(g,true,false);if(scan.Blockers.Count>0)throw new Exception(String.Join("\n",scan.Blockers));var loaders=Loaders(scan.Folder);if(loaders.Count!=1)throw new Exception("Installa prima una sola copia di ReShade con supporto completo agli add-on.");
   if(loaders[0]=="ReShade64.dll"&&(scan.Proxy==""||Core.Get(scan.Ini,"Plugins","LoadReshade")!="true"))throw new Exception("ReShade64.dll non è collegato a OptiScaler. Installa/configura ReShade prima dell’add-on.");
   var others=Directory.GetFiles(scan.Folder,"renodx-*.addon64").Select(Path.GetFileName).Where(n=>!n.Equals(name,StringComparison.OrdinalIgnoreCase));if(others.Any())throw new Exception("Altri add-on RenoDX presenti: "+String.Join(", ",others)+". Verifica la combinazione o ripristina il precedente prima di aggiungerne uno.");

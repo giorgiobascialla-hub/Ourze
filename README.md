@@ -18,8 +18,8 @@ HDLSS was created to help configure DLSS 5 and Neural Rendering in compatible ga
 ### HDR settings
 ![HDLSS HDR settings](assets/hdr.jpg)
 
-### DLSS components
-![HDLSS DLSS components](assets/dlss.jpg)
+### DLSS 5 components
+![HDLSS DLSS 5 components](assets/dlss.jpg)
 
 ## What you can do
 
@@ -35,7 +35,7 @@ HDLSS was created to help configure DLSS 5 and Neural Rendering in compatible ga
 
 Extract the portable archive into a writable folder and launch `HDLSS.exe`. Windows x64 and .NET Framework 4.8 are required. No Python or developer SDK is needed to run it.
 
-Select a game, check the executable, then choose HDR or DLSS. Close the game before applying changes. The review step shows what will change before installation.
+Select a game, check the executable, then choose HDR or DLSS 5. Close the game before applying changes. The review step shows what will change before installation.
 
 ## Updating an existing installation
 

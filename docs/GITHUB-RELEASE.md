@@ -1,7 +1,7 @@
 # Release settings
 
 Repository: giorgiobascialla-hub/Ourze
-Description: HDR, DLSS & graphics mods. Simplified. Portable Windows tool with per-game component checks, backups and recovery.
+Description: HDR, DLSS 5 & graphics mods. Simplified. Portable Windows tool with per-game component checks, backups and recovery.
 Topics: windows, hdr, dlss, optiscaler, reshade, renodx, gaming
 Tag: v1.0.0
 Release title: HDLSS 1.0.0
@@ -9,7 +9,7 @@ Mark as prerelease: No
 
 ## Release description
 
-Manage supported HDR and DLSS components with a portable Windows app. This release introduces clear file comparisons across game folders: identical, different or unreadable, with exact paths and no automatic DLL deletion.
+Manage supported HDR and DLSS 5 components with a portable Windows app. This release introduces clear file comparisons across game folders: identical, different or unreadable, with exact paths and no automatic DLL deletion.
 
 Download the portable ZIP, extract it, and run HDLSS.exe. For an existing installation, close the app and replace the executable while preserving data and backups. Windows x64 / .NET Framework 4.8 required.
 

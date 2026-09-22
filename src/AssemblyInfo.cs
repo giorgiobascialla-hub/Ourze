@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 [assembly: AssemblyTitle("HDLSS")]
-[assembly: AssemblyDescription("HDR, DLSS & graphics mods. Simplified.")]
+[assembly: AssemblyDescription("HDR, DLSS 5 & graphics mods. Simplified.")]
 [assembly: AssemblyProduct("HDLSS Portable")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
