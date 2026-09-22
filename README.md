@@ -60,6 +60,10 @@ New-Item -ItemType Directory -Force dist | Out-Null
 powershell -ExecutionPolicy Bypass -File ./src/build.ps1 -Output ./dist/HDLSS.exe
 ```
 
+## Support development
+
+If HDLSS is useful to you, you can support its development with an optional [donation via PayPal](https://paypal.me/Ourze). Thank you for your support!
+
 ## Support
 
 Include the app version, Windows version, GPU/driver, game and selected component. Describe expected and actual behavior. Review logs before sharing them and remove personal paths or other private data. Never upload game files, saved games or your backup directory to an issue.
