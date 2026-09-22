@@ -51,6 +51,13 @@ public static class DlssCore {
  public static bool Pe64(string file){try{using(var r=new BinaryReader(File.OpenRead(file))){if(r.ReadUInt16()!=0x5a4d)return false;r.BaseStream.Position=60;int offset=r.ReadInt32();if(offset<64||offset>r.BaseStream.Length-6)return false;r.BaseStream.Position=offset;return r.ReadUInt32()==0x4550&&r.ReadUInt16()==0x8664;}}catch{return false;}}
  public static bool IsOpti(string file){if(!File.Exists(file))return false;try{var v=FileVersionInfo.GetVersionInfo(file);if(((v.ProductName??"")+" "+(v.FileDescription??"")).IndexOf("OptiScaler",StringComparison.OrdinalIgnoreCase)>=0)return true;
  if(new FileInfo(file).Length>80000000)return false;byte[] bytes=File.ReadAllBytes(file);string t=Encoding.ASCII.GetString(bytes);return Pe64(file)&&t.Contains("OptiScaler.ini")&&t.Contains("OptiScaler");}catch{return false;}}
+ // This exact DLSS 5 Swapper UI overlay is not the separate RenoDX NR renderer.
+ // Source: rakanki911/DLSS5-Swapper overlay/README.md and overlay/overlay.cpp.
+ // Never exempt arbitrary files merely because their name includes "overlay".
+ static bool KnownControlOverlay(string file){
+  if(!Regex.IsMatch(Path.GetFileName(file),@"^dlss5-lab-overlay-[0-9a-f]{16}\.addon64$",RegexOptions.IgnoreCase))return false;
+  try{return Pe64(file)&&Hash(file)=="0d90c616cc1b051f7417b823e5de46eca36767fe1f3716ba9571fbddae492631";}catch{return false;}
+ }
  public static string ReadIni(string folder){string p=Safe(folder,"OptiScaler.ini");return File.Exists(p)?File.ReadAllText(p):"";}
  public static DlssScan Inspect(Game g,bool checkExecutable=true,bool installingNeuralRendering=true){
   if(String.IsNullOrEmpty(g.Exe)||!File.Exists(g.Exe))throw new Exception("Eseguibile del gioco non trovato.");
@@ -63,7 +70,7 @@ public static class DlssCore {
   if(File.Exists(own)){var m=ReadManifest(s.Folder);s.Managed=true;s.Build=m.Build;s.Owner="Gestito da HDLSS · "+m.Release;s.Notes.Add("Ripristino: stato precedente a HDLSS ("+m.PreviousOwner+").");}
   foreach(string p in Proxies){string path=Safe(s.Folder,p);if(File.Exists(path)&&!loaders.Contains(p))s.Notes.Add(p+": componente esistente conservato");}
   if(File.Exists(Safe(s.Folder,"ReShade64.dll")))s.Notes.Add("ReShade64.dll presente: caricamento tramite OptiScaler disponibile.");
-  foreach(string p in Directory.GetFiles(s.Folder,"*.addon64")){string n=Path.GetFileName(p);if(installingNeuralRendering&&(n.IndexOf("dlss",StringComparison.OrdinalIgnoreCase)>=0||n.IndexOf("neural",StringComparison.OrdinalIgnoreCase)>=0))s.Blockers.Add("Altro add-on DLSS 5 rilevato: "+n+". Evita due passaggi NR contemporanei.");else s.Notes.Add("Add-on conservato: "+n);}
+  foreach(string p in Directory.GetFiles(s.Folder,"*.addon64")){string n=Path.GetFileName(p);if(installingNeuralRendering&&!KnownControlOverlay(Safe(s.Folder,n))&&(n.IndexOf("dlss",StringComparison.OrdinalIgnoreCase)>=0||n.IndexOf("neural",StringComparison.OrdinalIgnoreCase)>=0))s.Blockers.Add("Altro add-on DLSS 5 rilevato: "+n+". Evita due passaggi NR contemporanei.");else s.Notes.Add("Add-on conservato: "+n);}
   if(Directory.Exists(Safe(g.Root,"EasyAntiCheat"))||Directory.Exists(Safe(g.Root,"BattlEye"))||Directory.GetFiles(s.Folder,"*EasyAntiCheat*").Length>0)s.Blockers.Add("Anti-cheat rilevato: installazione non supportata.");
   s.Notes.Add("La presenza dei file non conferma l’attivazione in gioco.");return s;
  }

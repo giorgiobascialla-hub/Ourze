@@ -21,3 +21,5 @@ English and Windows update
 - Passed clean/invalid/saved language tests, WPF UI smoke tests and DLL management regression tests on the available Windows machine.
 
 Presentation update: DLSS 5 naming is consistent across app labels, screenshots, documentation, narration and subtitles. Original external product names and technical identifiers are retained. UI and DLL tests passed; all six languages rendered at windowed and maximized sizes.
+
+Installation fix: the SHA-256-verified DLSS 5 Swapper control overlay no longer falsely blocks OptiScaler NR installation. Unknown/modified DLSS/NR add-ons and separate RenoDX NR renderers remain protected by conflict checks. The control overlay is preserved. Regression tests cover installation, updates, cleanup of third-party NR installations without an HDLSS manifest, and recovery; separate MFG/HDR/native DLLs remain untouched. Tested on isolated fixtures and a read-only Fatekeeper scan; in-game operation is not certified.

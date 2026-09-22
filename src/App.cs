@@ -33,7 +33,7 @@ public class Pilot {
    if(args.Length>2&&args[0]=="--native-test"){DlssTests.NativeTest(args[1],args[2]);return 0;}
    if(args.Length>2&&args[0]=="--native-inspect"){DlssTests.NativeInspect(args[1],args[2]);return 0;}
    if(args.Length>2&&args[0]=="--package-test"){DlssTests.Package(args[1],args[2]);return 0;}
-   if(args.Length>1&&args[0]=="--dlss-test"){DlssTests.Run(args[1]);return 0;}
+   if(args.Length>1&&args[0]=="--dlss-test"){DlssTests.Run(args[1],args.Length>2?args[2]:null);return 0;}
    if(args.Length>2&&args[0]=="--dlss-preview"){DlssTests.Preview(args[1],args[2]);return 0;}
    if(args.Length>2&&args[0]=="--dlss-scan"){DlssTests.Scan(args[1],args[2]);return 0;}
    if(args.Length>1&&args[0]=="--instance-test"){SingleInstance.Test(args[1]);return 0;}
