@@ -6,7 +6,7 @@ Created by **[Ourze on YouTube](https://www.youtube.com/channel/UC6GhuzwBEJESlCX
 
 <img src="assets/ourze-channel.jpg" alt="Ourze channel logo" width="100">
 
-[Download HDLSS 1.0 Preview](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0-preview.1) · [Release assets and presentation](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0-preview.1)
+[Download HDLSS 1.0 Preview](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0-preview.1) Â· [Release assets and presentation](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0-preview.1)
 
 A portable Windows desktop app for managing supported graphics components per game, with component checks, backups and recovery in one place.
 
@@ -50,7 +50,7 @@ On Windows with the .NET Framework compiler installed:
 
 ```powershell
 New-Item -ItemType Directory -Force dist | Out-Null
-powershell -ExecutionPolicy Bypass -File .\srcuild.ps1 -Output .\dist\HDLSS.exe
+powershell -ExecutionPolicy Bypass -File ./src/build.ps1 -Output ./dist/HDLSS.exe
 ```
 
 ## Support
