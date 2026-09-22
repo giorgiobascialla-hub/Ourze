@@ -6,13 +6,13 @@ Created by **[Ourze on YouTube](https://www.youtube.com/channel/UC6GhuzwBEJESlCX
 
 <img src="assets/ourze-channel.jpg" alt="Ourze channel logo" width="100">
 
-[Download HDLSS 1.0 Preview](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0-preview.1) Â· [Release assets and presentation](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0-preview.1)
+[Download HDLSS 1.0.0](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0) · [Release assets and presentation](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0)
 
 A portable Windows desktop app for managing supported graphics components per game, with component checks, backups and recovery in one place.
 
 <img src="assets/brand-logo.png" alt="HDLSS" width="420">
 
-[![Watch the presentation](assets/presentation.png)](https://github.com/giorgiobascialla-hub/Ourze/releases/download/v1.0.0-preview.1/HDLSS-Presentation.mp4)
+[![Watch the presentation](assets/presentation.png)](https://github.com/giorgiobascialla-hub/Ourze/releases/download/v1.0.0/HDLSS-Presentation.mp4)
 
 ## What you can do
 
@@ -42,7 +42,7 @@ A game can ship the same component in an engine/plugin folder and beside its exe
 
 Features depend on the game, GPU, driver, display and selected component. Updating a DLL does not add a feature the game does not implement. Installed files do not prove an effect is active: verify the result in game. Protected installations may prevent modifications. Experimental community features are identified in the app.
 
-This is a preview release of version 1.0. Broad hardware certification and complete localization remain in progress. See [validation](docs/VALIDATION.md) and [release notes](docs/RELEASE-NOTES.md).
+This release is version 1.0.0. Broad hardware certification and complete localization remain in progress. See [validation](docs/VALIDATION.md) and [release notes](docs/RELEASE-NOTES.md).
 
 ## Build from source
 

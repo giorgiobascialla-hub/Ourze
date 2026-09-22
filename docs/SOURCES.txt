@@ -1,4 +1,4 @@
-﻿Component sources
+Component sources
 
 OptiScaler community forks:
 https://github.com/Dagherbou/OptiScaler_DLSSNR
