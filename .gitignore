@@ -1,0 +1,8 @@
+dist/
+data/
+work/
+*.exe
+*.zip
+*.log
+data-location.txt
+HDR-Unlock-error.txt
