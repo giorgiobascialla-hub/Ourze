@@ -16,7 +16,7 @@ jobs:
         shell: powershell
         run: |
           $testProcess = Start-Process -FilePath "$pwd/dist/HDLSS.exe" -ArgumentList @('--dlss-test', "$pwd/dist/tests") -Wait -PassThru
-          if ($testProcess.ExitCode -ne 0) { throw 'Regression tests failed' }
+          if ($testProcess.ExitCode -ne 0) { Get-Content "$pwd/dist/HDR-Unlock-error.txt" -ErrorAction Continue; throw 'Regression tests failed' }
           Get-Content "$pwd/dist/tests/tests.txt"
       - uses: actions/upload-artifact@v4
         with:

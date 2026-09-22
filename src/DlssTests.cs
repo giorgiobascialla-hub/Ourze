@@ -10,7 +10,7 @@ public static class DlssTests {
  static void Check(bool ok,string why){if(!ok)throw new Exception(why);}
  static void Reject(Action action,string why){bool rejected=false;try{action();}catch{rejected=true;}Check(rejected,why);}
  static void FakePe(string path,bool opti){Directory.CreateDirectory(Path.GetDirectoryName(path));var b=new byte[256];b[0]=77;b[1]=90;b[60]=64;b[64]=80;b[65]=69;b[68]=100;b[69]=134;if(opti)System.Text.Encoding.ASCII.GetBytes("OptiScaler.ini OptiScaler").CopyTo(b,90);File.WriteAllBytes(path,b);}
- public static void Run(string folder,string controlOverlay=null){Directory.CreateDirectory(folder);string fixture=Path.Combine(folder,"fixture-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(fixture);Core.Data=Path.Combine(fixture,"data");Directory.CreateDirectory(Core.Data);var game=new Game{Id="test",Name="Test",Root=Path.Combine(fixture,"game"),Exe=Path.Combine(fixture,"game","Game.exe")};FakePe(game.Exe,false);
+ public static void Run(string folder,string controlOverlay=null){folder=Path.GetFullPath(folder);Directory.CreateDirectory(folder);string fixture=Path.Combine(folder,"fixture-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(fixture);Core.Data=Path.Combine(fixture,"data");Directory.CreateDirectory(Core.Data);var game=new Game{Id="test",Name="Test",Root=Path.Combine(fixture,"game"),Exe=Path.Combine(fixture,"game","Game.exe")};FakePe(game.Exe,false);
   // Names alone must not turn an unknown DLSS/NR add-on into a trusted UI overlay.
   string overlayName="dlss5-lab-overlay-0d90c616cc1b051f.addon64",overlay=Path.Combine(game.Root,overlayName);
   foreach(string name in new[]{overlayName,"dlss5-custom-overlay.addon64","renodx-dlss5.addon64","neural-rendering.addon64"}){
