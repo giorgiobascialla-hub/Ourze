@@ -2,7 +2,7 @@
 
 **DLSS 5 & Neural Rendering for compatible games.**
 
-[Download HDLSS 1.0.0](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0) · [Release assets and presentation](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0)
+[Download HDLSS 1.0.1](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.1) · [Release assets and presentation](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0)
 
 HDLSS was created to help configure DLSS 5 and Neural Rendering in compatible games. It brings supported community OptiScaler builds, component checks, backups and recovery into a portable Windows app, with additional HDR tools. It is an independent project; the integrated community injector builds are not official NVIDIA releases.
 
@@ -20,6 +20,10 @@ HDLSS was created to help configure DLSS 5 and Neural Rendering in compatible ga
 
 ### DLSS 5 components
 ![HDLSS DLSS 5 components](assets/dlss.jpg)
+
+## Changes in 1.0.1
+
+Fixed the false Neural Rendering conflict caused by the verified DLSS 5 Swapper control overlay. Added regression coverage for third-party NR cleanup and recovery. See the [changelog](CHANGELOG.md).
 
 ## What you can do
 
@@ -49,7 +53,7 @@ A game can ship the same component in an engine/plugin folder and beside its exe
 
 Features depend on the game, GPU, driver, display and selected component. Updating a DLL does not add a feature the game does not implement. Installed files do not prove an effect is active: verify the result in game. Protected installations may prevent modifications. Experimental community features are identified in the app.
 
-This release is version 1.0.0. Broad hardware certification and complete localization remain in progress. See [validation](docs/VALIDATION.md) and [release notes](docs/RELEASE-NOTES.md).
+This release is version 1.0.1. Broad hardware certification and complete localization remain in progress. See [validation](docs/VALIDATION.md) and [release notes](docs/RELEASE-NOTES.md).
 
 ## Build from source
 

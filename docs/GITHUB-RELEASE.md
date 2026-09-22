@@ -1,18 +1,19 @@
-# Release settings
+## HDLSS 1.0.1
 
-Repository: giorgiobascialla-hub/Ourze
-Description: HDR, DLSS 5 & graphics mods. Simplified. Portable Windows tool with per-game component checks, backups and recovery.
-Topics: windows, hdr, dlss, optiscaler, reshade, renodx, gaming
-Tag: v1.0.0
-Release title: HDLSS 1.0.0
-Mark as prerelease: No
+**DLSS 5 & Neural Rendering for compatible games.**
 
-## Release description
+### Changelog
+- Fixed the false NR installation conflict caused by the verified DLSS 5 Swapper control overlay. The overlay is preserved.
+- Recognition checks SHA-256; unknown or modified DLSS/NR add-ons and separate NR renderers still trigger conflict checks.
+- Added regression tests for third-party NR cleanup without an HDLSS manifest, recovery, and preservation of separate MFG/HDR/native game DLLs.
+- Updated internal help with the limits of overlay recognition and cleanup.
 
-Manage supported HDR and DLSS 5 components with a portable Windows app. This release introduces clear file comparisons across game folders: identical, different or unreadable, with exact paths and no automatic DLL deletion.
+### Download and update
+Download **HDLSS-Portable-1.0.1.zip**. Close HDLSS, extract the package, and replace your existing **HDLSS.exe**, preserving **data**, **data-location.txt** and all backups. Windows x64 and .NET Framework 4.8 required. SHA256SUMS.txt contains the package checksum; source is included in the ZIP.
 
-Download the portable ZIP, extract it, and run HDLSS.exe. For an existing installation, close the app and replace the executable while preserving data and backups. Windows x64 / .NET Framework 4.8 required.
+### Validation
+Local regression tests passed, including a copy of the reported overlay and a read-only Fatekeeper scan. No real game files were changed by the tests. In-game behavior still depends on the selected game, GPU, driver and component build.
 
-Game, driver and hardware compatibility varies. File presence does not prove an effect is active. Technical localization and broad hardware validation remain in progress.
+Cleanup removes recognized NR components from third-party installations with recovery copies. It is not a universal uninstaller: unknown files, external records and the control overlay can remain.
 
-Attach the portable ZIP, SHA256SUMS.txt and the presentation MP4. The media pack includes six optional subtitle tracks and standalone subtitle files.
+[Full changelog](https://github.com/giorgiobascialla-hub/Ourze/blob/v1.0.1/CHANGELOG.md) · [Existing presentation and media](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0)

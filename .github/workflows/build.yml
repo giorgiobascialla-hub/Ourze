@@ -12,6 +12,12 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force dist | Out-Null
           ./src/build.ps1 -Output "$pwd/dist/HDLSS.exe"
+      - name: Installation and third-party cleanup regression tests
+        shell: powershell
+        run: |
+          $testProcess = Start-Process -FilePath "$pwd/dist/HDLSS.exe" -ArgumentList @('--dlss-test', "$pwd/dist/tests") -Wait -PassThru
+          if ($testProcess.ExitCode -ne 0) { throw 'Regression tests failed' }
+          Get-Content "$pwd/dist/tests/tests.txt"
       - uses: actions/upload-artifact@v4
         with:
           name: HDLSS-Windows-x64
