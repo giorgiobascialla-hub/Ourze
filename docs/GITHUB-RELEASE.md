@@ -1,19 +1,23 @@
-## HDLSS 1.0.1
+# HDLSS 1.0.2
 
-**DLSS 5 & Neural Rendering for compatible games.**
+- Added installation of the official stable UE4SS end-user runtime and HDLSS reader, with a reviewed file plan and transaction recovery.
+- Recognize UE4SS both beside the executable and in the ue4ss subfolder. Preserve existing runtime versions, mod settings and unrelated mods. Explain conflicts with custom overrides, duplicate runtimes or an occupied loader.
+- Corrected the search root for manually added Unreal games: native DLSS DLLs in Engine/Plugins and project subdirectories can be detected and selected for updates.
+- Native DLSS library updates no longer run the Neural Rendering installation conflict check.
+- Corrected component names: DLSS Super Resolution, Ray Reconstruction and Frame Generation are separate from Neural Rendering.
+- Separated native UE5 HDR configuration from ReShade/RenoDX: Apply HDR modifies only the two Unreal INIs and never downloads an injector. Existing mods remain untouched. SDR output settings are corrected when requesting HDR.
+- Unified scene pixel measurements and optional fresh engine telemetry in the live overlay. Added sample age and explicit last-sample status. The overlay version follows the app version.
 
-### Changelog
-- Fixed the false NR installation conflict caused by the verified DLSS 5 Swapper control overlay. The overlay is preserved.
-- Recognition checks SHA-256; unknown or modified DLSS/NR add-ons and separate NR renderers still trigger conflict checks.
-- Added regression tests for third-party NR cleanup without an HDLSS manifest, recovery, and preservation of separate MFG/HDR/native game DLLs.
-- Updated internal help with the limits of overlay recognition and cleanup.
+## Validation and limits
+Installer, recovery, preserved mods, manual game DLL discovery, DLSS regression and UI checks passed on local fixtures. UE4SS compatibility must be checked per game using a fresh UE4SS.log; some games need a game-specific version/configuration. Custom override.txt installations require manual configuration. Native DLL replacement does not add features absent from the game.
 
-### Download and update
-Download **HDLSS-Portable-1.0.1.zip**. Close HDLSS, extract the package, and replace your existing **HDLSS.exe**, preserving **data**, **data-location.txt** and all backups. Windows x64 and .NET Framework 4.8 required. SHA256SUMS.txt contains the package checksum; source is included in the ZIP.
+Native HDR INI-only installation and recovery passed isolated tests with and without existing mod files, including SDR, scRGB and PQ configurations. Live Windows HDR capture passed on 4,953,600 pixels. This desktop check does not certify every game. The configured peak is a request to the engine, not a universal output clamp. The automatic ReShade peak filter has been removed from this build.
 
-### Validation
-Local regression tests passed, including a copy of the reported overlay and a read-only Fatekeeper scan. No real game files were changed by the tests. In-game behavior still depends on the selected game, GPU, driver and component build.
+## Sources
+- https://docs.ue4ss.com/installation-guide.html
+- https://docs.ue4ss.com/dev/installation-guide.html
+- https://github.com/UE4SS-RE/RE-UE4SS/releases
+- https://github.com/NVIDIA/DLSS
 
-Cleanup removes recognized NR components from third-party installations with recovery copies. It is not a universal uninstaller: unknown files, external records and the control overlay can remain.
-
-[Full changelog](https://github.com/giorgiobascialla-hub/Ourze/blob/v1.0.1/CHANGELOG.md) · [Existing presentation and media](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0)
+## Download and update
+Download HDLSS-Portable-1.0.2.zip. Close HDLSS and replace HDLSS.exe, preserving data, data-location.txt and all backups. Windows x64 and .NET Framework 4.8 required. Source is included.

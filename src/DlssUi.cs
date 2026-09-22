@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -97,7 +97,7 @@ public sealed class DlssUi {
  }
  void RefreshInstalled(){foreach(var refresh in choiceRefresh)refresh();if(installedLabel==null)return;try{
   var files=DlssLibraries.Scan(game);var lines=new System.Collections.Generic.List<string>();var paths=new System.Collections.Generic.List<string>();
-  string[] labels={"DLSS 5 · Super Resolution","DLSS 5 · Ray Reconstruction","DLSS 5 · Frame Generation"};
+  string[] labels={"DLSS · Super Resolution","DLSS · Ray Reconstruction","DLSS · Frame Generation"};
   for(int i=0;i<DlssLibraries.Names.Length;i++){string component=DlssLibraries.Names[i];var found=files.Where(f=>f.File.Equals(component,StringComparison.OrdinalIgnoreCase)).ToList();lines.Add(labels[i]+": "+(found.Count==0?"Non installato":String.Join(" / ",found.Select(f=>InstalledVersion(f.Path)).Distinct())+(found.Count>1?" · "+DlssLibraries.CopyLabel(found):"")));paths.AddRange(found.Select(f=>f.Relative+" · "+InstalledVersion(f.Path)));}
   string nr=Path.Combine(Path.GetDirectoryName(game.Exe),"nvngx_dlssnr.dll");lines.Add("Neural Rendering · modello: "+InstalledVersion(nr));if(File.Exists(nr))paths.Add(nr);
   lines.Add("File su disco · attivazione in gioco da verificare");installedLabel.Text=String.Join("\n",lines);installedLabel.ToolTip=new TextBlock{Text=String.Join("\n",paths)+"\n\n"+DlssLibraries.CopyExplanation(),TextWrapping=TextWrapping.Wrap,MaxWidth=680};
