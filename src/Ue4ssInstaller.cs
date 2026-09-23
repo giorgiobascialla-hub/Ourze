@@ -54,7 +54,7 @@ public static class Ue4ssInstaller {
   string error=Check(g);if(error!="")throw new Exception(error);
   ServicePointManager.SecurityProtocol|=SecurityProtocolType.Tls12;
   using(var web=new DlssCore.DownloadClient()){
-   web.Headers[HttpRequestHeader.UserAgent]="HDLSS/1.0.3";
+   web.Headers[HttpRequestHeader.UserAgent]="HDLSS/1.0.4";
    var release=Core.Json.Deserialize<Dictionary<string,object>>(web.DownloadString("https://api.github.com/repos/UE4SS-RE/RE-UE4SS/releases/latest"));
    if(Convert.ToBoolean(release["prerelease"])||Convert.ToBoolean(release["draft"]))throw new Exception("A stable UE4SS release is required.");
    var assets=((System.Collections.IEnumerable)release["assets"]).Cast<Dictionary<string,object>>();

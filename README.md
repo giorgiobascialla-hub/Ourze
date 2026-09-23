@@ -2,7 +2,7 @@
 
 **DLSS 5 & Neural Rendering for compatible games.**
 
-[Download HDLSS 1.0.3](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.3) · [Release assets and presentation](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0)
+[Download HDLSS 1.0.4](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.4) · [Release assets and presentation](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0)
 
 HDLSS was created to help configure DLSS 5 and Neural Rendering in compatible games. It brings supported community OptiScaler builds, component checks, backups and recovery into a portable Windows app, with additional HDR tools. It is an independent project; the integrated community injector builds are not official NVIDIA releases.
 
@@ -21,7 +21,7 @@ HDLSS was created to help configure DLSS 5 and Neural Rendering in compatible ga
 ### DLSS components
 ![HDLSS DLSS components](assets/dlss.jpg)
 
-## Changes in 1.0.3
+## Changes in 1.0.4
 
 Fixes migration of the retired HDLSS HDR filter left active by earlier builds. Existing unrelated effects and mods are preserved, with preset recovery. The reporting user confirmed normal colors and peak readings in Silent Hill Townfall after deactivation. See the [changelog](CHANGELOG.md).
 
@@ -53,7 +53,7 @@ A game can ship the same component in an engine/plugin folder and beside its exe
 
 Features depend on the game, GPU, driver, display and selected component. Updating a DLL does not add a feature the game does not implement. Installed files do not prove an effect is active: verify the result in game. Protected installations may prevent modifications. Experimental community features are identified in the app.
 
-This release is version 1.0.3. Broad hardware certification and complete localization remain in progress. See [validation](docs/VALIDATION.md) and [release notes](docs/RELEASE-NOTES.md).
+This release is version 1.0.4. Broad hardware certification and complete localization remain in progress. See [validation](docs/VALIDATION.md) and [release notes](docs/RELEASE-NOTES.md).
 
 ## Build from source
 

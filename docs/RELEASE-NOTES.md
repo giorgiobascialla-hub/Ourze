@@ -1,14 +1,17 @@
-# HDLSS 1.0.3
+# HDLSS 1.0.4
 
 ## Fixed
-- Disable the retired HDLSS_PeakLimit technique left active by earlier builds when applying native HDR or using Play game. Version 1.0.2 stopped installing the filter but did not deactivate existing copies.
-- Preserve ReShade, RenoDX, DLSS, other preset techniques and their settings. Save the previous preset in transaction recovery; repeated migration makes no additional change.
-- Keep native UE5 HDR independent of ReShade. The overlay continues to display measured pixel values without forcing them down to the configured peak.
+- Correct mixed-language text in the HDR panel and adjacent controls in Italian, English, Spanish, French, German and Portuguese.
+- Translate complete monitor advice, file status and UE4SS reader messages, including dynamic values and nested errors. Preserve numbers and paths when switching languages.
+- Display a duplicate UE4SS runtime error once instead of repeating it on two lines.
+- Update the internal help for the translated HDR status messages.
 
 ## Validation
-The reporting user confirmed that colors and the reported peak returned to normal in Silent Hill Townfall after disabling the old filter. This is a user-reported game check, not universal HDR certification.
-Local migration, unrelated-effect preservation, idempotence, exact recovery and DLSS regression tests passed. Engine HDR and mod compatibility remain game-specific.
+2,628 message and placeholder round-trip checks passed, together with nested-error, path-preservation, repeated-refresh and language-switching checks. Twelve WPF views were rendered across six languages at compact and maximized dimensions.
+This translation update covers the HDR panel and adjacent controls; it does not claim full translation of every technical log or help page.
+
+## Known issue
+The intermittent 9999-nit scene-overlay report remains under investigation. This release does not change capture or tone mapping and does not claim to fix that report.
 
 ## Update
-Close HDLSS and replace HDLSS.exe with this build. Preserve data, data-location.txt and all backups. Start the game from HDLSS or apply native HDR while the game is closed to migrate an old active HDLSS filter. External presets require manual review. Recover operation can restore the previous preset from its transaction.json.
-Windows x64 and .NET Framework 4.8 required. Source is included in HDLSS-Portable-1.0.3.zip.
+Download HDLSS-Portable-1.0.4.zip. Close HDLSS and replace HDLSS.exe, preserving data, data-location.txt and all backups. Windows x64 and .NET Framework 4.8 required. Source and SHA-256 checksum are included with the release.
