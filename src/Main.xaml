@@ -1,4 +1,4 @@
-<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="HDLSS 1.0.4 · Portable" Width="1450" Height="920" MinWidth="1180" MinHeight="740" WindowStartupLocation="CenterScreen" Background="#0C0F13" Foreground="#F0F3F5" FontFamily="Cascadia Mono, Consolas" FontSize="14" WindowStyle="None" ResizeMode="CanResize">
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="HDLSS 1.0.5 · Portable" Width="1450" Height="920" MinWidth="1180" MinHeight="740" WindowStartupLocation="CenterScreen" Background="#0C0F13" Foreground="#F0F3F5" FontFamily="Cascadia Mono, Consolas" FontSize="14" WindowStyle="None" ResizeMode="CanResize">
  <shell:WindowChrome.WindowChrome>
   <shell:WindowChrome CaptionHeight="38" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False" />
  </shell:WindowChrome.WindowChrome>
@@ -297,7 +297,7 @@
       <Button x:Name="MaximizeWindow" Content="□" Width="44" Padding="0" ToolTip="Ingrandisci / ripristina" />
       <Button x:Name="CloseWindow" Content="×" Width="48" Padding="0" ToolTip="Chiudi" />
      </StackPanel>
-     <TextBlock Text="H  /  HDLSS  1.0.4" Foreground="#E6AC50" VerticalAlignment="Center" Margin="18,0" FontSize="12" />
+     <TextBlock Text="H  /  HDLSS  1.0.5" Foreground="#E6AC50" VerticalAlignment="Center" Margin="18,0" FontSize="12" />
     </DockPanel>
    </Border>
    <Grid Grid.Row="1">
@@ -312,7 +312,7 @@
      <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"><StackPanel Margin="20,26">
       <StackPanel DockPanel.Dock="Top">
        <Image x:Name="BrandLogo" Height="66" Stretch="Uniform" HorizontalAlignment="Stretch" Margin="-8,0,-8,6" RenderOptions.BitmapScalingMode="HighQuality" />
-       <TextBlock Text="PORTABLE / 1.0.4" FontSize="11" Foreground="{StaticResource Muted}" />
+       <TextBlock Text="PORTABLE / 1.0.5" FontSize="11" Foreground="{StaticResource Muted}" />
        <Button x:Name="Home" Content="Library" Margin="0,32,0,0" />
        <TextBlock Text="HDR + DLSS 5" FontSize="11" Foreground="{StaticResource Muted}" Margin="4,22,0,5" />
        <TextBlock Text="HDR, DLSS 5 e mod grafiche. Senza complicazioni." TextWrapping="Wrap" FontSize="12" Foreground="#BAC4D0" Margin="4,0,0,0" />
@@ -320,12 +320,12 @@
       <StackPanel Margin="0,24,0,0">
 
 
-       <Button x:Name="OverlayDiagnostic" Content="Diagnostics" FontSize="14" Margin="0,0,0,10" />
+       
 
        <Button x:Name="Help" Content="Help" Margin="0,0,0,10" />
        <Button x:Name="DataFolder" Content="Backups" Margin="0,0,0,18" />
-       <TextBlock x:Name="MonitorLabel" Text="Monitor" TextWrapping="Wrap" Foreground="#E5EDF5" FontWeight="SemiBold" />
-       <TextBlock Text="Profilo del display selezionato" TextWrapping="Wrap" FontSize="11" Foreground="{StaticResource Muted}" Margin="0,5,0,0" />
+       
+       
       </StackPanel>
      </StackPanel></ScrollViewer>
     </Border>
@@ -396,12 +396,10 @@
       <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="16" /><ColumnDefinition /></Grid.ColumnDefinitions>
       <Border Background="#151D26" BorderBrush="#303E4B" BorderThickness="1" CornerRadius="10" Padding="20">
        <StackPanel>
-        <DockPanel><Button x:Name="HdrSection" Content="Set up HDR" Style="{StaticResource Primary}" DockPanel.Dock="Right" Margin="12,0,0,0" Padding="18,10" IsEnabled="False" /><TextBlock Text="HDR" FontSize="25" Foreground="#E6AC50" FontWeight="SemiBold" /></DockPanel><TextBlock x:Name="HdrCardStatus" Text="Select a game" TextWrapping="Wrap" FontSize="12" Margin="0,8,0,0" Foreground="#ADBACA" />
-        <TextBlock Text="Better highlights. Clearer dark scenes." Foreground="#ADBACA" FontSize="13" Margin="0,5,0,14" TextWrapping="Wrap" />
-        <TextBlock x:Name="HdrCardMethod" Text="Choose a game to see available HDR methods." TextWrapping="Wrap" Margin="0,0,0,12" />
-        <Border Background="#202A35" CornerRadius="6" Padding="12" Margin="0,0,0,14">
-         <DockPanel><Button x:Name="Hotkey" DockPanel.Dock="Right" Content="Change key" Margin="10,0,0,0" /><StackPanel><TextBlock Text="HDLSS overlay" FontSize="13" /><TextBlock x:Name="HotkeyState" Text="Ctrl + Shift + H" Foreground="#E6AC50" FontSize="12" /></StackPanel></DockPanel>
-        </Border>
+        <DockPanel><Button x:Name="HdrSection" Content="HDR / MFG" Style="{StaticResource Primary}" DockPanel.Dock="Right" Margin="12,0,0,0" Padding="18,10" IsEnabled="False" /><TextBlock Text="ReShade" FontSize="25" Foreground="#E6AC50" FontWeight="SemiBold" /></DockPanel><TextBlock x:Name="HdrCardStatus" Text="Select a game" TextWrapping="Wrap" FontSize="12" Margin="0,8,0,0" Foreground="#ADBACA" />
+        <TextBlock Text="HDR · Multi Frame Generation · Mods" Foreground="#ADBACA" FontSize="13" Margin="0,5,0,14" TextWrapping="Wrap" />
+        <TextBlock x:Name="HdrCardMethod" Text="ReShade · RenoDX · MFG Unlock" TextWrapping="Wrap" Margin="0,0,0,12" />
+        
         
        </StackPanel>
       </Border>
@@ -417,192 +415,11 @@
      </Grid>
     </ScrollViewer>
     <Border x:Name="HdrSettings" Visibility="Collapsed" Grid.Column="1" Grid.Row="2" Margin="24,0,24,0" Background="#141A22" BorderBrush="#2A3541" BorderThickness="1,0,0,0">
-     <ScrollViewer x:Name="HdrScroll" VerticalScrollBarVisibility="Auto">
-<StackPanel Margin="18,16">
-       <DockPanel Margin="0,0,0,14"><Button x:Name="HdrOverlayKey" DockPanel.Dock="Right" Content="HDR overlay key" /><TextBlock Text="HDR" FontSize="24" Foreground="#E6AC50" /></DockPanel>
-       <Border CornerRadius="9" Background="#232D3B" Height="72" Visibility="Collapsed" Margin="0,10,0,8" ClipToBounds="True">
-        <Image x:Name="Hero" Stretch="UniformToFill" />
-       </Border>
-       <TextBlock x:Name="GameTitle" Text="Seleziona un gioco" FontSize="17" FontWeight="SemiBold" TextWrapping="Wrap" />
-       <TextBlock Text="Come vuoi attivare HDR?" Foreground="#E6AC50" Margin="0,4,0,8" />
-       <ComboBox x:Name="HdrMethod" SelectedIndex="0" Margin="0,0,0,12"><ComboBoxItem Content="HDR del motore · UE5" ToolTip="Disponibile solo per i giochi UE5 riconosciuti; effetto HDR da verificare per gioco." /><ComboBoxItem Content="ReShade + RenoDX" /></ComboBox>
-       <TextBlock x:Name="HdrMethodInfo" TextWrapping="Wrap" FontSize="13" Margin="0,0,0,12" Foreground="#ADBACA" />
-       <Button x:Name="RenoDx" Content="Configura ReShade / RenoDX…" Margin="0,0,0,12" Foreground="#E6AC50" IsEnabled="False" Visibility="Collapsed" />
-<Grid x:Name="RenoInline" Visibility="Collapsed" />
-<Grid x:Name="UeSettingsGrid"><Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition /></Grid.ColumnDefinitions>      <StackPanel Margin="0,0,24,0">
-       <TextBlock x:Name="EngineInfo" Text="I parametri vengono salvati per il titolo selezionato." Foreground="{StaticResource Muted}" TextWrapping="Wrap" FontSize="12" Margin="0,7,0,14" />
-
-       <StackPanel Margin="0,4,0,6"><TextBlock Text="Cartella e configurazione" Foreground="#E6AC50" FontSize="14" Margin="0,8,0,8" />
-        <Border Background="#1C2631" CornerRadius="8" Padding="12" Margin="0,4,0,6">
-         <StackPanel>
-          <Button x:Name="OpenGame" Content="Cartella gioco" IsEnabled="False" Margin="0,0,0,8" />
-          <TextBlock Text="CONFIGURAZIONE" Foreground="#8E9CAB" FontSize="11" />
-          <TextBlock x:Name="ConfigInfo" Text="Nessuna cartella selezionata" TextWrapping="Wrap" FontSize="12" Margin="0,6,0,8" />
-          <Button x:Name="ChooseConfig" Content="Scegli cartella impostazioni…" Padding="8,6" IsEnabled="False" />
-          <ComboBox x:Name="Sections" Margin="0,8,0,0" ToolTip="Sezione GameUserSettings da modificare" />
-         </StackPanel>
-        </Border>
-       </StackPanel>
-       <Border Background="#1C2631" CornerRadius="8" Padding="10" Margin="0,0,0,10">
-        <StackPanel>
-         <TextBlock Text="MONITOR E CONSIGLI" Foreground="#E6AC50" FontSize="11" />
-         <ComboBox x:Name="Monitors" Margin="0,8,0,8" />
-         <ComboBox x:Name="MonitorMode" Margin="0,0,0,8" />
-         <StackPanel Margin="0,0,0,0"><TextBlock Text="Consigli del monitor" Foreground="#E6AC50" FontSize="14" Margin="0,8,0,8" />
-          <StackPanel>
-           <TextBlock x:Name="MonitorAdvice" TextWrapping="Wrap" Foreground="#ADBACA" FontSize="12" />
-           <Button x:Name="RefreshMonitors" Content="Rileva di nuovo" Padding="8,5" Margin="0,10,0,0" />
-          </StackPanel>
-         </StackPanel>
-        </StackPanel>
-       </Border>
-
-       <TextBlock x:Name="ReadState" Text="Valori iniziali, non una calibrazione misurata." TextWrapping="Wrap" FontSize="11" Foreground="#A8B4C2" Margin="0,12,0,10" />
-       <Grid>
-        <Grid.ColumnDefinitions>
-         <ColumnDefinition Width="*" />
-         <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Button x:Name="Restore" Content="Ripristina" IsEnabled="False" Margin="0,0,4,0" />
-        <Button x:Name="Verify" Grid.Column="1" Content="Verifica file" IsEnabled="False" Margin="4,0,0,0" />
-       </Grid>
-       <StackPanel Margin="0,8,0,0"><TextBlock Text="Strumenti e parametri motore" Foreground="#E6AC50" FontSize="14" Margin="0,8,0,8" />
-        <Border Background="#2B281B" CornerRadius="8" Padding="12" Margin="0,4,0,6">
-         <StackPanel>
-          <TextBlock Text="PARAMETRI MOTORE · OPZIONALE" Foreground="#E6AC50" FontSize="12" FontWeight="SemiBold" />
-          <TextBlock Text="Opzionale: legge i parametri del motore, non la scena. L’analizzatore di luminanza usa Windows e non richiede UE4SS." TextWrapping="Wrap" Foreground="#C3BDA6" FontSize="12" Margin="0,7,0,10" />
-          <TextBlock x:Name="ReaderStatus" Text="Seleziona un gioco per verificare il lettore." TextWrapping="Wrap" Foreground="#C3BDA6" FontSize="12" Margin="0,0,0,10" /><Button x:Name="RefreshReader" Content="Aggiorna stato lettore" Margin="0,0,0,8" />
-          <Button x:Name="EngineOverlay" Content="Vedi parametri del motore" IsEnabled="False" Padding="8,7" Margin="0,0,0,7" />
-          <Button x:Name="InstallReader" Content="Installa / attiva lettore UE4SS" IsEnabled="False" Padding="8,7" />
-          <Button x:Name="DisableReader" Content="Disattiva lettore" IsEnabled="False" Margin="0,6,0,0" Padding="8,5" />
-         </StackPanel>
-        </Border>
-       </StackPanel>
-       
-       <TextBlock Text="Sola lettura ripristinata dopo il salvataggio.&#10;La verifica dei file non misura l’HDR in gioco." Foreground="#758496" FontSize="11" TextWrapping="Wrap" Margin="0,13,0,0" />
-      </StackPanel>
-       <StackPanel x:Name="UeHdrControls" Grid.Column="1">
-       <Grid Margin="0,0,0,7">
-        <Grid.ColumnDefinitions>
-         <ColumnDefinition Width="*" />
-         <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <TextBlock Text="REGOLAZIONI HDR" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center" />
-        <Button x:Name="Defaults" Content="Consigliati" Grid.Column="1" Padding="9,5" />
-       </Grid>
-       <Grid Margin="0,5">
-        <Grid.ColumnDefinitions>
-         <ColumnDefinition Width="*" />
-         <ColumnDefinition Width="82" />
-         <ColumnDefinition Width="32" />
-        </Grid.ColumnDefinitions>
-        <StackPanel>
-         <TextBlock Text="Picco luminoso" />
-         <TextBlock x:Name="PeakAdvice" Text="Consiglio: scegli un monitor" Foreground="{StaticResource Muted}" FontSize="11" Margin="0,4,0,0" />
-        </StackPanel>
-        <TextBox x:Name="Peak" Grid.Column="1" Text="1060" MaxLength="5" TextAlignment="Right" Padding="8,6" />
-        <Button Grid.Column="2" Content="?" Padding="0" Width="25" Height="25" Margin="7,0,0,0" x:Name="HelpPeak" Tag="Il limite richiesto alla curva HDR del gioco, in nit. Non aumenta le capacità fisiche del display e non misura i pixel della scena. Usa il valore calibrato per la modalità HDR attiva sul monitor. Valori troppo alti possono perdere dettaglio nelle luci; troppo bassi possono comprimerle. Intervallo: 200–10000. Per AW3423DW: 1000 nominali in Peak 1000; 1060 è la personalizzazione scelta da te, non una misura del tuo pannello." ToolTip="Spiegazione e valori consigliati" />
-       </Grid>
-       <Grid Margin="0,5">
-        <Grid.ColumnDefinitions>
-         <ColumnDefinition Width="*" />
-         <ColumnDefinition Width="82" />
-         <ColumnDefinition Width="32" />
-        </Grid.ColumnDefinitions>
-        <StackPanel>
-         <TextBlock Text="Mezzitoni" />
-         <TextBlock Text="Base Unreal: 15 nit · grigio 18%" Foreground="{StaticResource Muted}" FontSize="11" Margin="0,4,0,0" />
-        </StackPanel>
-        <TextBox x:Name="Mid" Grid.Column="1" Text="15" MaxLength="3" TextAlignment="Right" Padding="8,6" />
-        <Button Grid.Column="2" Content="?" Padding="0" Width="25" Height="25" Margin="7,0,0,0" x:Name="HelpMid" Tag="Controlla la luminanza del grigio al 18% nella curva HDR, non quella del bianco. Base Unreal: 15 nit. Aumentarlo può schiarire i toni intermedi; ridurlo può scurirli. Parti da 15 e cambia poco alla volta, verificando visi e ombre nella stessa scena. Intervallo: 5–100 nit. Non deriva dal picco del monitor e alcuni giochi ignorano questo parametro." ToolTip="Spiegazione e valori consigliati" />
-       </Grid>
-       <Grid Margin="0,5">
-        <Grid.ColumnDefinitions>
-         <ColumnDefinition Width="*" />
-         <ColumnDefinition Width="82" />
-         <ColumnDefinition Width="32" />
-        </Grid.ColumnDefinitions>
-        <StackPanel>
-         <TextBlock Text="Luminosità interfaccia" />
-         <TextBlock Text="Base: 100%" Foreground="{StaticResource Muted}" FontSize="11" Margin="0,4,0,0" />
-        </StackPanel>
-        <TextBox x:Name="Ui" Grid.Column="1" Text="100" MaxLength="3" TextAlignment="Right" Padding="8,6" />
-        <Button Grid.Column="2" Content="?" Padding="0" Width="25" Height="25" Margin="7,0,0,0" x:Name="HelpUi" Tag="Regola il moltiplicatore della luminosità dell'interfaccia quando il gioco usa la composizione UI HDR di Unreal. 100% significa moltiplicatore 1, non 100 nit. Riduci se menu e HUD abbagliano; aumenta se sono poco leggibili. Intervallo: 25–300%. Può non agire su elementi disegnati direttamente nella scena o gestiti diversamente dal gioco." ToolTip="Spiegazione e valori consigliati" />
-       </Grid>
-       <DockPanel Margin="0,10,0,5">
-        <Button x:Name="HelpBlack" Content="?" DockPanel.Dock="Right" Padding="0" Width="25" Height="25" Tag="Il nero fisico di un OLED può essere zero. Questo controllo agisce invece sul minimo logaritmico della curva Unreal: Base = 0,0001 nit (−4); Quasi zero = 0,000001 nit (−6). Scrivere 0 nella variabile logaritmica significherebbe 1 nit. Parti dalla base: quasi zero non corregge necessariamente neri sollevati dal gioco. Conserva valore attuale mantiene un'impostazione personalizzata già presente." />
-        <TextBlock Text="Punto di nero" VerticalAlignment="Center" />
-       </DockPanel>
-       <ComboBox x:Name="Black">
-        <ComboBoxItem Content="Base Unreal · consigliato" />
-        <ComboBoxItem Content="OLED · quasi zero" />
-        <ComboBoxItem Content="Personalizzato · conserva valore attuale" />
-       </ComboBox>
-       <StackPanel x:Name="AdvancedExpander" Margin="0,14,0,8"><TextBlock Text="HDR avanzato" Foreground="#E6AC50" FontSize="14" Margin="0,8,0,8" />
-        <StackPanel Margin="0,10,0,0">
-         <CheckBox x:Name="UseAdvanced" Content="Applica anche questi parametri" />
-         <TextBlock Text="Consiglio iniziale: conserva i valori del gioco. Quando deselezionato, i parametri esistenti restano invariati. Disponibilità ed effetto dipendono dalla versione Unreal e dal gioco." TextWrapping="Wrap" FontSize="12" Foreground="#ADBACA" Margin="0,8,0,12" />
-         <StackPanel x:Name="AdvancedPanel" IsEnabled="False">
-          <TextBlock Text="Formato e spazio colore" Margin="0,4,0,4" FontSize="12" />
-          <Grid Margin="0,5">
-           <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="84" />
-            <ColumnDefinition Width="32" />
-           </Grid.ColumnDefinitions>
-           <ComboBox x:Name="OutputFormat" Margin="0,0,0,0" Grid.ColumnSpan="2">
-            <ComboBoxItem Content="scRGB · curva 1000 · Rec.709" />
-            <ComboBoxItem Content="scRGB · curva 2000 · Rec.709" />
-            <ComboBoxItem Content="HDR10 PQ · curva 1000 · Rec.2020" />
-            <ComboBoxItem Content="HDR10 PQ · curva 2000 · Rec.2020" />
-           </ComboBox>
-           <Button Grid.Column="2" Content="?" Padding="0" Width="25" Height="25" Margin="7,0,0,0" x:Name="HelpOutputFormat" Tag="Base: scRGB/1000. Le curve 1000 e 2000 sono preset del motore; non sostituiscono il picco personalizzato. Lo spazio colore segue il formato, non la copertura dichiarata del monitor." />
-          </Grid>
-          <Grid Margin="0,5">
-           <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="84" />
-            <ColumnDefinition Width="32" />
-           </Grid.ColumnDefinitions>
-           <TextBlock Text="Luminanza base interfaccia · nit" Margin="0" FontSize="12" VerticalAlignment="Center" />
-           <TextBox x:Name="UiNits" Text="300" MaxLength="4" Margin="0" Grid.Column="1" Padding="8,6" TextAlignment="Right" />
-           <Button Grid.Column="2" Content="?" Padding="0" Width="25" Height="25" Margin="7,0,0,0" x:Name="HelpUiNits" Tag="Base Unreal: 300 nit. Moltiplicata per la percentuale UI: 300 × 50% = 150 nit. Range app: 50–1000. Può non agire su HUD personalizzati." />
-          </Grid>
-          <Grid Margin="0,5">
-           <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="84" />
-            <ColumnDefinition Width="32" />
-           </Grid.ColumnDefinitions>
-           <TextBlock Text="Moltiplicatore scena ACES · %" Margin="0" FontSize="12" VerticalAlignment="Center" />
-           <TextBox x:Name="ScenePercent" Text="150" MaxLength="3" Margin="0" Grid.Column="1" Padding="8,6" TextAlignment="Right" />
-           <Button Grid.Column="2" Content="?" Padding="0" Width="25" Height="25" Margin="7,0,0,0" x:Name="HelpScenePercent" Tag="Base documentata: 150% (×1,5). Cambia il colore della scena prima della trasformazione HDR ACES; non è il picco del display. Range app: 25–300. Verifica luci e mezzi toni dopo ogni modifica." />
-          </Grid>
-          <Grid Margin="0,5">
-           <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="84" />
-            <ColumnDefinition Width="32" />
-           </Grid.ColumnDefinitions>
-           <CheckBox Margin="0,7,0,7" x:Name="GamutCompression" Content="Compressione colori ACES" Grid.ColumnSpan="2" />
-           <Button Grid.Column="2" Content="?" Padding="0" Width="25" Height="25" Margin="7,0,0,0" x:Name="HelpGamutCompression" Tag="Riduce la tendenza dei blu molto luminosi a diventare viola, desaturandoli. Non è un controllo generale di saturazione." />
-          </Grid>
-          <Grid Margin="0,5">
-           <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="84" />
-            <ColumnDefinition Width="32" />
-           </Grid.ColumnDefinitions>
-           <CheckBox Margin="0,7,0,7" x:Name="UiComposite" Content="Composizione UI HDR" Grid.ColumnSpan="2" />
-           <Button Grid.Column="2" Content="?" Padding="0" Width="25" Height="25" Margin="7,0,0,0" x:Name="HelpUiComposite" Tag="Il passaggio HDR migliora la fusione dell’interfaccia sulla scena. Usa Standard solo per confrontare eventuali problemi del gioco." />
-          </Grid>
-         </StackPanel>
-        </StackPanel>
-       </StackPanel>
-       </StackPanel></Grid>
-     </StackPanel>
-     </ScrollViewer>
-    </Border>
+ <ScrollViewer x:Name="HdrScroll" VerticalScrollBarVisibility="Auto"><StackPanel Margin="18,16">
+ <TextBlock Text="ReShade · RenoDX · MFG Unlock" FontSize="22" Foreground="#E6AC50" TextWrapping="Wrap" />
+ <TextBlock x:Name="GameTitle" Text="Seleziona un gioco" FontSize="17" Margin="0,10,0,14" TextWrapping="Wrap" />
+ <Grid x:Name="RenoInline" />
+ </StackPanel></ScrollViewer></Border>
     <Grid x:Name="DlssSection" Grid.Column="1" Grid.Row="2" Background="#141A22" Margin="24,0,24,0" Visibility="Collapsed" />
    </Grid>
    <Border Grid.Row="2" Background="#11161D" BorderBrush="#303844" BorderThickness="0,1,0,0" Padding="22,6">
@@ -619,8 +436,8 @@
       <TextBlock Text="{Binding Text,ElementName=GameTitle}" FontSize="13" FontWeight="SemiBold" Foreground="#EDF0F4" TextTrimming="CharacterEllipsis" Margin="0,5,0,0" />
      </StackPanel>
      <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-      <Button x:Name="Overlay" Content="Apri overlay live" IsEnabled="False" Margin="10,0,0,0" Padding="18,11" MinWidth="150" />
-      <Button x:Name="Apply" Content="Applica HDR" IsEnabled="False" Margin="10,0,0,0" Padding="18,11" MinWidth="150" />
+      
+      
       <Button x:Name="Play" Content="▶  Avvia gioco" Style="{StaticResource Primary}" IsEnabled="False" Margin="10,0,0,0" Padding="18,11" MinWidth="150" />
      </StackPanel>
     </Grid>

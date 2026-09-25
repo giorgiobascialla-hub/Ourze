@@ -1,8 +1,3 @@
-param([string]$Output=(Join-Path $PSScriptRoot '..\HDR-Unlock.exe'))
-$ErrorActionPreference='Stop'
-$fx=Join-Path $env:WINDIR 'Microsoft.NET\Framework\v4.0.30319'
-$wpf=Join-Path $fx 'WPF'
-$out=$Output
-& (Join-Path $fx 'csc.exe') /nologo /target:winexe /platform:x64 /optimize+ /unsafe /codepage:65001 "/out:$out" "/win32icon:$PSScriptRoot\app.ico" "/win32manifest:$PSScriptRoot\app.manifest" "/resource:$PSScriptRoot\Main.xaml,Main.xaml" "/resource:$PSScriptRoot\telemetry.lua,telemetry.lua" "/r:$wpf\PresentationFramework.dll" "/r:$wpf\PresentationCore.dll" "/r:$wpf\WindowsBase.dll" /r:System.Xaml.dll /r:System.Web.Extensions.dll /r:System.Windows.Forms.dll /r:System.Core.dll /r:System.IO.Compression.dll "$PSScriptRoot\Core.cs" "$PSScriptRoot\App.cs" "$PSScriptRoot\Overlay.cs" "$PSScriptRoot\Ui.cs" "$PSScriptRoot\Displays.cs" "$PSScriptRoot\Capture.cs" "$PSScriptRoot\SceneOverlay.cs" "$PSScriptRoot\AdvancedHdr.cs" "$PSScriptRoot\AssemblyInfo.cs" "$PSScriptRoot\OverlayWindow.cs" "$PSScriptRoot\Guide.cs" "$PSScriptRoot\SingleInstance.cs" "$PSScriptRoot\DlssCore.cs" "$PSScriptRoot\DlssUi.cs" "$PSScriptRoot\DlssHardware.cs" "$PSScriptRoot\DlssLibraries.cs" "$PSScriptRoot\DlssTests.cs" "$PSScriptRoot\RenoDx.cs" "$PSScriptRoot\ComponentTests.cs" "$PSScriptRoot\DllCatalog.cs" "$PSScriptRoot\NrModels.cs" "$PSScriptRoot\ActivityLog.cs" "$PSScriptRoot\PreferencesTests.cs" "$PSScriptRoot\AppOptions.cs"
-if($LASTEXITCODE -ne 0){throw 'Compilazione fallita'}
-
+param([string]$Output=(Join-Path $PSScriptRoot '..\HDLSS.exe'))
+# Compatibility entry point. HDLSS targets Windows x64.
+& (Join-Path $PSScriptRoot 'build.ps1') -Output $Output

@@ -31,7 +31,7 @@ public static class EffectCatalog {
  public static DlssPlan Prepare(Game game,EffectPackage p,Action<string> progress){
   Core.Closed(game);string root=Path.GetDirectoryName(game.Exe),config=ConfigFile(root),marker=Marker(p);if(p.Addon){
    bool engine=game.Config!=null&&File.Exists(Path.Combine(game.Config,"Engine.ini"))&&Core.Get(File.ReadAllText(Path.Combine(game.Config,"Engine.ini")),"SystemSettings","r.HDR.EnableHDROutput")=="1";
-   if(engine||Directory.GetFiles(root,"renodx-*.addon64").Any(f=>Path.GetFileName(f).IndexOf("dlss",StringComparison.OrdinalIgnoreCase)<0))throw new Exception("AutoHDR: disattiva prima HDR del motore o rimuovi RenoDX HDR. Evita due conversioni HDR sovrapposte.");
+   if(engine||RenoDx.HasHdrAddon(game))throw new Exception("AutoHDR: disattiva prima HDR del motore o rimuovi RenoDX HDR. Evita due conversioni HDR sovrapposte.");
   }
   string cache=Path.Combine(Core.Data,"effect-packages",Guid.NewGuid().ToString("N"));Directory.CreateDirectory(cache);string source=Path.Combine(cache,"files");Directory.CreateDirectory(source);string origin="";
   ServicePointManager.SecurityProtocol|=SecurityProtocolType.Tls12;using(var web=new DlssCore.DownloadClient()){web.Headers[HttpRequestHeader.UserAgent]="HDR-Unlock/0.1";progress("Scarico "+p.Name+" dal repository dell’autore…");

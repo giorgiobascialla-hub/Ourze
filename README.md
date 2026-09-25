@@ -2,7 +2,7 @@
 
 **DLSS 5 & Neural Rendering for compatible games.**
 
-[Download HDLSS 1.0.4](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.4) · [Release assets and presentation](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0)
+[Download HDLSS 1.0.5](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.5) · [Release assets and presentation](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0)
 
 HDLSS was created to help configure DLSS 5 and Neural Rendering in compatible games. It brings supported community OptiScaler builds, component checks, backups and recovery into a portable Windows app, with additional HDR tools. It is an independent project; the integrated community injector builds are not official NVIDIA releases.
 
@@ -12,23 +12,24 @@ HDLSS was created to help configure DLSS 5 and Neural Rendering in compatible ga
 
 ## App screenshots
 
+Library and DLSS views from earlier releases. Version 1.0.5 replaces the UE5 HDR editor with the HDR / MFG mod-management page. The linked 1.0.0 presentation is historical.
+
 ### Game library
 ![HDLSS game library](assets/library.jpg)
-
-### HDR settings
-![HDLSS HDR settings](assets/hdr.jpg)
 
 ### DLSS components
 ![HDLSS DLSS components](assets/dlss.jpg)
 
-## Changes in 1.0.4
+## Changes in 1.0.5
 
-Fixes migration of the retired HDLSS HDR filter left active by earlier builds. Existing unrelated effects and mods are preserved, with preset recovery. The reporting user confirmed normal colors and peak readings in Silent Hill Townfall after deactivation. See the [changelog](CHANGELOG.md).
+Adds ReShade MFG Unlock installation and updates for RTX 2000/3000/4000 in games with native DLSS Frame Generation. Removes the UE5 HDR editor and HDLSS luminance overlay. Includes separate backups, preservation of other add-ons, updated help and translations. See the [changelog](CHANGELOG.md).
 
 ## What you can do
 
 - Browse detected Steam and Xbox / Game Pass titles, or add a game executable.
-- Configure supported Unreal HDR settings and manage ReShade / RenoDX separately.
+- Manage ReShade, compatible RenoDX HDR mods and MFG Unlock separately.
+- Download the latest stable MFG Unlock release with SHA-256 verification; restore it without discarding later ReShade settings.
+- Install UE4SS for supported Unreal game mods without the retired HDLSS telemetry reader.
 - Work with the three supported community OptiScaler forks and their available options.
 - Inspect Super Resolution, Ray Reconstruction and Frame Generation DLLs independently from the Neural Rendering model.
 - Compare files across game folders, inspect their paths, and update a selected component with verification and backup.
@@ -39,7 +40,7 @@ Fixes migration of the retired HDLSS HDR filter left active by earlier builds. E
 
 Extract the portable archive into a writable folder and launch `HDLSS.exe`. Windows x64 and .NET Framework 4.8 are required. No Python or developer SDK is needed to run it.
 
-Select a game, check the executable, then choose HDR or DLSS 5. Close the game before applying changes. The review step shows what will change before installation.
+Select a game, check the executable, then choose HDR / MFG or DLSS 5. Close the game before applying changes. The review step shows what will change before installation.
 
 ## Updating an existing installation
 
@@ -53,7 +54,9 @@ A game can ship the same component in an engine/plugin folder and beside its exe
 
 Features depend on the game, GPU, driver, display and selected component. Updating a DLL does not add a feature the game does not implement. Installed files do not prove an effect is active: verify the result in game. Protected installations may prevent modifications. Experimental community features are identified in the app.
 
-This release is version 1.0.4. Broad hardware certification and complete localization remain in progress. See [validation](docs/VALIDATION.md) and [release notes](docs/RELEASE-NOTES.md).
+MFG Unlock requires full add-on ReShade and native DLSS Frame Generation in the game. It does not add FG to a game that lacks it. No automatic NVIDIA/Streamline replacement is performed. MFG activation has not been verified in a running game across RTX 2000/3000/4000 hardware. Consult the [author's compatibility notes](https://github.com/nefh/MFGAmpereUnlock-RenoDx).
+
+This release is version 1.0.5. Broad hardware certification and complete localization remain in progress. See [validation](docs/VALIDATION.md) and [release notes](docs/RELEASE-NOTES.md).
 
 ## Build from source
 
@@ -77,5 +80,6 @@ Include the app version, Windows version, GPU/driver, game and selected componen
 HDLSS is independent and is not affiliated with NVIDIA, Valve, Microsoft, Epic Games, ReShade, RenoDX or the OptiScaler authors. Component downloads retain their authors' terms. See [component sources](docs/SOURCES.txt). Third-party injectors, models and game files are not bundled.
 
 No open-source license has been selected for HDLSS in this package. Public source availability alone does not grant a reuse license. Third-party trademarks and game artwork belong to their respective owners.
+
 
 

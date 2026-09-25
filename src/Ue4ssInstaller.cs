@@ -26,10 +26,10 @@ public static class Ue4ssInstaller {
   if(File.Exists(Path.Combine(folder,"dwmapi.dll")))return "dwmapi.dll already exists. Its loader is preserved; configure a compatible UE4SS installation manually.";
   return "";
  }
- public static DlssPlan Prepare(Game g,string zip){
+ public static DlssPlan Prepare(Game g,string zip,bool readerEnabled=true){
   Core.Closed(g);string error=Check(g);if(error!="")throw new Exception(error);
   string root=Path.GetDirectoryName(Path.GetFullPath(g.Exe));
-  if(File.Exists(Path.Combine(RuntimeFolder(g),"UE4SS.dll")))throw new Exception("UE4SS is already installed. Keep the game's existing version and install only the reader.");
+  if(File.Exists(Path.Combine(RuntimeFolder(g),"UE4SS.dll")))throw new Exception(readerEnabled?"UE4SS is already installed. Keep the game's existing version and install only the reader.":"UE4SS is already installed. Existing runtime and mods are preserved; follow the game mod author before replacing its runtime.");
   if(File.Exists(DlssCore.Safe(root,Marker)))throw new Exception("A previous UE4SS installation record exists. Recover that operation before reinstalling.");
   var p=new DlssPlan{Folder=root,MarkerName=Marker,Manifest=new DlssManifest{Game=g.Id,Folder=root,PreviousOwner="Before UE4SS installation",BackupRoot="ue4ss-backups/"+Guid.NewGuid().ToString("N")},Summary="Install official UE4SS (stable) and the HDLSS engine reader. Game-specific compatibility is not guaranteed: check a fresh UE4SS.log after launching. Existing mod files are preserved. Recover operation can undo this installation using its transaction record."};
   long total=0;var names=new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -44,13 +44,14 @@ public static class Ue4ssInstaller {
    using(var input=e.Open())using(var output=new MemoryStream()){input.CopyTo(output);p.Changes.Add(new DlssChange{Name=name,Bytes=output.ToArray()});}
   }
   if(!p.Changes.Any(c=>c.Name=="UE4SS.dll")||!p.Changes.Any(c=>c.Name=="dwmapi.dll"))throw new Exception("The package does not contain the required UE4SS runtime and loader.");
+  if(!readerEnabled){p.Summary="Install the latest official stable UE4SS for game mods. No HDLSS telemetry reader is installed. Verify compatibility with the game and its mods.";return p;}
   string reader="Mods/HDRPilotTelemetry/";
   if(Directory.Exists(DlssCore.Safe(root,"Mods/HDRPilotTelemetry")))throw new Exception("An existing HDLSS reader folder must be reviewed before installation.");
   string modList=DlssCore.Safe(root,"Mods/mods.txt");if(File.Exists(modList)&&Regex.IsMatch(File.ReadAllText(modList),@"(?im)^\s*HDRPilotTelemetry\s*:"))throw new Exception("An existing HDRPilotTelemetry entry in mods.txt must be reviewed before installation.");
   p.Changes.Add(new DlssChange{Name=reader+"Scripts/main.lua",Bytes=new UTF8Encoding(false).GetBytes(Telemetry.Payload())});
   p.Changes.Add(new DlssChange{Name=reader+"enabled.txt",Bytes=new byte[0]});return p;
  }
- public static DlssPlan DownloadAndPrepare(Game g){
+ public static DlssPlan DownloadAndPrepare(Game g,bool readerEnabled=true){
   string error=Check(g);if(error!="")throw new Exception(error);
   ServicePointManager.SecurityProtocol|=SecurityProtocolType.Tls12;
   using(var web=new DlssCore.DownloadClient()){
@@ -64,7 +65,7 @@ public static class Ue4ssInstaller {
    string folder=Path.Combine(Core.Data,"ue4ss-downloads",Guid.NewGuid().ToString("N"));Directory.CreateDirectory(folder);string zip=Path.Combine(folder,"UE4SS.zip");
    web.DownloadFile(url,zip);if(new FileInfo(zip).Length!=Convert.ToInt64(asset["size"]))throw new Exception("Incomplete UE4SS download.");
    object digest;if(asset.TryGetValue("digest",out digest)&&Convert.ToString(digest).StartsWith("sha256:"))if(!String.Equals(Convert.ToString(digest).Substring(7),DlssCore.Hash(zip),StringComparison.OrdinalIgnoreCase))throw new Exception("UE4SS checksum mismatch.");
-   File.WriteAllText(zip+".source.txt",url+"\nSHA256 "+DlssCore.Hash(zip));var p=Prepare(g,zip);p.Summary="UE4SS "+release["tag_name"]+"\n"+p.Summary;return p;
+   File.WriteAllText(zip+".source.txt",url+"\nSHA256 "+DlssCore.Hash(zip));var p=Prepare(g,zip,readerEnabled);p.Summary="UE4SS "+release["tag_name"]+"\n"+p.Summary;return p;
   }
  }
  public static string InstallLabel(bool runtime){int i=Array.IndexOf(new[]{"en","it","es","fr","de","pt"},Core.Pref.Language);if(i<0)i=0;return (runtime?new[]{"Install UE4SS + reader","Installa UE4SS + lettore","Instalar UE4SS + lector","Installer UE4SS + lecteur","UE4SS + Leser installieren","Instalar UE4SS + leitor"}:new[]{"Enable UE4SS reader","Attiva lettore UE4SS","Activar lector UE4SS","Activer le lecteur UE4SS","UE4SS-Leser aktivieren","Ativar leitor UE4SS"})[i];}

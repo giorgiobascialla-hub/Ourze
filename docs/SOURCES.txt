@@ -15,3 +15,6 @@ Neural Rendering model variants: https://github.com/RankFTW/rhi-repo/releases
 Reference downloads: https://www.techpowerup.com/download/nvidia-dlss-dll/
 
 Each component retains its author's license and compatibility requirements.
+
+MFG Unlock: https://github.com/nefh/MFGAmpereUnlock-RenoDx
+
