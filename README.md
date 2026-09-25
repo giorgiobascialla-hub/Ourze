@@ -2,17 +2,15 @@
 
 **DLSS 5 & Neural Rendering for compatible games.**
 
-[Download HDLSS 1.0.5](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.5) · [Release assets and presentation](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.0)
+[Download HDLSS 1.0.5](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.5)
 
 HDLSS was created to help configure DLSS 5 and Neural Rendering in compatible games. It brings supported community OptiScaler builds, component checks, backups and recovery into a portable Windows app, with additional HDR tools. It is an independent project; the integrated community injector builds are not official NVIDIA releases.
 
 <img src="assets/brand-logo.png" alt="HDLSS" width="420">
 
-[![Watch the presentation](assets/presentation.png)](https://github.com/giorgiobascialla-hub/Ourze/releases/download/v1.0.0/HDLSS-Presentation.mp4)
-
 ## App screenshots
 
-Library and DLSS views from earlier releases. Version 1.0.5 replaces the UE5 HDR editor with the HDR / MFG mod-management page. The linked 1.0.0 presentation is historical.
+Library and DLSS views from earlier releases. Version 1.0.5 replaces the UE5 HDR editor with the HDR / MFG mod-management page.
 
 ### Game library
 ![HDLSS game library](assets/library.jpg)
