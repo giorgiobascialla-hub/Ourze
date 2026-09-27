@@ -65,16 +65,16 @@ public class Pilot {
   string[] themes={"dark","light","system"};C<ComboBox>("HomeTheme").ItemsSource=new[]{"Dark","Light","System"};C<ComboBox>("HomeTheme").SelectedIndex=Math.Max(0,Array.IndexOf(themes,Core.Pref.Theme));C<ComboBox>("HomeTheme").SelectionChanged+=(s,e)=>{string old=Core.Pref.Theme;try{Core.Pref.Theme=themes[C<ComboBox>("HomeTheme").SelectedIndex];Core.SavePrefs();Appearance.Refresh();}catch(Exception ex){Core.Pref.Theme=old;Fail(ex);}};
   C<Button>("Scan").Click+=(s,e)=>{if(Leave())StartScan();};
   C<TextBox>("Search").TextChanged+=(s,e)=>Filter();C<CheckBox>("ShowUncertain").Checked+=(s,e)=>Filter();C<CheckBox>("ShowUncertain").Unchecked+=(s,e)=>Filter();
-  C<ListBox>("Games").SelectionChanged+=(s,e)=>{if(loading)return;var g=C<ListBox>("Games").SelectedItem as Game;if(g==current)return;if(busy||RenoDxUi.IsBusy||(dlssPanel!=null&&dlssPanel.IsBusy)){loading=true;C<ListBox>("Games").SelectedItem=current;loading=false;SetStatus("Attendi il completamento dell’operazione.");return;}if(!Leave()){loading=true;C<ListBox>("Games").SelectedItem=current;loading=false;return;}Select(g);};
+  C<ListBox>("Games").SelectionChanged+=(s,e)=>{if(loading)return;var g=C<ListBox>("Games").SelectedItem as Game;if(g==current)return;if(busy||ModCenter.Busy||RenoDxUi.IsBusy||(dlssPanel!=null&&dlssPanel.IsBusy)){loading=true;C<ListBox>("Games").SelectedItem=current;loading=false;SetStatus("Attendi il completamento dell’operazione.");return;}if(!Leave()){loading=true;C<ListBox>("Games").SelectedItem=current;loading=false;return;}Select(g);};
   C<Button>("SteamFolder").Click+=(s,e)=>Act(()=>{using(var d=new Forms.FolderBrowserDialog()){d.Description="Scegli SteamLibrary oppure la cartella Xbox / Game Pass (es. XboxGames)";if(d.ShowDialog()!=Forms.DialogResult.OK)return;string path=d.SelectedPath;if(String.Equals(Path.GetFileName(path),"steamapps",StringComparison.OrdinalIgnoreCase))path=Path.GetDirectoryName(path);if(!Core.Pref.Libraries.Contains(path))Core.Pref.Libraries.Add(path);Core.SavePrefs();StartScan();}});
   C<Button>("DataFolder").Click+=(s,e)=>Act(()=>Open(Core.Data));
   C<Button>("CoverButton").Click+=(s,e)=>Act(()=>{if(current==null)return;var d=new Microsoft.Win32.OpenFileDialog{Filter="Immagini|*.jpg;*.jpeg;*.png;*.bmp"};if(d.ShowDialog(window)!=true)return;ImageSource img=Image(d.FileName);if(img==null)throw new Exception("Immagine non leggibile.");string dir=Path.Combine(Core.Data,"covers");Directory.CreateDirectory(dir);string file=Path.Combine(dir,current.Id+Path.GetExtension(d.FileName));File.Copy(d.FileName,file,true);Core.Pref.Covers[current.Id]=Path.Combine("covers",Path.GetFileName(file));Core.SavePrefs();current.Cover=file;RefreshCards();});
   C<Button>("Dlss").Click+=(s,e)=>Act(()=>SwitchSection(true));
   C<Button>("HdrSection").Click+=(s,e)=>Act(()=>SwitchSection(false));
   C<Button>("Help").Click+=(s,e)=>Guide.Show(window);
-  window.Closing+=(s,e)=>{if(busy||RenoDxUi.IsBusy||(dlssPanel!=null&&dlssPanel.IsBusy)){e.Cancel=true;return;}if(preview==null&&!Leave())e.Cancel=true;};
+  window.Closing+=(s,e)=>{if(busy||ModCenter.Busy||RenoDxUi.IsBusy||(dlssPanel!=null&&dlssPanel.IsBusy)){e.Cancel=true;return;}if(preview==null&&!Leave())e.Cancel=true;};
   window.Loaded+=(s,e)=>StartScan();
-  C<Button>("Play").Click+=(s,e)=>Act(()=>{if(current!=null&&!busy&&!RenoDxUi.IsBusy&&(dlssPanel==null||!dlssPanel.IsBusy))InjectionSetup.Launch(current);});
+  C<Button>("Play").Click+=(s,e)=>Act(()=>{if(current!=null&&!busy&&!ModCenter.Busy&&!RenoDxUi.IsBusy&&(dlssPanel==null||!dlssPanel.IsBusy))InjectionSetup.Launch(current);});
  }
 
  void HdrMode(){var host=C<Grid>("RenoInline");if(!homeMode&&!dlssMode&&!RenoDxUi.IsBusy){host.Children.Clear();if(current!=null&&!String.IsNullOrEmpty(current.Exe)&&File.Exists(current.Exe))host.Children.Add(RenoDxUi.Embed(window,current));} }
@@ -91,11 +91,11 @@ public class Pilot {
   }catch(Exception ex){C<TextBlock>("DlssCardStatus").Text="Check required";C<TextBlock>("DlssCardStatus").ToolTip=ex.Message;}}
   C<Button>("HdrSection").Style=window.TryFindResource(hdr?"Installed":"Primary") as Style;C<Button>("Dlss").Style=window.TryFindResource(dlss?"Installed":"Primary") as Style;Appearance.Refresh();
  }
- void UpdateLibraryLayout(){double height=window.ActualHeight>0?window.ActualHeight:window.Height;double poster=Math.Round(Math.Max(200,Math.Min(320,200+(height-740)*0.18)));if(!homeMode)poster=Math.Round(Math.Max(110,Math.Min(230,110+(height-740)*0.18)));window.Resources["LibraryPosterHeight"]=poster;window.Resources["LibraryCardWidth"]=Math.Round(poster*0.70+24);bool compactDlss=!homeMode&&dlssMode;C<Grid>("LibrarySection").Visibility=compactDlss?Visibility.Collapsed:Visibility.Visible;C<RowDefinition>("LibraryRow").Height=new GridLength(compactDlss?0:poster+(homeMode?225:165));C<ListBox>("Games").LayoutTransform=Transform.Identity;}
- void ShowHome(){if(busy||RenoDxUi.IsBusy||(dlssPanel!=null&&dlssPanel.IsBusy))throw new Exception("Wait for the current operation to finish.");if(!homeMode&&!Leave())return;homeMode=true;C<Button>("Overview").Visibility=Visibility.Collapsed;UpdateLibraryLayout();C<ScrollViewer>("FeatureHome").Visibility=Visibility.Visible;C<Border>("HdrSettings").Visibility=Visibility.Collapsed;C<Grid>("DlssSection").Visibility=Visibility.Collapsed;RefreshHome();Appearance.Refresh();}
+ void UpdateLibraryLayout(){double height=window.ActualHeight>0?window.ActualHeight:window.Height;double poster=homeMode?Math.Round(Math.Max(180,Math.Min(300,180+(height-740)*0.18))):Math.Round(Math.Max(100,Math.Min(200,100+(height-740)*0.14)));window.Resources["LibraryPosterHeight"]=poster;window.Resources["LibraryCardWidth"]=Math.Max(145,Math.Round(poster*0.70+24));C<Grid>("LibrarySection").Visibility=Visibility.Visible;C<RowDefinition>("LibraryRow").Height=new GridLength(poster+(homeMode?230:110));C<DockPanel>("LibraryHeading").Visibility=C<DockPanel>("LibrarySearch").Visibility=homeMode?Visibility.Visible:Visibility.Collapsed;C<ListBox>("Games").LayoutTransform=Transform.Identity;}
+ void ShowHome(){if(busy||ModCenter.Busy||RenoDxUi.IsBusy||(dlssPanel!=null&&dlssPanel.IsBusy))throw new Exception("Wait for the current operation to finish.");if(!homeMode&&!Leave())return;homeMode=true;C<Button>("Overview").Visibility=Visibility.Collapsed;UpdateLibraryLayout();C<ScrollViewer>("FeatureHome").Visibility=Visibility.Visible;C<Border>("HdrSettings").Visibility=Visibility.Collapsed;C<Grid>("DlssSection").Visibility=Visibility.Collapsed;RefreshHome();Appearance.Refresh();}
  void RenderDlss(){var host=C<Grid>("DlssSection");host.Children.Clear();host.RowDefinitions.Clear();dlssPanel=null;if(current==null)return;if(String.IsNullOrEmpty(current.Exe)||!File.Exists(current.Exe)){host.Children.Add(Dialogs.Text(current.ProtectedInstall?current.Evidence:"Scegli un target.exe valido dal pulsante Target.exe / API per configurare OptiScaler.",16));return;}dlssPanel=new DlssUi();dlssPanel.Create(window,current,true);dlssPanel.EmbeddedContent.Margin=new Thickness(18,16,18,16);host.Children.Add(dlssPanel.EmbeddedContent);}
  void SwitchSection(bool dlss){
-  if(busy||RenoDxUi.IsBusy||(dlssPanel!=null&&dlssPanel.IsBusy))throw new Exception("Attendi il completamento dell’installazione.");
+  if(busy||ModCenter.Busy||RenoDxUi.IsBusy||(dlssPanel!=null&&dlssPanel.IsBusy))throw new Exception("Attendi il completamento dell’installazione.");
   if(dlss&&current==null)return;
   if(dlss&&!dlssMode&&!Leave())return;
   var host=C<Grid>("DlssSection");
@@ -107,9 +107,10 @@ public class Pilot {
 
   RefreshHome();Appearance.Refresh();
  }
- bool Leave(){if(RenoDxUi.IsBusy||(dlssPanel!=null&&dlssPanel.IsBusy)){SetStatus("Attendi il completamento dell’operazione.");return false;}return true;}
+ bool Leave(){if(ModCenter.Busy||RenoDxUi.IsBusy||(dlssPanel!=null&&dlssPanel.IsBusy)){SetStatus("Attendi il completamento dell’operazione.");return false;}return true;}
 
  async void StartScan(){if(busy)return;busy=true;C<Button>("Scan").IsEnabled=C<Button>("SteamFolder").IsEnabled=false;SetStatus("Lettura di Steam e Xbox / Game Pass, motori e copertine locali…");try{games=await Task.Run(()=>Core.Scan());Filter();if(C<ListBox>("Games").Items.Count>0){loading=true;C<ListBox>("Games").SelectedItem=C<ListBox>("Games").Items[0];loading=false;Select(C<ListBox>("Games").SelectedItem as Game);}else Select(null);SetStatus("Scansione completata.");}catch(Exception ex){Fail(ex);}finally{busy=false;C<Button>("Scan").IsEnabled=C<Button>("SteamFolder").IsEnabled=true;}
+ if(preview==null){var updateCheck=ModUpdates.Refresh(games);}
  if(preview!=null){try{SavePreview(preview);if(current!=null){SwitchSection(false);SavePreview(preview+"-reshade.png");SwitchSection(true);SavePreview(preview+"-dlss.png");}}finally{window.Close();}}
  }
  void SavePreview(string file){Appearance.Refresh();window.UpdateLayout();var bitmap=new RenderTargetBitmap((int)window.ActualWidth,(int)window.ActualHeight,96,96,PixelFormats.Pbgra32);bitmap.Render(window);var png=new PngBitmapEncoder();png.Frames.Add(BitmapFrame.Create(bitmap));using(var output=File.Create(file))png.Save(output);}

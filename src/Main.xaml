@@ -1,4 +1,4 @@
-<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="HDLSS 1.0.5 · Portable" Width="1450" Height="920" MinWidth="1180" MinHeight="740" WindowStartupLocation="CenterScreen" Background="#0C0F13" Foreground="#F0F3F5" FontFamily="Cascadia Mono, Consolas" FontSize="14" WindowStyle="None" ResizeMode="CanResize">
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="HDLSS 1.0.6 · Portable" Width="1450" Height="920" MinWidth="1180" MinHeight="740" WindowStartupLocation="CenterScreen" Background="#0C0F13" Foreground="#F0F3F5" FontFamily="Cascadia Mono, Consolas" FontSize="14" WindowStyle="None" ResizeMode="CanResize">
  <shell:WindowChrome.WindowChrome>
   <shell:WindowChrome CaptionHeight="38" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False" />
  </shell:WindowChrome.WindowChrome>
@@ -297,7 +297,7 @@
       <Button x:Name="MaximizeWindow" Content="□" Width="44" Padding="0" ToolTip="Ingrandisci / ripristina" />
       <Button x:Name="CloseWindow" Content="×" Width="48" Padding="0" ToolTip="Chiudi" />
      </StackPanel>
-     <TextBlock Text="H  /  HDLSS  1.0.5" Foreground="#E6AC50" VerticalAlignment="Center" Margin="18,0" FontSize="12" />
+     <TextBlock Text="H  /  HDLSS  1.0.6" Foreground="#E6AC50" VerticalAlignment="Center" Margin="18,0" FontSize="12" />
     </DockPanel>
    </Border>
    <Grid Grid.Row="1">
@@ -312,7 +312,7 @@
      <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"><StackPanel Margin="20,26">
       <StackPanel DockPanel.Dock="Top">
        <Image x:Name="BrandLogo" Height="66" Stretch="Uniform" HorizontalAlignment="Stretch" Margin="-8,0,-8,6" RenderOptions.BitmapScalingMode="HighQuality" />
-       <TextBlock Text="PORTABLE / 1.0.5" FontSize="11" Foreground="{StaticResource Muted}" />
+       <TextBlock Text="PORTABLE / 1.0.6" FontSize="11" Foreground="{StaticResource Muted}" />
        <Button x:Name="Home" Content="Library" Margin="0,32,0,0" />
        <TextBlock Text="HDR + DLSS 5" FontSize="11" Foreground="{StaticResource Muted}" Margin="4,22,0,5" />
        <TextBlock Text="HDR, DLSS 5 e mod grafiche. Senza complicazioni." TextWrapping="Wrap" FontSize="12" Foreground="#BAC4D0" Margin="4,0,0,0" />
@@ -336,7 +336,7 @@
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
      </Grid.RowDefinitions>
-     <DockPanel Margin="0,0,0,8">
+     <DockPanel x:Name="LibraryHeading" Margin="0,0,0,8">
       <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
        <TextBlock Text="Language" FontSize="12" Margin="0,0,8,0" VerticalAlignment="Center" />
        <ComboBox x:Name="HomeLanguage" Width="125" Margin="0,0,12,0" />
@@ -345,7 +345,7 @@
       <TextBlock x:Name="Count" Visibility="Collapsed" DockPanel.Dock="Right" Foreground="#919BAA" FontSize="12" VerticalAlignment="Center" />
       <TextBlock Text="LA TUA LIBRERIA" FontSize="20" Foreground="#E6AC50" FontWeight="SemiBold" />
      </DockPanel>
-     <DockPanel Grid.Row="1" Margin="0,0,0,10">
+     <DockPanel x:Name="LibrarySearch" Grid.Row="1" Margin="0,0,0,10">
       <Button x:Name="CoverButton" DockPanel.Dock="Right" Content="Cover" IsEnabled="False" Margin="8,0,0,0" />
       <Button x:Name="AddGame" DockPanel.Dock="Right" Content="Add game" Margin="8,0,0,0" />
       <Button x:Name="SteamFolder" DockPanel.Dock="Right" Content="Libreria…" Margin="8,0,0,0" />
@@ -371,7 +371,7 @@
             <TextBlock Text="{Binding ArtworkLabel}" Foreground="#E6AC50" FontSize="11" />
            </Border>
           </Grid>
-          <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MinHeight="45" FontWeight="SemiBold" Margin="7,9,7,0" Foreground="#F0F3F5" />
+          <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Height="54" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}" FontSize="12" FontWeight="SemiBold" Margin="7,7,7,0" Foreground="#F0F3F5" />
           <TextBlock Visibility="Collapsed" Text="{Binding ConfigLabel}" Foreground="#939FAE" FontSize="11" Margin="7,5,7,8" />
          </StackPanel>
         </DataTemplate>

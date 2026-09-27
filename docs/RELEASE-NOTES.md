@@ -1,42 +1,15 @@
-# HDLSS 1.0.5
+## New and improved
+- Added ASI Loader installation and management, plus updates for existing NVIDIA Streamline integrations.
+- Added background mod-version checks at startup and per-component update controls in the main game page. Downloads and installation remain user-triggered.
+- Added direct removal buttons for ReShade, ASI Loader, RenoDX HDR and MFG Unlock. Individual manual add-ons and shader packages can also be removed, with verified file deletion and recovery copies.
+- Recognize manually installed ReShade add-ons separately from managed RenoDX HDR. Control RR uses its Nexus Mods page and assisted download; unknown sources use an exact-filename local update.
+- AutoHDR, Pumbo, Lilium, qUINT and SweetFX have Install selected and Remove selected actions.
+- Added conservative duplicate-loader cleanup: only identical recognized loaders with a verifiable loading path are eligible. Native DLL copies in different folders are preserved.
+- Restored and enlarged game thumbnails in HDR and DLSS views, retaining game names below them.
+- Yellow buttons mean installed, not update available. Updates have separate controls. Updated internal help and six-language labels.
 
-Release 1.0.5 â€” 2026-09-24.
-
-## Added
-- Separate MFG Unlock installer/updater for nefh/MFGAmpereUnlock-RenoDx, targeting RTX 2000, 3000 and 4000 in games with native NVIDIA DLSS Frame Generation.
-- Query the latest stable release at every installation/update. Verify SHA-256, asset size, origin and x64 format. Never silently fall back to an older cached download.
-- Merge ReShade early-loading settings while preserving other add-ons, escaped commas, encoding and user preferences. Support custom add-on folders inside the game directory; protect external shared folders and duplicate installations.
-- Independent MFG backup and restoration. Preserve subsequent ReShade settings changes and stop if an add-on or backup changed unexpectedly.
-
-## Removed
-- UE5 HDR configuration editor, engine-parameter panel, HDLSS luminance overlay and its global hotkey registration.
-- Scene capture and overlay window classes from the executable. No background scene capture is started.
-- Automatic Engine.ini recipes during RenoDX installation. Existing game INIs, mods and backups are retained; follow the mod author's instructions when it requires native engine HDR.
-
-## Changed
-- HDR / MFG opens ReShade, RenoDX and MFG installation controls directly. Keep the three primary actions visible at compact window sizes.
-- MFG add-ons are no longer classified as RenoDX HDR. Restore MFG before removing its ReShade dependency.
-- UE4SS installation remains available for mods without the HDLSS telemetry reader. Existing UE4SS runtimes and mods are preserved.
-- RenoDX uses the current game catalog and checks recent published assets for the matching add-on. ReShade stable/nightly, shader packages and MFG resolve downloads online. Local imports cannot certify the newest version.
-- Update internal help and new interface text in Italian, English, Spanish, French, German and Portuguese.
-
-## Verification
-- Live official downloads: MFG Unlock 0.11 and ReShade 6.8.0 full add-on.
-- 32 MFG checks: release validation, installation/update, exact and selective restoration, custom folders, duplicates, locked INI rollback, UTF-16, stale previews, external baselines and unrelated file preservation.
-- 10,129 localization/UI assertions and 48 WPF renders in six languages at 1180Ã—740 and 3440Ã—1440. Primary MFG action visible without scrolling; navigation and guide checked.
-- Existing DLSS transaction suite passed. ReShade stable/nightly extraction, standalone/OptiScaler loading chain, RenoDX installation, restoration and UI regression suite passed.
-- No real game files changed by these tests.
-
-## Limits
-MFG was not verified in a running game on RTX 2000/3000/4000 hardware. Installing files does not prove that the add-on loads or that a multiplier is active. A game must already implement native DLSS FG; this is not a universal FG injector. API/runtime/driver requirements can change. Consult the author and the in-game ReShade log/panel. External shared add-on directories and Vulkan ReShade layer setup require manual installation. Updates are requested by the user, not silently applied at game launch.
-
-Sources: [MFG Unlock](https://github.com/nefh/MFGAmpereUnlock-RenoDx), [ReShade early loading](https://github.com/crosire/reshade/blob/main/source/dll_main.cpp), [INI format](https://github.com/crosire/reshade/blob/main/source/ini_file.cpp).
-
-### DLSS interface update â€” 2026-09-25
-- Original button styling retained; settings arranged in vertical groups, including advanced options.
-- Library covers hidden in the DLSS detail view; Back returns to the library.
-- Six-language internal guide updated; 48 WPF renders and 10,345 checks passed.
-
+## Validation and limits
+48 WPF renders across six languages and two window sizes; 18,181 UI/translation assertions. Component removal/recovery, manual add-on updates and all five shader/add-on removal paths were tested in fixture folders. Earlier Streamline, MFG and DLSS regression checks also passed. These tests do not certify every game, GPU, driver or mod combination. Nexus downloads require the website step; unavailable metadata is not reported as up to date.
 
 ## Download and update
-Download HDLSS-Portable-1.0.5.zip below. Close HDLSS and replace HDLSS.exe, preserving data, data-location.txt and all backups. Windows x64 and .NET Framework 4.8 required. Source and test results are included.
+Download **HDLSS-Portable-1.0.6.zip**, close HDLSS and replace HDLSS.exe. Preserve **data**, **data-location.txt** and all backups. Windows x64 / .NET Framework 4.8 required. Source and test results are included; verify the ZIP with the separate SHA-256 file.
