@@ -15,7 +15,7 @@ public static class CatalogStore {
  public static string Refresh(string resource,string url,Func<string,bool> valid){lock(Gate){
   DateTime when;if(Checked.TryGetValue(resource,out when)&&DateTime.UtcNow-when<TimeSpan.FromMinutes(10))return Local(resource,valid);
   ServicePointManager.SecurityProtocol|=SecurityProtocolType.Tls12;string json;
-  using(var web=new DlssCore.DownloadClient()){web.Headers[HttpRequestHeader.UserAgent]="HDLSS/1.0.7";json=web.DownloadString(url);}
+  using(var web=new DlssCore.DownloadClient()){web.Headers[HttpRequestHeader.UserAgent]="HDLSS/1.0.8";json=web.DownloadString(url);}
   if(!valid(json))throw new InvalidDataException("Invalid online catalog; local catalog preserved.");
   string dir=Path.Combine(Core.Data,"catalogs");Directory.CreateDirectory(dir);string file=Path.Combine(dir,resource),temp=file+"."+Guid.NewGuid().ToString("N")+".tmp";
   try{File.WriteAllText(temp,json);if(File.Exists(file))File.Replace(temp,file,null);else File.Move(temp,file);}finally{if(File.Exists(temp))File.Delete(temp);}
@@ -23,3 +23,4 @@ public static class CatalogStore {
  }}
 }
 }
+

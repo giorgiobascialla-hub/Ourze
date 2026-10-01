@@ -2,6 +2,7 @@ using System;
 namespace HdrPilot {
 public static partial class Guide {
  static Topic[] NewTopics(){return new[]{
+ new Topic(Appearance.Localize("Configure HDR"),Appearance.Localize(RenoGameHdr.Help)),
  new Topic("HDR / MFG",Appearance.Localize("Choose a game and open HDR / MFG. Install ReShade, then the matching RenoDX HDR mod or MFG Unlock. Close the game before applying changes and verify the add-on in the ReShade menu after launch."),
  Appearance.Localize("UE5 HDR and HDLSS overlay"),Appearance.Localize("The UE5 HDR editor, engine reader and HDLSS luminance overlay have been removed. Existing game INIs, mods and backups are preserved. HDR is configured through ReShade and a compatible mod; follow its author if engine HDR must be enabled manually.")),
  new Topic("MFG Unlock",Appearance.Localize(MfgAddon.Requirements),

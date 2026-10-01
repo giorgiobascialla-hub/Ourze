@@ -17,7 +17,7 @@ public static class ModCenter {
  }
  public static FrameworkElement Panel(Window owner,Game game,bool dlss,Action changed,Action<string> chooseVersion=null){
   var panel=new StackPanel{Name="InlineModActions",Margin=new Thickness(0,6,0,12)};
-  var removals=new WrapPanel{Name="InlineRemovalButtons"};var updates=new StackPanel{Name="InlineUpdates"};var info=Dialogs.Text("",12);
+  var hdr=new StackPanel();panel.Children.Add(hdr);var removals=new WrapPanel{Name="InlineRemovalButtons"};var updates=new StackPanel{Name="InlineUpdates"};var info=Dialogs.Text("",12);
   var heading=Dialogs.Text(L("Removal"),15);panel.Children.Add(heading);panel.Children.Add(removals);
   var updateHeading=new DockPanel{Margin=new Thickness(0,10,0,6)};var check=new Button{Content=L("Check again"),MinWidth=120,Margin=new Thickness(8,0,0,0)};DockPanel.SetDock(check,Dock.Right);updateHeading.Children.Add(check);updateHeading.Children.Add(Dialogs.Text(L("Mod updates"),15));panel.Children.Add(updateHeading);panel.Children.Add(updates);panel.Children.Add(info);
   Action render=null;Action<DlssPlan> review=async plan=>{panel.IsEnabled=false;try{await InlineOperation.Apply(game,plan,info,()=>{changed();render();});}finally{panel.IsEnabled=true;}};
@@ -25,6 +25,7 @@ public static class ModCenter {
   Action<string,string,Action,bool> addRemove=(label,tag,action,enabled)=>{var button=new Button{Content=L(label),Tag=tag,MinWidth=120,Margin=new Thickness(0,0,8,6),IsEnabled=enabled,Style=owner.TryFindResource("RestoreAction") as Style};removals.Children.Add(button);button.Click+=(s,e)=>{if(Busy||RenoDxUi.IsBusy)return;try{action();render();}catch(Exception ex){info.Text=L(ex.Message);}};};
   render=()=>{
    var items=ModInventory.Scan(game).Where(i=>dlss?new[]{"opti","nr","native","streamline"}.Contains(i.Id):!new[]{"opti","nr","native","streamline"}.Contains(i.Id)).ToList();removals.Children.Clear();updates.Children.Clear();
+   hdr.Children.Clear();if(!dlss&&RenoGameHdr.Supported(game)){bool configured=RenoGameHdr.Configured(game);var row=new WrapPanel();var configure=new Button{Content=L(configured?"HDR configured":"Configure HDR"),Margin=new Thickness(0,0,8,6),IsEnabled=!configured&&items.Any(i=>i.Id=="renodx"),Style=owner.TryFindResource(configured?"Installed":"Primary") as Style};row.Children.Add(configure);configure.Click+=(s,e)=>{if(Busy||RenoDxUi.IsBusy)return;try{review(RenoGameHdr.Prepare(game));}catch(Exception ex){info.Text=L(ex.Message);}};if(RenoGameHdr.Managed(game)){var restore=new Button{Content=L("Restore HDR configuration"),Margin=new Thickness(0,0,8,6)};row.Children.Add(restore);restore.Click+=(s,e)=>{if(Busy||RenoDxUi.IsBusy)return;try{var p=new DlssPlan{Folder=Path.GetDirectoryName(game.Exe),Uninstall=true,Summary=L("Restore HDR configuration")};RenoGameHdr.AttachRestore(game,p);review(p);}catch(Exception ex){info.Text=L(ex.Message);}};}hdr.Children.Add(row);hdr.Children.Add(Dialogs.Text(L(configured?"Restart the game and verify HDR in a loaded scene.":"RenoDX HDR requires game configuration."),12));}
    string[] ids=dlss?new[]{"opti","nr"}:new[]{"reshade","asi","renodx","mfg"};string[] labels=dlss?new[]{"Remove OptiScaler","Remove Neural Rendering"}:new[]{"Remove ReShade","Remove ASI Loader","Remove RenoDX","Remove MFG"};
    for(int n=0;n<ids.Length;n++){string id=ids[n];addRemove(labels[n],"remove-"+id,()=>review(RemoveGroup(game,id)),items.Any(i=>i.Id==id));}
    foreach(var item in items.Where(i=>!ids.Contains(i.Id))){var current=item;addRemove((item.Id=="native"||item.Id=="streamline"?L("Restore original"):L("Uninstall"))+" · "+item.Name,"remove-"+item.Id,()=>review(ModInventory.Remove(current)),true);}
@@ -50,3 +51,4 @@ public static class ModCenter {
  }
 }
 }
+
