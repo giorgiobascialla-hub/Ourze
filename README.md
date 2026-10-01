@@ -2,7 +2,7 @@
 
 **DLSS 5 & Neural Rendering for compatible games.**
 
-[Download HDLSS 1.0.6](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.6)
+[Download HDLSS 1.0.7](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.7)
 
 HDLSS was created to help configure DLSS 5 and Neural Rendering in compatible games. It brings supported community OptiScaler builds, component checks, backups and recovery into a portable Windows app, with additional HDR tools. It is an independent project; the integrated community injector builds are not official NVIDIA releases.
 
@@ -18,9 +18,9 @@ Library and DLSS views from earlier releases. Version 1.0.5 replaces the UE5 HDR
 ### DLSS components
 ![HDLSS DLSS components](assets/dlss.jpg)
 
-## Changes in 1.0.6
+## Changes in 1.0.7
 
-Adds ASI Loader and Streamline management, startup update checks, direct per-component removal, separate manual add-ons and Nexus assisted updates. Restores larger game thumbnails and clarifies installed versus update states. See the [changelog](CHANGELOG.md).
+Adds inline DLL version menus and bundled catalogs, improves download reliability, fixes large RenoDX metadata and strengthens transaction checks. Adds ASI Loader and Streamline management, startup update checks, direct per-component removal, separate manual add-ons and Nexus assisted updates. Restores larger game thumbnails and clarifies installed versus update states. See the [changelog](CHANGELOG.md).
 
 ## What you can do
 
@@ -38,7 +38,7 @@ Adds ASI Loader and Streamline management, startup update checks, direct per-com
 
 Extract the portable archive into a writable folder and launch `HDLSS.exe`. Windows x64 and .NET Framework 4.8 are required. No Python or developer SDK is needed to run it.
 
-Select a game, check the executable, then choose HDR / MFG or DLSS 5. Close the game before applying changes. The review step shows what will change before installation.
+Select a game, check the executable, then choose HDR / MFG or DLSS 5. Close the game before applying changes. Choose the component and version on the main page; installation progress and recovery information appear inline.
 
 ## Updating an existing installation
 
@@ -54,7 +54,7 @@ Features depend on the game, GPU, driver, display and selected component. Updati
 
 MFG Unlock requires full add-on ReShade and native DLSS Frame Generation in the game. It does not add FG to a game that lacks it. No automatic NVIDIA/Streamline replacement is performed. MFG activation has not been verified in a running game across RTX 2000/3000/4000 hardware. Consult the [author's compatibility notes](https://github.com/nefh/MFGAmpereUnlock-RenoDx).
 
-This release is version 1.0.5. Broad hardware certification and complete localization remain in progress. See [validation](docs/VALIDATION.md) and [release notes](docs/RELEASE-NOTES.md).
+This release is version 1.0.7. Broad hardware certification and complete localization remain in progress. See [validation](docs/VALIDATION.md) and [release notes](docs/RELEASE-NOTES.md).
 
 ## Build from source
 
@@ -78,6 +78,3 @@ Include the app version, Windows version, GPU/driver, game and selected componen
 HDLSS is independent and is not affiliated with NVIDIA, Valve, Microsoft, Epic Games, ReShade, RenoDX or the OptiScaler authors. Component downloads retain their authors' terms. See [component sources](docs/SOURCES.txt). Third-party injectors, models and game files are not bundled.
 
 No open-source license has been selected for HDLSS in this package. Public source availability alone does not grant a reuse license. Third-party trademarks and game artwork belong to their respective owners.
-
-
-

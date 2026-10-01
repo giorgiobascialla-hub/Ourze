@@ -11,7 +11,7 @@ namespace HdrPilot {
 public static class Streamline {
  public const string Repo="NVIDIA-RTX/Streamline", Marker="hdlss-streamline.json";
  public static readonly string[] Names={"sl.interposer.dll","sl.common.dll","sl.dlss.dll","sl.dlss_d.dll","sl.dlss_g.dll","sl.reflex.dll","sl.pcl.dll","sl.nis.dll","sl.deepdvc.dll","sl.directsr.dll","sl.nvperf.dll"};
- public const string Help="Update an existing Streamline integration using NVIDIA production DLLs. Select the detected folder, download the latest stable SDK or import its ZIP, then review and apply with backup. This does not add Streamline or Frame Generation to unsupported games. Streamline 1.x and major-version migrations are blocked. Game compatibility must be tested after updating; use Removal to restore the original Streamline files.";
+ public const string Help="Choose a Streamline version and an existing game folder, then install with automatic backup. This does not add support to games. Only Streamline 2.x integrations are supported; major-version migrations are blocked. Use Removal to restore originals.";
  static string L(string s){return Appearance.Localize(s);}
  public static List<DlssLibrary> Scan(Game g){return DlssLibraries.ScanNames(g,Names);}
  public static string Summary(Game g){var files=Scan(g);return files.Count==0?L("Streamline: not detected"):"Streamline: "+String.Join(" / ",files.Select(f=>f.Version).Distinct())+" · "+files.Select(f=>Path.GetDirectoryName(f.Path)).Distinct(StringComparer.OrdinalIgnoreCase).Count()+" "+L("folders");}
@@ -40,11 +40,19 @@ public static class Streamline {
   string main=Path.Combine(dir,"sl.interposer.dll");if(!File.Exists(main)||!File.Exists(Path.Combine(dir,"sl.common.dll")))throw new Exception(L("Incomplete Streamline package."));
   var version=VersionOf(main);if(version.Major!=2||Directory.GetFiles(dir,"*.dll").Any(p=>VersionOf(p)!=version))throw new Exception(L("Mixed or unsupported Streamline versions."));return dir;
  }
- public static string Latest(Action<string> progress){
+ static bool HasPackage(Dictionary<string,object> release){try{string tag=Convert.ToString(release["tag_name"]);return ((System.Collections.IEnumerable)release["assets"]).Cast<Dictionary<string,object>>().Count(a=>Convert.ToString(a["name"])=="streamline-sdk-"+tag+".zip"&&a.ContainsKey("digest")&&Regex.IsMatch(Convert.ToString(a["digest"]),@"^sha256:[a-fA-F0-9]{64}$")&&Convert.ToString(a["browser_download_url"])=="https://github.com/"+Repo+"/releases/download/"+tag+"/streamline-sdk-"+tag+".zip")==1;}catch{return false;}}
+ public static List<string> Tags(string json){return Core.Json.Deserialize<List<Dictionary<string,object>>>(json).Where(r=>HasPackage(r)&&!Convert.ToBoolean(r["draft"])&&!Convert.ToBoolean(r["prerelease"])&&Regex.IsMatch(Convert.ToString(r["tag_name"]),@"^v2\.\d+\.\d+$")).Select(r=>Convert.ToString(r["tag_name"])).OrderByDescending(v=>new Version(v.Substring(1))).Distinct().ToList();}
+ public static bool ValidCatalog(string json){try{return Tags(json).Count>0;}catch{return false;}}
+ public static List<string> LocalVersions(){return Tags(CatalogStore.Local("StreamlineSeed.json",ValidCatalog));}
+ public static List<string> Versions(){return Tags(CatalogStore.Refresh("StreamlineSeed.json","https://api.github.com/repos/"+Repo+"/releases?per_page=20",ValidCatalog));}
+ public static string Latest(Action<string> progress){return Download(null,progress);}
+ public static string Download(string selectedTag,Action<string> progress){
+  if(selectedTag!=null&&!Regex.IsMatch(selectedTag,@"^v2\.\d+\.\d+$"))throw new Exception("Invalid Streamline version.");
   ServicePointManager.SecurityProtocol|=SecurityProtocolType.Tls12;
   using(var web=new DlssCore.DownloadClient()){
    web.Headers[HttpRequestHeader.UserAgent]="HDLSS";web.Headers[HttpRequestHeader.CacheControl]="no-cache";progress(L("Checking the latest NVIDIA Streamline release…"));
-   var r=Core.Json.Deserialize<Dictionary<string,object>>(web.DownloadString("https://api.github.com/repos/"+Repo+"/releases/latest"));string tag=Convert.ToString(r["tag_name"]);
+   var r=Core.Json.Deserialize<Dictionary<string,object>>(web.DownloadString("https://api.github.com/repos/"+Repo+"/releases/"+(selectedTag==null?"latest":"tags/"+selectedTag)));string tag=Convert.ToString(r["tag_name"]);
+   if(selectedTag!=null&&tag!=selectedTag)throw new Exception("Streamline release version mismatch.");
    if(!Regex.IsMatch(tag,@"^v2\.\d+\.\d+$")||Convert.ToBoolean(r["prerelease"])||Convert.ToBoolean(r["draft"]))throw new Exception(L("Unsupported Streamline release."));
    var assets=((System.Collections.IEnumerable)r["assets"]).Cast<Dictionary<string,object>>().Where(asset=>Convert.ToString(asset["name"])=="streamline-sdk-"+tag+".zip").ToList();if(assets.Count!=1)throw new Exception(L("Official x64 Streamline package not found."));
    var a=assets[0];string url=Convert.ToString(a["browser_download_url"]),digest=a.ContainsKey("digest")?Convert.ToString(a["digest"]):"";long size=Convert.ToInt64(a["size"]);

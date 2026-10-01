@@ -1,15 +1,15 @@
-## New and improved
-- Added ASI Loader installation and management, plus updates for existing NVIDIA Streamline integrations.
-- Added background mod-version checks at startup and per-component update controls in the main game page. Downloads and installation remain user-triggered.
-- Added direct removal buttons for ReShade, ASI Loader, RenoDX HDR and MFG Unlock. Individual manual add-ons and shader packages can also be removed, with verified file deletion and recovery copies.
-- Recognize manually installed ReShade add-ons separately from managed RenoDX HDR. Control RR uses its Nexus Mods page and assisted download; unknown sources use an exact-filename local update.
-- AutoHDR, Pumbo, Lilium, qUINT and SweetFX have Install selected and Remove selected actions.
-- Added conservative duplicate-loader cleanup: only identical recognized loaders with a verifiable loading path are eligible. Native DLL copies in different folders are preserved.
-- Restored and enlarged game thumbnails in HDR and DLSS views, retaining game names below them.
-- Yellow buttons mean installed, not update available. Updates have separate controls. Updated internal help and six-language labels.
+## Changes
+- Inline version selectors for DLSS Super Resolution, Ray Reconstruction, Frame Generation, Streamline and Neural Rendering, with bundled catalog metadata and downloads on demand.
+- Installation, progress, errors and recovery stay on the main page.
+- ASI Loader management, startup update checks and individual removal of mods, manual add-ons and shader packages.
+- Larger game thumbnails, game names and clear installed/update states.
+- Shared GitHub cache and rate-limit handling; stable ReShade downloads through its official website.
+- Fix large RenoDX JSON responses, corrupted caches and unknown versions incorrectly reported as up to date.
+- Reject duplicate installation target paths and preserve explicitly imported DLL loaders during duplicate cleanup.
+- Updated six-language help.
 
-## Validation and limits
-48 WPF renders across six languages and two window sizes; 18,181 UI/translation assertions. Component removal/recovery, manual add-on updates and all five shader/add-on removal paths were tested in fixture folders. Earlier Streamline, MFG and DLSS regression checks also passed. These tests do not certify every game, GPU, driver or mod combination. Nexus downloads require the website step; unavailable metadata is not reported as up to date.
+## Validation and compatibility
+Local component, recovery, catalog, Streamline, API and UI regression checks passed. Large RenoDX metadata was verified against a real 17.5-million-character response. Compatibility depends on the game, GPU, driver and installed add-ons. The reported CONTROL Resonant add-on crash is still under diagnosis; this release does not claim to fix third-party add-on conflicts.
 
 ## Download and update
-Download **HDLSS-Portable-1.0.6.zip**, close HDLSS and replace HDLSS.exe. Preserve **data**, **data-location.txt** and all backups. Windows x64 / .NET Framework 4.8 required. Source and test results are included; verify the ZIP with the separate SHA-256 file.
+Download **HDLSS-Portable-1.0.7.zip** below. Close HDLSS and replace **HDLSS.exe**, preserving **data**, **data-location.txt** and all backups. Windows x64 and .NET Framework 4.8 required. Source is included; the separate SHA-256 file verifies the archive.

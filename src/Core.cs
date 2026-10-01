@@ -25,7 +25,8 @@ public class Preferences {public List<Game> ManualGames=new List<Game>();public 
 public class Backup {public string AppId; public string Name; public string Config; public string Created; public string[] Names; public bool[] Existed; public int[] Attributes;}
 public static class Core {
  public static string Data=Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"data");
- public static JavaScriptSerializer Json=new JavaScriptSerializer();
+ // Release metadata and its escaped cache envelope exceed the 2 Mi-character default.
+ public static JavaScriptSerializer Json=new JavaScriptSerializer{MaxJsonLength=64*1024*1024};
  public static Preferences Pref=new Preferences();
  public static List<string> Warnings=new List<string>();
  public static void Init(){Pref=PreferenceStore.Load(Data);ActivityLog.Write("Preferenze caricate · "+Path.Combine(Data,"preferences.json")+" · overlay "+Shortcut.Label(Pref.HotkeyMods,Pref.HotkeyKey));}

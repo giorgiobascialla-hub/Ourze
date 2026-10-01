@@ -9,11 +9,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Threading.Tasks;
 namespace HdrPilot {
-public sealed class NrModel {public string Tag,Url,Digest;public bool Community;public override string ToString(){return Tag.Replace("dlssnr-","")+" · "+(Community?"community / compatibilità":"originale RTX 5000");}}
+public sealed class NrModel {public string Tag,Url,Digest;public bool Community;public override string ToString(){return Tag.Replace("dlssnr-","")+" · "+Appearance.Localize(Community?"Community compatibility variant":"RTX 5000 variant");}}
 public static class NrModels {
  public const string Marker="hdr-unlock-nr-model.json",Api="https://api.github.com/repos/RankFTW/rhi-repo/releases?per_page=100";
  public static List<NrModel> Parse(string json){var rows=Core.Json.Deserialize<List<Dictionary<string,object>>>(json);var result=new List<NrModel>();foreach(var row in rows.OrderByDescending(r=>r.ContainsKey("published_at")?Convert.ToString(r["published_at"]):"",StringComparer.Ordinal)){string tag=Convert.ToString(row["tag_name"]);if(!Regex.IsMatch(tag,@"^dlssnr-[0-9][a-zA-Z0-9.\-]*$")||Convert.ToBoolean(row["draft"]))continue;foreach(var asset in ((System.Collections.IEnumerable)row["assets"]).Cast<Dictionary<string,object>>()){string url=Convert.ToString(asset["browser_download_url"]),name=Convert.ToString(asset["name"]),digest=asset.ContainsKey("digest")?Convert.ToString(asset["digest"]):"";if(!name.EndsWith(".zip")||!url.StartsWith("https://github.com/RankFTW/rhi-repo/releases/download/"+tag+"/",StringComparison.Ordinal)||!Regex.IsMatch(digest,@"^sha256:[a-fA-F0-9]{64}$"))continue;result.Add(new NrModel{Tag=tag,Url=url,Digest=digest.Substring(7),Community=tag.IndexOf("SF",StringComparison.OrdinalIgnoreCase)>=0||tag.IndexOf("RTX40",StringComparison.OrdinalIgnoreCase)>=0});break;}if(result.Count==10)break;}return result;}
- public static List<NrModel> Fetch(){ServicePointManager.SecurityProtocol|=SecurityProtocolType.Tls12;using(var web=new DlssCore.DownloadClient()){web.Headers[HttpRequestHeader.UserAgent]="HDR-Unlock/0.1";return Parse(web.DownloadString(Api));}}
+ public static bool ValidCatalog(string json){try{return Parse(json).Count>0;}catch{return false;}}
+ public static List<NrModel> Local(){return Parse(CatalogStore.Local("NrSeed.json",ValidCatalog));}
+ public static List<NrModel> Fetch(){return Parse(CatalogStore.Refresh("NrSeed.json",Api,ValidCatalog));}
  public static NrModel SelectAutomatic(List<NrModel> models,int series){
   if(series!=40&&series!=50)throw new Exception("GPU RTX 4000/5000 non rilevata: impossibile scegliere automaticamente il modello.");
   var chosen=models.FirstOrDefault(m=>series==40?m.Community:!m.Community);
