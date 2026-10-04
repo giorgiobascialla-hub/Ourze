@@ -1,3 +1,18 @@
+# HDLSS 1.0.8 r2
+
+## Revision 2 — 4 October 2026
+- Fix RenoDX update checks for GitHub Pages downloads by comparing SHA256 with the installed add-on. Different files are offered as updates, not proof of a higher version number.
+- Validate the downloaded x64 file; bound download size/time and leave game files untouched during checks.
+- Explain temporary HTTP 5xx update-server failures without reporting installed mods as broken or up to date.
+- Include the expanded beginner guide and an in-app Changelog topic in six languages. Remove obsolete guide content and clarify conditional Configure HDR availability.
+
+### Validation
+Build passed; five source/mismatch checks and a live download/hash check against the official Unreal Engine Extended catalog URL passed. Guide checks cover six languages and two window sizes. This does not fix an unavailable upstream server or certify compatibility with every game.
+
+### Download
+Use **HDLSS-Portable-1.0.8-r2.zip** (revision 2). Close HDLSS, replace HDLSS.exe and preserve data, data-location.txt and backups. Version remains 1.0.8. Earlier 1.0.8 assets are retained for recovery.
+
+
 # HDLSS 1.0.8
 
 ## Changes
