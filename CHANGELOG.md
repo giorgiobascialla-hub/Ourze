@@ -1,3 +1,22 @@
+# HDLSS 1.1 — 7 October 2026
+
+- Add NeuRotic alongside the three existing community OptiScaler forks. Select complete release packages, exclude patch-only archives and verify published SHA256.
+- Redesign the game workspace: left library, smooth thumbnail scrolling, unified game header, expandable sections, preserved tabs and open menus when switching games.
+- Keep Install OptiScaler, Apply settings, Remove OptiScaler and Clean Neural Rendering together in the fixed DLSS 5 action bar.
+- Integrate DLL and Streamline version controls into component sections; show Streamline locations separately.
+- Save and manually restore a working DLL configuration for each game with recovery copies. This does not prevent driver/game changes or automatically reapply files.
+- Reconcile the affected components locally after installation instead of checking every game again. Improve UE4SS revision detection and Streamline backup validation.
+- Enable Update only when an update is verified; unknown or failed checks no longer imply availability. Manual imports and version selection remain separate.
+- Preserve the original fonts and sizes, improve action colors and remove the old intermediate startup screen.
+- Update the internal guide, changelog and translations in all six languages.
+
+## Updating
+Close HDLSS, replace HDLSS.exe and keep your existing data folder, data-location.txt and backups. The ZIP includes the matching source. NeuRotic advanced options are configured in its in-game menu; game compatibility and performance remain experimental and require testing.
+
+## Validation
+Release build; six-language interface and guide checks; navigation-state, saved-DLL recovery, update-state and Streamline backup tests. NeuRotic package SHA256, x64 identity and complete-release selection checked. No game files changed during validation.
+
+
 # HDLSS 1.0.8 r2
 
 ## Revision 2 — 4 October 2026

@@ -3,12 +3,13 @@ namespace HdrPilot {
 public sealed class ModItem {public Game Game;public string Id,Name,File,Version,Latest="",Status="",Repo="",Marker="";public bool UpdateAvailable;public EffectPackage Effect;public DlssLibrary Library;}
 public static class ModInventory {
  public static string Version(string path){try{return (FileVersionInfo.GetVersionInfo(path).FileVersion??"").Replace(", ",".");}catch{return "";}}
+ public static string Ue4ssVersion(Game g,string file){try{string root=Path.GetDirectoryName(g.Exe);var m=DlssCore.ReadManifest(root,Ue4ssInstaller.Marker);var record=m.Files.FirstOrDefault(x=>String.Equals(DlssCore.Safe(root,x.Name),file,StringComparison.OrdinalIgnoreCase));if(record!=null&&!String.IsNullOrEmpty(m.Release)&&record.After==DlssCore.Hash(file))return m.Release;}catch{}return Version(file);}
  public static bool Recorded(Game g,string marker){try{string root=Path.GetDirectoryName(g.Exe);var m=DlssCore.ReadManifest(root,marker);return m.Files.Any(f=>!f.Name.EndsWith(".ini",StringComparison.OrdinalIgnoreCase)&&File.Exists(DlssCore.Safe(root,f.Name)));}catch{return false;}}
  public static List<ModItem> Scan(Game g){var items=new List<ModItem>();if(g==null||String.IsNullOrEmpty(g.Exe)||!File.Exists(g.Exe))return items;string root=Path.GetDirectoryName(g.Exe);Action<string,string,string,string> add=(id,name,file,repo)=>items.Add(new ModItem{Game=g,Id=id,Name=name,File=file,Version=Version(file),Repo=repo});
  foreach(string n in RenoDx.Loaders(root))add("reshade","ReShade",Path.Combine(root,n),"crosire/reshade");
  var hdr=RenoDx.HdrAddons(g);foreach(string file in RenoDx.AllAddons(g)){string name=Path.GetFileName(file);if(name.Equals(MfgAddon.Name,StringComparison.OrdinalIgnoreCase))add("mfg","MFG Unlock",file,MfgAddon.Repo);else if(hdr.Contains(file,StringComparer.OrdinalIgnoreCase))add("renodx","RenoDX HDR · "+name,file,"clshortfuse/renodx");else if(!name.Equals("AutoHDR.addon64",StringComparison.OrdinalIgnoreCase))add("addon",Appearance.Localize("Manual add-on")+" · "+name,file,"");}
  foreach(string n in AsiLoader.Installed(g))add("asi","ASI Loader · "+n,Path.Combine(root,n),AsiLoader.Repo);
- foreach(string n in new[]{"UE4SS.dll","ue4ss/UE4SS.dll"})if(DlssCore.Pe64(DlssCore.Safe(root,n)))add("ue4ss","UE4SS",DlssCore.Safe(root,n),"UE4SS-RE/RE-UE4SS");
+ foreach(string n in new[]{"UE4SS.dll","ue4ss/UE4SS.dll"})if(DlssCore.Pe64(DlssCore.Safe(root,n))){add("ue4ss","UE4SS",DlssCore.Safe(root,n),"UE4SS-RE/RE-UE4SS");items.Last().Version=Ue4ssVersion(g,DlssCore.Safe(root,n));}
  foreach(var effect in EffectCatalog.All){string marker="hdr-unlock-effects-"+effect.Id+".json";if(Recorded(g,marker)||effect.Addon&&DlssCore.Pe64(DlssCore.Safe(root,"AutoHDR.addon64"))){var item=new ModItem{Game=g,Id="effect",Name=effect.Name,Effect=effect,Repo=effect.Repo,Marker=marker};try{item.Version=DlssCore.ReadManifest(root,marker).Release??"";}catch{}items.Add(item);}}
  try{var scan=DlssCore.Inspect(g,false,false);if(scan.Proxy!=""){var build=DlssBuild.All.FirstOrDefault(b=>b.Id==scan.Build);add("opti","OptiScaler",Path.Combine(root,scan.Proxy),build==null?"":build.Repo);if(scan.Managed)items.Last().Version=DlssCore.ReadManifest(root).Release;}if(DlssCore.Pe64(scan.Runtime))add("nr","Neural Rendering",scan.Runtime,"RankFTW/rhi-repo");}catch{}
  foreach(var dll in DlssLibraries.Scan(g)){var item=new ModItem{Game=g,Id="native",Name=dll.File,File=dll.Path,Version=dll.Version,Library=dll};items.Add(item);}
@@ -31,4 +32,3 @@ public static class ModInventory {
  }
 }
 }
-

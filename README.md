@@ -2,7 +2,7 @@
 
 **DLSS 5 & Neural Rendering for compatible games.**
 
-[Download HDLSS 1.0.8](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.0.8)
+[Download HDLSS 1.1](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.1)
 
 HDLSS was created to help configure DLSS 5 and Neural Rendering in compatible games. It brings supported community OptiScaler builds, component checks, backups and recovery into a portable Windows app, with additional HDR tools. It is an independent project; the integrated community injector builds are not official NVIDIA releases.
 
@@ -18,7 +18,7 @@ Library and DLSS views from earlier releases. Version 1.0.5 replaces the UE5 HDR
 ### DLSS components
 ![HDLSS DLSS components](assets/dlss.jpg)
 
-## Changes in 1.0.8
+## Changes in 1.1
 
 Adds inline DLL version menus and bundled catalogs, improves download reliability, fixes large RenoDX metadata and strengthens transaction checks. Adds ASI Loader and Streamline management, startup update checks, direct per-component removal, separate manual add-ons and Nexus assisted updates. Restores larger game thumbnails and clarifies installed versus update states. See the [changelog](CHANGELOG.md).
 
@@ -54,7 +54,7 @@ Features depend on the game, GPU, driver, display and selected component. Updati
 
 MFG Unlock requires full add-on ReShade and native DLSS Frame Generation in the game. It does not add FG to a game that lacks it. No automatic NVIDIA/Streamline replacement is performed. MFG activation has not been verified in a running game across RTX 2000/3000/4000 hardware. Consult the [author's compatibility notes](https://github.com/nefh/MFGAmpereUnlock-RenoDx).
 
-This release is version 1.0.8. Broad hardware certification and complete localization remain in progress. See [validation](docs/VALIDATION.md) and [release notes](docs/RELEASE-NOTES.md).
+This release is version 1.1. Broad hardware certification and complete localization remain in progress. See [validation](docs/VALIDATION.md) and [release notes](docs/RELEASE-NOTES.md).
 
 ## Build from source
 

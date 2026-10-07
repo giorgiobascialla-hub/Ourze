@@ -91,25 +91,14 @@ public class Pilot {
   }catch(Exception ex){C<TextBlock>("DlssCardStatus").Text="Check required";C<TextBlock>("DlssCardStatus").ToolTip=ex.Message;}}
   C<Button>("HdrSection").Style=window.TryFindResource(hdr?"Installed":"Primary") as Style;C<Button>("Dlss").Style=window.TryFindResource(dlss?"Installed":"Primary") as Style;Appearance.Refresh();
  }
- void UpdateLibraryLayout(){double height=window.ActualHeight>0?window.ActualHeight:window.Height;double poster=homeMode?Math.Round(Math.Max(180,Math.Min(300,180+(height-740)*0.18))):Math.Round(Math.Max(100,Math.Min(200,100+(height-740)*0.14)));window.Resources["LibraryPosterHeight"]=poster;window.Resources["LibraryCardWidth"]=Math.Max(145,Math.Round(poster*0.70+24));C<Grid>("LibrarySection").Visibility=Visibility.Visible;C<RowDefinition>("LibraryRow").Height=new GridLength(poster+(homeMode?230:110));C<DockPanel>("LibraryHeading").Visibility=C<DockPanel>("LibrarySearch").Visibility=homeMode?Visibility.Visible:Visibility.Collapsed;C<ListBox>("Games").LayoutTransform=Transform.Identity;}
- void ShowHome(){if(busy||ModCenter.Busy||RenoDxUi.IsBusy||(dlssPanel!=null&&dlssPanel.IsBusy))throw new Exception("Wait for the current operation to finish.");if(!homeMode&&!Leave())return;homeMode=true;C<Button>("Overview").Visibility=Visibility.Collapsed;UpdateLibraryLayout();C<ScrollViewer>("FeatureHome").Visibility=Visibility.Visible;C<Border>("HdrSettings").Visibility=Visibility.Collapsed;C<Grid>("DlssSection").Visibility=Visibility.Collapsed;RefreshHome();Appearance.Refresh();}
- void RenderDlss(){var host=C<Grid>("DlssSection");host.Children.Clear();host.RowDefinitions.Clear();dlssPanel=null;if(current==null)return;if(String.IsNullOrEmpty(current.Exe)||!File.Exists(current.Exe)){host.Children.Add(Dialogs.Text(current.ProtectedInstall?current.Evidence:"Scegli un target.exe valido dal pulsante Target.exe / API per configurare OptiScaler.",16));return;}dlssPanel=new DlssUi();dlssPanel.Create(window,current,true);dlssPanel.EmbeddedContent.Margin=new Thickness(18,16,18,16);host.Children.Add(dlssPanel.EmbeddedContent);}
- void SwitchSection(bool dlss){
-  if(busy||ModCenter.Busy||RenoDxUi.IsBusy||(dlssPanel!=null&&dlssPanel.IsBusy))throw new Exception("Attendi il completamento dell’installazione.");
-  if(dlss&&current==null)return;
-  if(dlss&&!dlssMode&&!Leave())return;
-  var host=C<Grid>("DlssSection");
-  if(dlss&&(homeMode||!dlssMode))RenderDlss();homeMode=false;C<Button>("Overview").Visibility=Visibility.Visible;UpdateLibraryLayout();C<ScrollViewer>("FeatureHome").Visibility=Visibility.Collapsed;
-  dlssMode=dlss;host.Visibility=dlss?Visibility.Visible:Visibility.Collapsed;
-  UpdateLibraryLayout();
-  C<Border>("HdrSettings").Visibility=dlss?Visibility.Collapsed:Visibility.Visible;
-  HdrMode();
-
-  RefreshHome();Appearance.Refresh();
- }
+ void UpdateLibraryLayout(){window.Resources["LibraryPosterHeight"]=180.0;window.Resources["LibraryCardWidth"]=180.0;C<Grid>("LibrarySection").Visibility=Visibility.Visible;C<RowDefinition>("LibraryRow").Height=GridLength.Auto;C<RowDefinition>("LibraryRow").MinHeight=150;C<DockPanel>("LibraryHeading").Visibility=C<DockPanel>("LibrarySearch").Visibility=Visibility.Visible;C<ListBox>("Games").LayoutTransform=Transform.Identity;C<Button>("Overview").Visibility=Visibility.Collapsed;}
+ void ShowHome(){if(!Leave())return;ShowGameConfiguration();}
+ void ShowGameConfiguration(){homeMode=false;dlssMode=true;C<ScrollViewer>("FeatureHome").Visibility=Visibility.Collapsed;C<Border>("HdrSettings").Visibility=Visibility.Collapsed;C<Grid>("DlssSection").Visibility=Visibility.Visible;UpdateLibraryLayout();RenderDlss();Appearance.Refresh();}
+ void RenderDlss(){var host=C<Grid>("DlssSection");host.Children.Clear();host.RowDefinitions.Clear();dlssPanel=null;if(current==null){var message=Dialogs.Text(Appearance.Localize(busy?"Caricamento della libreria…":"Select a game"),16);message.Margin=new Thickness(18);host.Children.Add(message);return;}if(String.IsNullOrEmpty(current.Exe)||!File.Exists(current.Exe)){host.Children.Add(Dialogs.Text(current.ProtectedInstall?current.Evidence:"Scegli un target.exe valido dal pulsante Target.exe / API per configurare OptiScaler.",16));return;}dlssPanel=new DlssUi();dlssPanel.Create(window,current,true);dlssPanel.EmbeddedContent.Margin=new Thickness(18,16,18,16);host.Children.Add(dlssPanel.EmbeddedContent);}
+ void SwitchSection(bool dlss){if(!Leave())return;ShowGameConfiguration();}
  bool Leave(){if(ModCenter.Busy||RenoDxUi.IsBusy||(dlssPanel!=null&&dlssPanel.IsBusy)){SetStatus("Attendi il completamento dell’operazione.");return false;}return true;}
 
- async void StartScan(){if(busy)return;busy=true;C<Button>("Scan").IsEnabled=C<Button>("SteamFolder").IsEnabled=false;SetStatus("Lettura di Steam e Xbox / Game Pass, motori e copertine locali…");try{games=await Task.Run(()=>Core.Scan());Filter();if(C<ListBox>("Games").Items.Count>0){loading=true;C<ListBox>("Games").SelectedItem=C<ListBox>("Games").Items[0];loading=false;Select(C<ListBox>("Games").SelectedItem as Game);}else Select(null);SetStatus("Scansione completata.");}catch(Exception ex){Fail(ex);}finally{busy=false;C<Button>("Scan").IsEnabled=C<Button>("SteamFolder").IsEnabled=true;}
+ async void StartScan(){if(busy)return;busy=true;if(current==null){C<TextBlock>("SelectedGameName").Text="HDLSS";ShowGameConfiguration();}C<Button>("Scan").IsEnabled=C<Button>("SteamFolder").IsEnabled=false;SetStatus("Lettura di Steam e Xbox / Game Pass, motori e copertine locali…");try{games=await Task.Run(()=>Core.Scan());Filter();if(C<ListBox>("Games").Items.Count>0){loading=true;C<ListBox>("Games").SelectedItem=C<ListBox>("Games").Items[0];loading=false;Select(C<ListBox>("Games").SelectedItem as Game);}else Select(null);SetStatus("Scansione completata.");}catch(Exception ex){Fail(ex);}finally{busy=false;if(current==null){ShowGameConfiguration();}C<Button>("Scan").IsEnabled=C<Button>("SteamFolder").IsEnabled=true;}
  if(preview==null){var updateCheck=ModUpdates.Refresh(games);}
  if(preview!=null){try{SavePreview(preview);if(current!=null){SwitchSection(false);SavePreview(preview+"-reshade.png");SwitchSection(true);SavePreview(preview+"-dlss.png");}}finally{window.Close();}}
  }
@@ -120,10 +109,11 @@ public class Pilot {
  void RefreshCards(){C<ListBox>("Games").Items.Refresh();}
  static ImageSource Image(string path){if(String.IsNullOrEmpty(path)||!File.Exists(path))return null;try{var i=new BitmapImage();i.BeginInit();i.CacheOption=BitmapCacheOption.OnLoad;i.UriSource=new Uri(Path.GetFullPath(path));i.EndInit();i.Freeze();return i;}catch{return null;}}
  void Select(Game game){current=game;loading=true;try{
+ C<TextBlock>("SelectedGameName").Text=game==null?"HDLSS":game.Name;C<System.Windows.Controls.Image>("SelectedGameCover").Source=game==null?null:Image(game.Cover);C<TextBlock>("SelectedGamePlatform").Text=game==null?"":game.ArtworkLabel;
  C<TextBox>("TargetPath").Text=game==null?"Seleziona un gioco":game.ProtectedInstall?game.Evidence:String.IsNullOrEmpty(game.Exe)?"Select a valid game executable first.":Path.GetFullPath(game.Exe);
  C<TextBlock>("GameTitle").Text=game==null?"Seleziona un gioco":game.Name;
  foreach(string name in new[]{"InjectionSetup","Dlss","Play","CoverButton"})C<Button>(name).IsEnabled=game!=null;
- if(!homeMode){if(dlssMode)RenderDlss();else HdrMode();}RefreshHome();
+ ShowGameConfiguration();RefreshHome();
  }finally{loading=false;}}
 
  static void Open(string target){System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(target){UseShellExecute=true});}

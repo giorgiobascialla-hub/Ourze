@@ -12,4 +12,3 @@ public static partial class Guide {
  public static void Show(Window owner){Create(owner).ShowDialog();}
 }
 }
-

@@ -2,8 +2,7 @@ using System.Reflection;
 [assembly: AssemblyTitle("HDLSS")]
 [assembly: AssemblyDescription("HDR, DLSS 5 & graphics mods. Simplified.")]
 [assembly: AssemblyProduct("HDLSS Portable")]
-[assembly: AssemblyVersion("1.0.8.0")]
-[assembly: AssemblyFileVersion("1.0.8.0")]
-[assembly: AssemblyInformationalVersion("1.0.8")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyInformationalVersion("1.1")]
 [assembly: System.Runtime.Versioning.TargetFramework(".NETFramework,Version=v4.8", FrameworkDisplayName=".NET Framework 4.8")]
-

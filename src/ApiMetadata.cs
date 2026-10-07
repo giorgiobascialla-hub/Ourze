@@ -31,4 +31,3 @@ public static class ApiMetadata {
  static string PauseMessage(long epoch){return Appearance.Localize("GitHub request limit reached. Try again after {0}.").Replace("{0}",new DateTime(1970,1,1,0,0,0,DateTimeKind.Utc).AddSeconds(epoch).ToLocalTime().ToString("HH:mm"));}
 }
 }
-
