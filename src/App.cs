@@ -44,12 +44,12 @@ public class Pilot {
    if(args.Length>0&&args[0]=="--scan"){File.WriteAllText(args[1],Core.Json.Serialize(Core.Scan()));return 0;}
    var app=new Application();Appearance.Start();var p=new Pilot();if(args.Length>1&&args[0]=="--preview")p.preview=args[1];
    using(var s=Assembly.GetExecutingAssembly().GetManifestResourceStream("Main.xaml"))p.window=(Window)XamlReader.Load(s);
-   using(var logo=Assembly.GetExecutingAssembly().GetManifestResourceStream("brand-logo.png")){var bitmap=new System.Windows.Media.Imaging.BitmapImage();bitmap.BeginInit();bitmap.CacheOption=System.Windows.Media.Imaging.BitmapCacheOption.OnLoad;bitmap.StreamSource=logo;bitmap.EndInit();bitmap.Freeze();p.C<Image>("BrandLogo").Source=bitmap;}
+   using(var logo=Assembly.GetExecutingAssembly().GetManifestResourceStream("brand-logo.png")){var bitmap=new System.Windows.Media.Imaging.BitmapImage();bitmap.BeginInit();bitmap.CacheOption=System.Windows.Media.Imaging.BitmapCacheOption.OnLoad;bitmap.StreamSource=logo;bitmap.EndInit();bitmap.Freeze();var drawing=new DrawingGroup();drawing.Children.Add(new ImageDrawing(bitmap,new Rect(0,0,200,80)));var five=Geometry.Parse("M190,28 L222,28 L225,31 L225,35 L198,35 L198,40 L219,40 L225,46 L225,53 L219,59 L190,59 L190,52 L215,52 L218,50 L216,47 L190,47 Z");five=five.Clone();five.Transform=new ScaleTransform(0.85,0.78,190,28);drawing.Children.Add(new GeometryDrawing(new LinearGradientBrush(Color.FromRgb(244,197,101),Color.FromRgb(230,172,80),90),null,five));var logoSource=new DrawingImage(drawing);logoSource.Freeze();p.C<Image>("BrandLogo").Source=logoSource;}
    using(var icon=Assembly.GetExecutingAssembly().GetManifestResourceStream("app.ico")){p.window.Icon=System.Windows.Media.Imaging.BitmapFrame.Create(icon,System.Windows.Media.Imaging.BitmapCreateOptions.None,System.Windows.Media.Imaging.BitmapCacheOption.OnLoad);}
    if(p.preview!=null&&args.Length>2&&args[2]=="maximized")p.window.WindowState=WindowState.Maximized;
    if(p.preview!=null&&args.Length>3&&new[]{"it","en","es","fr","de","pt"}.Contains(args[3]))Core.Pref.Language=args[3];
    p.Wire();app.DispatcherUnhandledException+=(o,e)=>{p.Fail(e.Exception);e.Handled=true;};app.Run(p.window);return 0;
-  }catch(Exception ex){string dest=Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"HDR-Unlock-error.txt");try{File.WriteAllText(dest,ex.ToString());}catch{}if(args.Length==0)MessageBox.Show(ex.Message,"HDLSS");return 1;}finally{SingleInstance.Leave();}
+  }catch(Exception ex){string dest=Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"HDR-Unlock-error.txt");try{File.WriteAllText(dest,ex.ToString());}catch{}if(args.Length==0)MessageBox.Show(ex.Message,"HDLSS5");return 1;}finally{SingleInstance.Leave();}
  }
  void Wire(){
   UpdateLibraryLayout();window.SizeChanged+=(s,e)=>UpdateLibraryLayout();
@@ -98,7 +98,7 @@ public class Pilot {
  void SwitchSection(bool dlss){if(!Leave())return;ShowGameConfiguration();}
  bool Leave(){if(ModCenter.Busy||RenoDxUi.IsBusy||(dlssPanel!=null&&dlssPanel.IsBusy)){SetStatus("Attendi il completamento dell’operazione.");return false;}return true;}
 
- async void StartScan(){if(busy)return;busy=true;if(current==null){C<TextBlock>("SelectedGameName").Text="HDLSS";ShowGameConfiguration();}C<Button>("Scan").IsEnabled=C<Button>("SteamFolder").IsEnabled=false;SetStatus("Lettura di Steam e Xbox / Game Pass, motori e copertine locali…");try{games=await Task.Run(()=>Core.Scan());Filter();if(C<ListBox>("Games").Items.Count>0){loading=true;C<ListBox>("Games").SelectedItem=C<ListBox>("Games").Items[0];loading=false;Select(C<ListBox>("Games").SelectedItem as Game);}else Select(null);SetStatus("Scansione completata.");}catch(Exception ex){Fail(ex);}finally{busy=false;if(current==null){ShowGameConfiguration();}C<Button>("Scan").IsEnabled=C<Button>("SteamFolder").IsEnabled=true;}
+ async void StartScan(){if(busy)return;busy=true;if(current==null){C<TextBlock>("SelectedGameName").Text="HDLSS5";ShowGameConfiguration();}C<Button>("Scan").IsEnabled=C<Button>("SteamFolder").IsEnabled=false;SetStatus("Lettura di Steam e Xbox / Game Pass, motori e copertine locali…");try{games=await Task.Run(()=>Core.Scan());Filter();if(C<ListBox>("Games").Items.Count>0){loading=true;C<ListBox>("Games").SelectedItem=C<ListBox>("Games").Items[0];loading=false;Select(C<ListBox>("Games").SelectedItem as Game);}else Select(null);SetStatus("Scansione completata.");}catch(Exception ex){Fail(ex);}finally{busy=false;if(current==null){ShowGameConfiguration();}C<Button>("Scan").IsEnabled=C<Button>("SteamFolder").IsEnabled=true;}
  if(preview==null){var updateCheck=ModUpdates.Refresh(games);}
  if(preview!=null){try{SavePreview(preview);if(current!=null){SwitchSection(false);SavePreview(preview+"-reshade.png");SwitchSection(true);SavePreview(preview+"-dlss.png");}}finally{window.Close();}}
  }
@@ -109,7 +109,7 @@ public class Pilot {
  void RefreshCards(){C<ListBox>("Games").Items.Refresh();}
  static ImageSource Image(string path){if(String.IsNullOrEmpty(path)||!File.Exists(path))return null;try{var i=new BitmapImage();i.BeginInit();i.CacheOption=BitmapCacheOption.OnLoad;i.UriSource=new Uri(Path.GetFullPath(path));i.EndInit();i.Freeze();return i;}catch{return null;}}
  void Select(Game game){current=game;loading=true;try{
- C<TextBlock>("SelectedGameName").Text=game==null?"HDLSS":game.Name;C<System.Windows.Controls.Image>("SelectedGameCover").Source=game==null?null:Image(game.Cover);C<TextBlock>("SelectedGamePlatform").Text=game==null?"":game.ArtworkLabel;
+ C<TextBlock>("SelectedGameName").Text=game==null?"HDLSS5":game.Name;C<System.Windows.Controls.Image>("SelectedGameCover").Source=game==null?null:Image(game.Cover);C<TextBlock>("SelectedGamePlatform").Text=game==null?"":game.ArtworkLabel;
  C<TextBox>("TargetPath").Text=game==null?"Seleziona un gioco":game.ProtectedInstall?game.Evidence:String.IsNullOrEmpty(game.Exe)?"Select a valid game executable first.":Path.GetFullPath(game.Exe);
  C<TextBlock>("GameTitle").Text=game==null?"Seleziona un gioco":game.Name;
  foreach(string name in new[]{"InjectionSetup","Dlss","Play","CoverButton"})C<Button>(name).IsEnabled=game!=null;

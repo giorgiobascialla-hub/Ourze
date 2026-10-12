@@ -1,7 +1,7 @@
-# HDLSS 1.2
+# HDLSS5 1.2
 
 - Unified OptiScaler, ReShade and DLL/Streamline workspace with consistent cards, responsive columns and visible primary actions.
-- Larger HDLSS logo in the title bar.
+- Larger HDLSS5 logo in the title bar.
 - Clear DLL/Streamline update destinations: full path and installed version of the selected copy. Fixed empty destination menus.
 - Official OptiScaler Standard option without Neural Rendering, alongside community forks.
 - ReShade Neural Rendering workflow, manual add-on recognition, separate removal, Lilium and CAS options.
@@ -10,13 +10,13 @@
 - Updated internal guide, changelog and six-language labels.
 
 ## Update
-Close HDLSS and replace HDLSS.exe. Keep your existing data, data-location.txt and backups. Matching source is included. Game compatibility depends on each component; installed files do not prove activation in game.
+Close HDLSS5 and replace HDLSS5.exe. Keep your existing data, data-location.txt and backups. Matching source is included. Game compatibility depends on each component; installed files do not prove activation in game.
 
 ## Validation
 Release build, six-language guide and layout checks, actual open DLL destination-menu check, and live official RenoDX UE Extended download/hash verification. Game files were not changed by these checks.
 
 
-# HDLSS 1.1 — 7 October 2026
+# HDLSS5 1.1 — 7 October 2026
 
 - Add NeuRotic alongside the three existing community OptiScaler forks. Select complete release packages, exclude patch-only archives and verify published SHA256.
 - Redesign the game workspace: left library, smooth thumbnail scrolling, unified game header, expandable sections, preserved tabs and open menus when switching games.
@@ -29,13 +29,13 @@ Release build, six-language guide and layout checks, actual open DLL destination
 - Update the internal guide, changelog and translations in all six languages.
 
 ## Updating
-Close HDLSS, replace HDLSS.exe and keep your existing data folder, data-location.txt and backups. The ZIP includes the matching source. NeuRotic advanced options are configured in its in-game menu; game compatibility and performance remain experimental and require testing.
+Close HDLSS5, replace HDLSS5.exe and keep your existing data folder, data-location.txt and backups. The ZIP includes the matching source. NeuRotic advanced options are configured in its in-game menu; game compatibility and performance remain experimental and require testing.
 
 ## Validation
 Release build; six-language interface and guide checks; navigation-state, saved-DLL recovery, update-state and Streamline backup tests. NeuRotic package SHA256, x64 identity and complete-release selection checked. No game files changed during validation.
 
 
-# HDLSS 1.0.8 r2
+# HDLSS5 1.0.8 r2
 
 ## Revision 2 — 4 October 2026
 - Fix RenoDX update checks for GitHub Pages downloads by comparing SHA256 with the installed add-on. Different files are offered as updates, not proof of a higher version number.
@@ -47,10 +47,10 @@ Release build; six-language interface and guide checks; navigation-state, saved-
 Build passed; five source/mismatch checks and a live download/hash check against the official Unreal Engine Extended catalog URL passed. Guide checks cover six languages and two window sizes. This does not fix an unavailable upstream server or certify compatibility with every game.
 
 ### Download
-Use **HDLSS-Portable-1.0.8-r2.zip** (revision 2). Close HDLSS, replace HDLSS.exe and preserve data, data-location.txt and backups. Version remains 1.0.8. Earlier 1.0.8 assets are retained for recovery.
+Use **HDLSS5-Portable-1.0.8-r2.zip** (revision 2). Close HDLSS5, replace HDLSS5.exe and preserve data, data-location.txt and backups. Version remains 1.0.8. Earlier 1.0.8 assets are retained for recovery.
 
 
-# HDLSS 1.0.8
+# HDLSS5 1.0.8
 
 ## Changes
 - Add Configure HDR directly to the RenoDX section for The Blood of Dawnwalker, using the documented Unreal Engine Extended settings.
@@ -63,10 +63,10 @@ Use **HDLSS-Portable-1.0.8-r2.zip** (revision 2). Close HDLSS, replace HDLSS.exe
 55 targeted configuration/UI checks and 19 component regression checks passed. The user confirmed the Dawnwalker HDR setup works in game. This is not a universal UE5 profile: only Dawnwalker is supported by the new configuration action. Profiles are bundled, not refreshed remotely. The removed standalone UE5 HDR editor and luminance overlay remain removed.
 
 ## Installation
-Close HDLSS and the game, then extract the portable package. Preserve your existing data folder and backups. For supported Dawnwalker installations, open HDR / MFG and use Configure HDR when required.
+Close HDLSS5 and the game, then extract the portable package. Preserve your existing data folder and backups. For supported Dawnwalker installations, open HDR / MFG and use Configure HDR when required.
 
 
-# HDLSS 1.0.7
+# HDLSS5 1.0.7
 
 ## Changes
 - Inline version selectors for DLSS Super Resolution, Ray Reconstruction, Frame Generation, Streamline and Neural Rendering, with bundled catalog metadata and downloads on demand.
@@ -82,11 +82,11 @@ Close HDLSS and the game, then extract the portable package. Preserve your exist
 Local component, recovery, catalog, Streamline, API and UI regression checks passed. Large RenoDX metadata was verified against a real 17.5-million-character response. Compatibility depends on the game, GPU, driver and installed add-ons. The reported CONTROL Resonant add-on crash is still under diagnosis; this release does not claim to fix third-party add-on conflicts.
 
 ## Download and update
-Download **HDLSS-Portable-1.0.7.zip** below. Close HDLSS and replace **HDLSS.exe**, preserving **data**, **data-location.txt** and all backups. Windows x64 and .NET Framework 4.8 required. Source is included; the separate SHA-256 file verifies the archive.
+Download **HDLSS5-Portable-1.0.7.zip** below. Close HDLSS5 and replace **HDLSS5.exe**, preserving **data**, **data-location.txt** and all backups. Windows x64 and .NET Framework 4.8 required. Source is included; the separate SHA-256 file verifies the archive.
 
 ---
 
-# HDLSS 1.0.6
+# HDLSS5 1.0.6
 
 ## New and improved
 - Added ASI Loader installation and management, plus updates for existing NVIDIA Streamline integrations.
@@ -102,11 +102,11 @@ Download **HDLSS-Portable-1.0.7.zip** below. Close HDLSS and replace **HDLSS.exe
 48 WPF renders across six languages and two window sizes; 18,181 UI/translation assertions. Component removal/recovery, manual add-on updates and all five shader/add-on removal paths were tested in fixture folders. Earlier Streamline, MFG and DLSS regression checks also passed. These tests do not certify every game, GPU, driver or mod combination. Nexus downloads require the website step; unavailable metadata is not reported as up to date.
 
 ## Download and update
-Download **HDLSS-Portable-1.0.6.zip**, close HDLSS and replace HDLSS.exe. Preserve **data**, **data-location.txt** and all backups. Windows x64 / .NET Framework 4.8 required. Source and test results are included; verify the ZIP with the separate SHA-256 file.
+Download **HDLSS5-Portable-1.0.6.zip**, close HDLSS5 and replace HDLSS5.exe. Preserve **data**, **data-location.txt** and all backups. Windows x64 / .NET Framework 4.8 required. Source and test results are included; verify the ZIP with the separate SHA-256 file.
 
 ---
 
-# HDLSS 1.0.5
+# HDLSS5 1.0.5
 
 Release 1.0.5 â€” 2026-09-24.
 
@@ -117,14 +117,14 @@ Release 1.0.5 â€” 2026-09-24.
 - Independent MFG backup and restoration. Preserve subsequent ReShade settings changes and stop if an add-on or backup changed unexpectedly.
 
 ## Removed
-- UE5 HDR configuration editor, engine-parameter panel, HDLSS luminance overlay and its global hotkey registration.
+- UE5 HDR configuration editor, engine-parameter panel, HDLSS5 luminance overlay and its global hotkey registration.
 - Scene capture and overlay window classes from the executable. No background scene capture is started.
 - Automatic Engine.ini recipes during RenoDX installation. Existing game INIs, mods and backups are retained; follow the mod author's instructions when it requires native engine HDR.
 
 ## Changed
 - HDR / MFG opens ReShade, RenoDX and MFG installation controls directly. Keep the three primary actions visible at compact window sizes.
 - MFG add-ons are no longer classified as RenoDX HDR. Restore MFG before removing its ReShade dependency.
-- UE4SS installation remains available for mods without the HDLSS telemetry reader. Existing UE4SS runtimes and mods are preserved.
+- UE4SS installation remains available for mods without the HDLSS5 telemetry reader. Existing UE4SS runtimes and mods are preserved.
 - RenoDX uses the current game catalog and checks recent published assets for the matching add-on. ReShade stable/nightly, shader packages and MFG resolve downloads online. Local imports cannot certify the newest version.
 - Update internal help and new interface text in Italian, English, Spanish, French, German and Portuguese.
 
@@ -147,12 +147,12 @@ Sources: [MFG Unlock](https://github.com/nefh/MFGAmpereUnlock-RenoDx), [ReShade 
 
 
 ## Download and update
-Download HDLSS-Portable-1.0.5.zip below. Close HDLSS and replace HDLSS.exe, preserving data, data-location.txt and all backups. Windows x64 and .NET Framework 4.8 required. Source and test results are included.
+Download HDLSS5-Portable-1.0.5.zip below. Close HDLSS5 and replace HDLSS5.exe, preserving data, data-location.txt and all backups. Windows x64 and .NET Framework 4.8 required. Source and test results are included.
 
 
 ---
 
-# HDLSS 1.0.4
+# HDLSS5 1.0.4
 
 ## Fixed
 - Correct mixed-language text in the HDR panel and adjacent controls in Italian, English, Spanish, French, German and Portuguese.
@@ -168,15 +168,15 @@ This translation update covers the HDR panel and adjacent controls; it does not 
 The intermittent 9999-nit scene-overlay report remains under investigation. This release does not change capture or tone mapping and does not claim to fix that report.
 
 ## Update
-Download HDLSS-Portable-1.0.4.zip. Close HDLSS and replace HDLSS.exe, preserving data, data-location.txt and all backups. Windows x64 and .NET Framework 4.8 required. Source and SHA-256 checksum are included with the release.
+Download HDLSS5-Portable-1.0.4.zip. Close HDLSS5 and replace HDLSS5.exe, preserving data, data-location.txt and all backups. Windows x64 and .NET Framework 4.8 required. Source and SHA-256 checksum are included with the release.
 
 
 ---
 
-# HDLSS 1.0.3
+# HDLSS5 1.0.3
 
 ## Fixed
-- Disable the retired HDLSS_PeakLimit technique left active by earlier builds when applying native HDR or using Play game. Version 1.0.2 stopped installing the filter but did not deactivate existing copies.
+- Disable the retired HDLSS5_PeakLimit technique left active by earlier builds when applying native HDR or using Play game. Version 1.0.2 stopped installing the filter but did not deactivate existing copies.
 - Preserve ReShade, RenoDX, DLSS, other preset techniques and their settings. Save the previous preset in transaction recovery; repeated migration makes no additional change.
 - Keep native UE5 HDR independent of ReShade. The overlay continues to display measured pixel values without forcing them down to the configured peak.
 
@@ -185,13 +185,13 @@ The reporting user confirmed that colors and the reported peak returned to norma
 Local migration, unrelated-effect preservation, idempotence, exact recovery and DLSS regression tests passed. Engine HDR and mod compatibility remain game-specific.
 
 ## Update
-Close HDLSS and replace HDLSS.exe with this build. Preserve data, data-location.txt and all backups. Start the game from HDLSS or apply native HDR while the game is closed to migrate an old active HDLSS filter. External presets require manual review. Recover operation can restore the previous preset from its transaction.json.
-Windows x64 and .NET Framework 4.8 required. Source is included in HDLSS-Portable-1.0.3.zip.
+Close HDLSS5 and replace HDLSS5.exe with this build. Preserve data, data-location.txt and all backups. Start the game from HDLSS5 or apply native HDR while the game is closed to migrate an old active HDLSS5 filter. External presets require manual review. Recover operation can restore the previous preset from its transaction.json.
+Windows x64 and .NET Framework 4.8 required. Source is included in HDLSS5-Portable-1.0.3.zip.
 
 
-# HDLSS 1.0.2
+# HDLSS5 1.0.2
 
-- Added installation of the official stable UE4SS end-user runtime and HDLSS reader, with a reviewed file plan and transaction recovery.
+- Added installation of the official stable UE4SS end-user runtime and HDLSS5 reader, with a reviewed file plan and transaction recovery.
 - Recognize UE4SS both beside the executable and in the ue4ss subfolder. Preserve existing runtime versions, mod settings and unrelated mods. Explain conflicts with custom overrides, duplicate runtimes or an occupied loader.
 - Corrected the search root for manually added Unreal games: native DLSS DLLs in Engine/Plugins and project subdirectories can be detected and selected for updates.
 - Native DLSS library updates no longer run the Neural Rendering installation conflict check.
@@ -211,7 +211,7 @@ Native HDR INI-only installation and recovery passed isolated tests with and wit
 - https://github.com/NVIDIA/DLSS
 
 ## Download and update
-Download HDLSS-Portable-1.0.2.zip. Close HDLSS and replace HDLSS.exe, preserving data, data-location.txt and all backups. Windows x64 and .NET Framework 4.8 required. Source is included.
+Download HDLSS5-Portable-1.0.2.zip. Close HDLSS5 and replace HDLSS5.exe, preserving data, data-location.txt and all backups. Windows x64 and .NET Framework 4.8 required. Source is included.
 
 # Changelog
 
@@ -222,13 +222,13 @@ Download HDLSS-Portable-1.0.2.zip. Close HDLSS and replace HDLSS.exe, preserving
 - The exception checks the file's SHA-256, not just its name. Unknown or modified DLSS/NR add-ons and separate RenoDX NR renderers still trigger conflict checks.
 
 ### Validation and help
-- Added regression tests for cleanup of recognized third-party NR installations without an HDLSS manifest, backup recovery, and preservation of separate MFG, HDR and native game DLLs.
+- Added regression tests for cleanup of recognized third-party NR installations without an HDLSS5 manifest, backup recovery, and preservation of separate MFG, HDR and native game DLLs.
 - Added tests for unknown and modified overlays, a separate NR renderer alongside the verified overlay, and overlay preservation across installation, updates and recovery.
 - Updated the internal help to explain the distinction between a control overlay and an NR renderer.
 - Verified locally with isolated installation/cleanup fixtures and a read-only Fatekeeper scan. In-game behavior and universal hardware compatibility are not certified.
 
 ### Updating
-Close HDLSS and replace HDLSS.exe with the 1.0.1 build. Preserve data, data-location.txt and existing backups. Windows x64 and .NET Framework 4.8 are required. There is no need to delete the verified control overlay or reinstall unrelated HDR/MFG components.
+Close HDLSS5 and replace HDLSS5.exe with the 1.0.1 build. Preserve data, data-location.txt and existing backups. Windows x64 and .NET Framework 4.8 are required. There is no need to delete the verified control overlay or reinstall unrelated HDR/MFG components.
 
 ## 1.0.0
 

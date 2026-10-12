@@ -1,22 +1,22 @@
-# HDLSS
+# HDLSS5
 
 **DLSS 5 & Neural Rendering for compatible games.**
 
-[Download HDLSS 1.2](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.2)
+[Download HDLSS5 1.2](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.2)
 
-HDLSS was created to help configure DLSS 5 and Neural Rendering in compatible games. It brings supported community OptiScaler builds, component checks, backups and recovery into a portable Windows app, with additional HDR tools. It is an independent project; the integrated community injector builds are not official NVIDIA releases.
+HDLSS5 was created to help configure DLSS 5 and Neural Rendering in compatible games. It brings supported community OptiScaler builds, component checks, backups and recovery into a portable Windows app, with additional HDR tools. It is an independent project; the integrated community injector builds are not official NVIDIA releases.
 
-<img src="assets/brand-logo.png" alt="HDLSS" width="420">
+<img src="assets/brand-logo.png" alt="HDLSS5" width="420">
 
 ## App screenshots
 
 Library and DLSS views from earlier releases. Version 1.0.5 replaces the UE5 HDR editor with the HDR / MFG mod-management page.
 
 ### Game library
-![HDLSS game library](assets/library.jpg)
+![HDLSS5 game library](assets/library.jpg)
 
 ### DLSS components
-![HDLSS DLSS components](assets/dlss.jpg)
+![HDLSS5 DLSS components](assets/dlss.jpg)
 
 ## Changes in 1.2
 
@@ -31,7 +31,7 @@ Adds inline DLL version menus and bundled catalogs, improves download reliabilit
 - Browse detected Steam and Xbox / Game Pass titles, or add a game executable.
 - Manage ReShade, compatible RenoDX HDR mods and MFG Unlock separately.
 - Download the latest stable MFG Unlock release with SHA-256 verification; restore it without discarding later ReShade settings.
-- Install UE4SS for supported Unreal game mods without the retired HDLSS telemetry reader.
+- Install UE4SS for supported Unreal game mods without the retired HDLSS5 telemetry reader.
 - Work with the three supported community OptiScaler forks and their available options.
 - Inspect Super Resolution, Ray Reconstruction and Frame Generation DLLs independently from the Neural Rendering model.
 - Compare files across game folders, inspect their paths, and update a selected component with verification and backup.
@@ -40,17 +40,17 @@ Adds inline DLL version menus and bundled catalogs, improves download reliabilit
 
 ## Start
 
-Extract the portable archive into a writable folder and launch `HDLSS.exe`. Windows x64 and .NET Framework 4.8 are required. No Python or developer SDK is needed to run it.
+Extract the portable archive into a writable folder and launch `HDLSS5.exe`. Windows x64 and .NET Framework 4.8 are required. No Python or developer SDK is needed to run it.
 
 Select a game, check the executable, then choose HDR / MFG or DLSS 5. Close the game before applying changes. Choose the component and version on the main page; installation progress and recovery information appear inline.
 
 ## Updating an existing installation
 
-Close HDLSS and replace the executable with the new build. Keep `data`, any `data-location.txt`, and all existing backups. Legacy HDR Unlock component records remain supported. Do not delete the old data directory when a data-location link points to it.
+Close HDLSS5 and replace the executable with the new build. Keep `data`, any `data-location.txt`, and all existing backups. Legacy HDR Unlock component records remain supported. Do not delete the old data directory when a data-location link points to it.
 
 ## Why are there multiple DLL locations?
 
-A game can ship the same component in an engine/plugin folder and beside its executable. HDLSS compares their SHA-256 hashes and distinguishes identical files, different files and unreadable comparisons. Use **Check files and paths** to refresh the inventory. It does not automatically delete duplicates or claim that every detected file is loaded.
+A game can ship the same component in an engine/plugin folder and beside its executable. HDLSS5 compares their SHA-256 hashes and distinguishes identical files, different files and unreadable comparisons. Use **Check files and paths** to refresh the inventory. It does not automatically delete duplicates or claim that every detected file is loaded.
 
 ## Compatibility
 
@@ -66,12 +66,12 @@ On Windows with the .NET Framework compiler installed:
 
 ```powershell
 New-Item -ItemType Directory -Force dist | Out-Null
-powershell -ExecutionPolicy Bypass -File ./src/build.ps1 -Output ./dist/HDLSS.exe
+powershell -ExecutionPolicy Bypass -File ./src/build.ps1 -Output ./dist/HDLSS5.exe
 ```
 
 ## Support development
 
-If HDLSS is useful to you, you can support its development with an optional [donation via PayPal](https://paypal.me/Ourze). Thank you for your support!
+If HDLSS5 is useful to you, you can support its development with an optional [donation via PayPal](https://paypal.me/Ourze). Thank you for your support!
 
 ## Support
 
@@ -79,9 +79,9 @@ Include the app version, Windows version, GPU/driver, game and selected componen
 
 ## Credits and licensing
 
-HDLSS is independent and is not affiliated with NVIDIA, Valve, Microsoft, Epic Games, ReShade, RenoDX or the OptiScaler authors. Component downloads retain their authors' terms. See [component sources](docs/SOURCES.txt). Third-party injectors, models and game files are not bundled.
+HDLSS5 is independent and is not affiliated with NVIDIA, Valve, Microsoft, Epic Games, ReShade, RenoDX or the OptiScaler authors. Component downloads retain their authors' terms. See [component sources](docs/SOURCES.txt). Third-party injectors, models and game files are not bundled.
 
-No open-source license has been selected for HDLSS in this package. Public source availability alone does not grant a reuse license. Third-party trademarks and game artwork belong to their respective owners.
+No open-source license has been selected for HDLSS5 in this package. Public source availability alone does not grant a reuse license. Third-party trademarks and game artwork belong to their respective owners.
 
 
 ### RenoDX HDR configuration
