@@ -1,2 +1,1 @@
-d4ac1eae00eecd190aefe83056309de1bd8c5883f12ee66057d03e1773a07867  HDLSS-Portable-1.0.8.zip
-
+dfc88a9efa4d4d2f0b553fba0d3d4f3cd16faaab4f427c573c45b04b566af70d  HDLSS-Portable-1.2.zip

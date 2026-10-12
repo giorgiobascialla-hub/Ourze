@@ -1,4 +1,4 @@
-using System;using System.IO;using System.Linq;using System.Text;using System.Text.RegularExpressions;using System.Collections.Generic;
+﻿using System;using System.IO;using System.Linq;using System.Text;using System.Text.RegularExpressions;using System.Collections.Generic;
 namespace HdrPilot {
 // Deliberately allowlisted: generic UE5 detection is not evidence of HDR compatibility.
 public static class RenoGameHdr {

@@ -1,4 +1,4 @@
-using System;using System.Threading.Tasks;using System.Windows.Controls;
+﻿using System;using System.Threading.Tasks;using System.Windows.Controls;
 namespace HdrPilot {
 public static class InlineOperation {
  public static bool IsBusy {get;private set;}

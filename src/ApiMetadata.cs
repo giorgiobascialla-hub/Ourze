@@ -1,4 +1,4 @@
-using System;using System.IO;using System.Net;using System.Security.Cryptography;using System.Text;using System.Collections.Generic;
+﻿using System;using System.IO;using System.Net;using System.Security.Cryptography;using System.Text;using System.Collections.Generic;
 namespace HdrPilot {
 public static class ApiMetadata {
  public sealed class Reply {public int Status;public string Text,Remaining,Reset,Retry;}

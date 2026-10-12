@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -13,6 +13,7 @@ public sealed class DlssBuild {
  public string Id,Name,Repo,Description;
  public override string ToString(){return Name;}
  public static readonly DlssBuild[] All={
+ new DlssBuild{Id="official",Name="OptiScaler · Standard · no NR",Repo="optiscaler/OptiScaler",Description="Official OptiScaler without Neural Rendering. Latest stable release; no NR model download. Configure upscaling in the in-game OptiScaler menu."},
  new DlssBuild{Id="dagherbou",Name="Dagherbou · DLSS-NR",Repo="Dagherbou/OptiScaler_DLSSNR",Description="Aggiunge Neural Rendering dopo l’upscaling: il modello rielabora l’immagine e sintetizza dettagli. È la variante di partenza dei tre fork. Richiede un modello NR compatibile; il costo in FPS dipende da gioco e risoluzione."},
  new DlssBuild{Id="wilsjo2",Name="wilsjo2 · Pre-SR / Multipass",Repo="wilsjo2/OptiScaler-DLSSNR-PreSR-Multipass",Description="Permette Neural Rendering prima o dopo l’upscaling e da 1 a 3 passaggi, con regolazioni per ciascun passaggio nel menu OptiScaler. Prima dell’upscaling il modello può lavorare su meno pixel. Parti da 1 passaggio: aumentarli costa prestazioni e può trasformare maggiormente l’immagine."},
  new DlssBuild{Id="y4my4my4m",Name="y4my4my4m · Multipass / MFG",Repo="y4my4my4m/OptiScaler_DLSSNR_Multipass_MFG",Description="Variante sperimentale con più passaggi NR e funzioni MFG, cioè generazione di più fotogrammi intermedi. Include un percorso sperimentale per RTX 4000/Ada, legato a gioco e componenti Streamline compatibili. HDLSS non attiva MFG automaticamente: conserva la generazione fotogrammi esistente. Le regolazioni specifiche sono nel menu della build."},
@@ -71,13 +72,13 @@ public static class DlssCore {
   if(File.Exists(own)){var m=ReadManifest(s.Folder);s.Managed=true;s.Build=m.Build;s.Owner="Gestito da HDLSS · "+m.Release;s.Notes.Add("Ripristino: stato precedente a HDLSS ("+m.PreviousOwner+").");}
   foreach(string p in Proxies){string path=Safe(s.Folder,p);if(File.Exists(path)&&!loaders.Contains(p))s.Notes.Add(p+": componente esistente conservato");}
   if(File.Exists(Safe(s.Folder,"ReShade64.dll")))s.Notes.Add("ReShade64.dll presente: caricamento tramite OptiScaler disponibile.");
-  foreach(string p in Directory.GetFiles(s.Folder,"*.addon64")){string n=Path.GetFileName(p);if(installingNeuralRendering&&!KnownControlOverlay(Safe(s.Folder,n))&&(n.IndexOf("dlss",StringComparison.OrdinalIgnoreCase)>=0||n.IndexOf("neural",StringComparison.OrdinalIgnoreCase)>=0))s.Blockers.Add("Altro add-on DLSS 5 rilevato: "+n+". Evita due passaggi NR contemporanei.");else s.Notes.Add("Add-on conservato: "+n);}
+  foreach(string p in Directory.GetFiles(s.Folder,"*.addon64").Concat(RenoDx.AllAddons(g)).Distinct(StringComparer.OrdinalIgnoreCase)){string n=Path.GetFileName(p);if(installingNeuralRendering&&!KnownControlOverlay(p)&&(n.IndexOf("dlss",StringComparison.OrdinalIgnoreCase)>=0||n.IndexOf("neural",StringComparison.OrdinalIgnoreCase)>=0))s.Blockers.Add("Altro add-on DLSS 5 rilevato: "+n+". Evita due passaggi NR contemporanei.");else s.Notes.Add("Add-on conservato: "+n);}
   if(Directory.Exists(Safe(g.Root,"EasyAntiCheat"))||Directory.Exists(Safe(g.Root,"BattlEye"))||Directory.GetFiles(s.Folder,"*EasyAntiCheat*").Length>0)s.Blockers.Add("Anti-cheat rilevato: installazione non supportata.");
   s.Notes.Add("La presenza dei file non conferma l’attivazione in gioco.");return s;
  }
  public static DlssManifest ReadManifest(string root,string marker=Marker){var m=Core.Json.Deserialize<DlssManifest>(File.ReadAllText(Safe(root,marker)));if(m==null||m.Schema!=1||m.Files==null||m.Files.Count>2000||!String.Equals(m.Folder,Path.GetFullPath(root),StringComparison.OrdinalIgnoreCase))throw new Exception("Registro HDLSS non valido per questa cartella.");foreach(var f in m.Files){Safe(root,f.Name);if(f.Before!=null)Safe(Core.Data,f.Backup);}return m;}
  public static DlssRelease PickRelease(string json,DlssBuild build){
-  var releases=Core.Json.Deserialize<List<Dictionary<string,object>>>(json);foreach(var r in releases.OrderByDescending(r=>r.ContainsKey("published_at")?Convert.ToString(r["published_at"]):"",StringComparer.Ordinal)){if(r.ContainsKey("draft")&&Convert.ToBoolean(r["draft"]))continue;object[] assets=(r["assets"] as System.Collections.ArrayList??new System.Collections.ArrayList((object[])r["assets"])).ToArray();
+  var releases=Core.Json.Deserialize<List<Dictionary<string,object>>>(json);foreach(var r in releases.OrderByDescending(r=>r.ContainsKey("published_at")?Convert.ToString(r["published_at"]):"",StringComparer.Ordinal)){if(r.ContainsKey("draft")&&Convert.ToBoolean(r["draft"]))continue;if(build.Id=="official"&&r.ContainsKey("prerelease")&&Convert.ToBoolean(r["prerelease"]))continue;object[] assets=(r["assets"] as System.Collections.ArrayList??new System.Collections.ArrayList((object[])r["assets"])).ToArray();
    var candidates=assets.Cast<Dictionary<string,object>>().Where(a=>{string n=Convert.ToString(a["name"]).ToLowerInvariant();return (build.Id=="neurotic"?System.Text.RegularExpressions.Regex.IsMatch(n,@"^neurotic-alpha-[0-9]+(?:\.[0-9]+)*\.zip$"):n.Contains("optiscaler"))&&(n.EndsWith(".zip")||n.EndsWith(".7z"))&&!n.Contains("with_dlss")&&!n.Contains("rtx40-mfg")&&!n.Contains("symbols");}).ToList();
    if(candidates.Count==0)continue;var a2=candidates.OrderByDescending(a=>Convert.ToString(a["name"]),StringComparer.OrdinalIgnoreCase).First();string url=Convert.ToString(a2["browser_download_url"]);if(!url.StartsWith("https://github.com/"+build.Repo+"/releases/download/",StringComparison.OrdinalIgnoreCase))throw new Exception("Origine del pacchetto non valida.");return new DlssRelease{Tag=Convert.ToString(r["tag_name"]),Url=url,Asset=Convert.ToString(a2["name"]),Digest=a2.ContainsKey("digest")?Convert.ToString(a2["digest"]):""};
   }throw new Exception("Nessun pacchetto OptiScaler compatibile trovato nelle ultime release.");
@@ -102,6 +103,7 @@ protected override WebResponse GetWebResponse(WebRequest request){try{var respon
   Tar("-xf "+Q(archive)+" -C "+Q(root));var dlls=Directory.GetFiles(root,"OptiScaler.dll",SearchOption.AllDirectories);if(dlls.Length!=1)throw new Exception("L’archivio non contiene un unico OptiScaler.dll.");return Path.GetDirectoryName(dlls[0]);
  }
  public static string Config(string text,DlssOptions o){
+  if(o.Build=="official")o.Enabled=false;
   if(o.Scale<25||o.Scale>100||o.Style< -1||o.Style>2||o.Passes<1||o.Passes>3||o.Strength<0||o.Strength>100||o.Placement< -1||o.Placement>1)throw new Exception("Regolazioni DLSS 5 fuori intervallo.");
   text=Core.Set(text,"DlssNr","Enabled",o.Enabled?"true":"false");text=Core.Set(text,"DlssNr","WorkingScale",(o.Scale/100m).ToString(CultureInfo.InvariantCulture));text=Core.Set(text,"DlssNr","Style",o.Style<0?"auto":o.Style.ToString());text=Core.Set(text,"DlssNr","TransferStrength",(o.Strength/100m).ToString(CultureInfo.InvariantCulture));
   if(o.Build=="wilsjo2"){if(o.Placement>=0){text=Core.Set(text,"DlssNr","RunBeforeSR",o.Placement==1?"true":"false");text=Core.Set(text,"DlssNr","FinishedPicture","false");text=Core.Set(text,"DlssNr","DeferredDLSS","false");text=Core.Set(text,"DlssNr","ResidualAcrossRR","false");text=Core.Set(text,"DlssNr","ApplyModel","true");}text=Core.Set(text,"DlssNr","Passes",o.Passes.ToString());}
@@ -112,7 +114,7 @@ protected override WebResponse GetWebResponse(WebRequest request){try{var respon
  static DlssChange Change(string folder,string name,string source,byte[] bytes,bool delete=false){string dest=Safe(folder,name);return new DlssChange{Name=name,Source=source,SourceHash=source==null?null:Hash(source),Bytes=bytes,Delete=delete,Expected=File.Exists(dest)?Hash(dest):null};}
  public static DlssPlan Prepare(Game g,DlssOptions o,string package,string release){
   ActivityLog.Write("DLSS 5 · controllo loader, compatibilità e piano per "+g.Name);
-  var scan=Inspect(g);if(scan.Blockers.Count>0)throw new Exception(String.Join("\n",scan.Blockers));string root=scan.Folder;
+  if(o.Build=="official"){o.Enabled=false;o.Runtime="";}var scan=Inspect(g,true,o.Enabled);if(scan.Blockers.Count>0)throw new Exception(String.Join("\n",scan.Blockers));string root=scan.Folder;
   var reshade=RenoDx.Loaders(root);if(reshade.Count>1)throw new Exception("Più loader ReShade: installazione fermata per evitare duplicati.");
   if(File.Exists(Safe(root,"ReShade64.dll"))&&!RenoDx.IsReShade(Safe(root,"ReShade64.dll")))throw new Exception("ReShade64.dll non riconosciuto: verifica il componente prima di collegarlo a OptiScaler.");
   string proxy=o.Proxy=="auto"?(scan.Proxy!=""?scan.Proxy:Proxies.FirstOrDefault(p=>!File.Exists(Safe(root,p)))):o.Proxy;
@@ -121,11 +123,12 @@ protected override WebResponse GetWebResponse(WebRequest request){try{var respon
   var old=scan.Managed?ReadManifest(root):null;
   var manifest=old??new DlssManifest{Game=g.Id,Folder=root,PreviousOwner=scan.Owner,BackupRoot="dlss-backups/"+Guid.NewGuid().ToString("N")};manifest.Build=o.Build;manifest.Release=release;plan.Manifest=manifest;plan.MarkerExpected=File.Exists(Safe(root,Marker))?Hash(Safe(root,Marker)):null;
   if(!String.IsNullOrEmpty(package)){
-   string main=Safe(package,"OptiScaler.dll");if(!Pe64(main)||!IsOpti(main)||!File.Exists(Safe(package,"OptiScaler.ini"))||!Directory.Exists(Safe(package,"OptiScaler")))throw new Exception("Seleziona il pacchetto completo x64: OptiScaler.dll, OptiScaler.ini e cartella OptiScaler.");
+   string main=Safe(package,"OptiScaler.dll");if(!Pe64(main)||!IsOpti(main)||!File.Exists(Safe(package,"OptiScaler.ini"))||(o.Build!="official"&&!Directory.Exists(Safe(package,"OptiScaler"))))throw new Exception("Seleziona il pacchetto completo x64: OptiScaler.dll, OptiScaler.ini e cartella OptiScaler.");
    foreach(string src in Directory.GetFiles(package,"*",SearchOption.AllDirectories)){
     string rel=src.Substring(Path.GetFullPath(package).TrimEnd('\\').Length+1).Replace('\\','/');Safe(package,rel);string ext=Path.GetExtension(rel).ToLowerInvariant();
     if(rel.Equals("OptiScaler.ini",StringComparison.OrdinalIgnoreCase))continue;
     bool allowed=rel.Equals("OptiScaler.dll",StringComparison.OrdinalIgnoreCase)||rel.Equals("nvngx.dll_dlssnr.dll",StringComparison.OrdinalIgnoreCase)||(rel.StartsWith("OptiScaler/",StringComparison.OrdinalIgnoreCase)&&new[]{".dll",".bin",".json",".ini",".hlsl",".cso"}.Contains(ext));
+    if(o.Build=="official"){allowed=new[]{"OptiScaler.dll","amd_fidelityfx_dx12.dll","amd_fidelityfx_framegeneration_dx12.dll","amd_fidelityfx_upscaler_dx12.dll","amd_fidelityfx_vk.dll","dlssg_to_fsr3_amd_is_better.dll","fakenvapi.dll","libxell.dll","libxess.dll","libxess_dx11.dll","libxess_fg.dll","D3D12_Optiscaler/D3D12Core.dll"}.Contains(rel,StringComparer.OrdinalIgnoreCase)||(rel.Equals("fakenvapi.ini",StringComparison.OrdinalIgnoreCase)&&!File.Exists(Safe(root,rel)))||(rel.StartsWith("Licenses/",StringComparison.OrdinalIgnoreCase)&&new[]{".txt",".md"}.Contains(ext));}
     if(!allowed||DlssLibraries.Names.Contains(Path.GetFileName(rel),StringComparer.OrdinalIgnoreCase))continue;string target=rel.Equals("OptiScaler.dll",StringComparison.OrdinalIgnoreCase)?proxy:rel;
     plan.Changes.Add(Change(root,target,src,null));
    }

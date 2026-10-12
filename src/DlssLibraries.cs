@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 namespace HdrPilot {
-public sealed class DlssLibrary {public string File,Path,Version,Relative;public override string ToString(){return File+" · "+Version+" · "+Relative;}}
+public sealed class DlssLibrary {public string File,Path,Version,Relative;public string DestinationLabel{get{return (String.IsNullOrWhiteSpace(Relative)?Path:Relative)+" · "+(Version??"").Replace(",",".").Replace(" ","");}}public override string ToString(){return DestinationLabel;}}
 public static class DlssLibraries {
  public const string Marker="hdr-unlock-dlls.json";
  public static readonly string[] Names={"nvngx_dlss.dll","nvngx_dlssd.dll","nvngx_dlssg.dll"};

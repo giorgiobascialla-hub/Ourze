@@ -1,4 +1,4 @@
-namespace HdrPilot {
+﻿namespace HdrPilot {
 public static partial class Guide {
  static readonly Topic[] EnglishTopics={
  new Topic("Nexus downloads","Some RenoDX mods are hosted on Nexus Mods rather than a direct release repository. A free account requires you to confirm the download on the website. HDLSS does not request your password.","Assisted flow","Keep the assistant window open, confirm the free download on Nexus and save the ZIP to the displayed folder. The app waits for the file to finish downloading, checks the archive and prepares the installation. Download folder lets you change the watched location.","Matching and limits","The supported flow expects the mod ID, RenoDX and the game's title in the original ZIP filename. A matching ZIP already in that folder can be used. Multiple matches, extra components or an unsupported archive format need review. A filename is not proof of origin. The supported ZIP contains one HDR RenoDX x64 add-on; package checks do not execute its code."),

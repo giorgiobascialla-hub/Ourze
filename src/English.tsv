@@ -1,4 +1,4 @@
-▦   Libreria giochi	▦   Game library
+﻿▦   Libreria giochi	▦   Game library
 Tutti i giochi	All games
 Libreria giochi	Game library
 GIOCO SELEZIONATO	SELECTED GAME
@@ -161,3 +161,39 @@ File letti · HDR richiesto: 	Files read · HDR requested:
 
 Controlla file e percorsi	Check files and paths
 File installati	Installed files
+
+OptiScaler ufficiale senza Neural Rendering. Ultima release stabile; nessun modello NR scaricato. Configura l’upscaling nel menu OptiScaler in gioco.	Official OptiScaler without Neural Rendering. Latest stable release; no NR model download. Configure upscaling in the in-game OptiScaler menu.
+Nitidezza adattiva per SDR/HDR. Attiva Lilium CAS in ReShade e parti da un’intensità bassa. Non abilita HDR e non genera fotogrammi.	Contrast Adaptive Sharpening for SDR/HDR. Enable Lilium CAS in ReShade and start with low strength. Does not enable HDR or generate frames.
+CAS è già incluso in Lilium. Attiva Lilium CAS in ReShade.	CAS is already included in Lilium. Enable Lilium CAS in ReShade.
+Apri un componente per installarlo, aggiornarlo o rimuoverlo.	Open a component to install, update or remove it.
+Altri add-on ReShade	Other ReShade add-ons
+Installa / aggiorna REFramework	Install / update REFramework
+Rimuovi REFramework	Remove REFramework
+Edizione attuale / ray tracing	Current edition / ray tracing
+Edizione legacy senza ray tracing	Legacy edition without ray tracing
+Seleziona l’edizione del gioco installata prima di scaricare.	Select the installed game edition before downloading.
+Giochi attuali: ultima nightly ufficiale. Edizioni legacy: pacchetto TDB stabile corrispondente.	Current games: latest official nightly. Legacy editions: matching stable TDB package.
+REFramework: gioco o edizione non supportati.	REFramework: game or edition not supported.
+REFramework: release non valida.	REFramework: invalid release.
+REFramework: pacchetto per questa edizione non disponibile.	REFramework: package for this edition is unavailable.
+REFramework: pacchetto non valido.	REFramework: invalid package.
+REFramework: checksum del download non corrispondente.	REFramework: download checksum mismatch.
+dinput8.dll appartiene a un altro loader. Rimuovilo prima: nessun file sovrascritto.	dinput8.dll belongs to another loader. Remove that loader first; no file was overwritten.
+File REFramework modificato fuori dall’app. Controllalo prima di aggiornare.	REFramework file changed outside the app. Review it before updating.
+Rimuovi il loader REFramework; script e impostazioni sono conservati.	Remove REFramework loader; scripts and settings are preserved.
+Destinazione aggiornamento	Update destination
+Seleziona il file da aggiornare. Nessuna destinazione selezionata.	Select the file to update. No destination selected.
+Verrà sostituito solo questo file. Il percorso non dimostra che il gioco lo utilizzi.	Only this file will be replaced. Its location does not prove the game uses it.
+Seleziona il file per vedere la sua versione installata.	Select the file to view its installed version.
+Seleziona la cartella da aggiornare. Nessuna destinazione selezionata.	Select the folder to update. No destination selected.
+Verranno aggiornati solo i file Streamline in questa cartella.	Only Streamline files in this folder will be updated.
+Seleziona la cartella per vedere le versioni installate.	Select the folder to view its installed versions.
+Corretta la visualizzazione delle destinazioni nei menu DLL: percorso e versione sono visibili in ogni voce.	Fixed DLL destination menus: every entry displays its path and version.
+
+Controllo aggiornamenti RenoDX fallito: HTTP	RenoDX update check failed: HTTP
+
+Il file RenoDX supera il limite di verifica di 128 MiB.	RenoDX file exceeds the 128 MiB verification limit.
+
+Tempo di verifica RenoDX scaduto. Riprova più tardi.	RenoDX verification timed out. Try again later.
+
+Corretto il controllo RenoDX UE Extended: supporta file fino a 128 MiB, con verifica x64 e SHA256. Un errore di controllo non indica che la mod installata sia guasta.	Fixed RenoDX UE Extended checks: files up to 128 MiB supported with x64 and SHA256 validation. A check failure does not mean the installed mod is broken.

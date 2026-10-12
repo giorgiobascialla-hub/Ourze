@@ -1,3 +1,21 @@
+# HDLSS 1.2
+
+- Unified OptiScaler, ReShade and DLL/Streamline workspace with consistent cards, responsive columns and visible primary actions.
+- Larger HDLSS logo in the title bar.
+- Clear DLL/Streamline update destinations: full path and installed version of the selected copy. Fixed empty destination menus.
+- Official OptiScaler Standard option without Neural Rendering, alongside community forks.
+- ReShade Neural Rendering workflow, manual add-on recognition, separate removal, Lilium and CAS options.
+- REFramework support for recognized RE Engine games with loader conflict checks.
+- Fixed RenoDX UE Extended update verification for files larger than 64 MiB: bounded 128 MiB downloads, x64 and SHA256 validation retained.
+- Updated internal guide, changelog and six-language labels.
+
+## Update
+Close HDLSS and replace HDLSS.exe. Keep your existing data, data-location.txt and backups. Matching source is included. Game compatibility depends on each component; installed files do not prove activation in game.
+
+## Validation
+Release build, six-language guide and layout checks, actual open DLL destination-menu check, and live official RenoDX UE Extended download/hash verification. Game files were not changed by these checks.
+
+
 # HDLSS 1.1 — 7 October 2026
 
 - Add NeuRotic alongside the three existing community OptiScaler forks. Select complete release packages, exclude patch-only archives and verify published SHA256.

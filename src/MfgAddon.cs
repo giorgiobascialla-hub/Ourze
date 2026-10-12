@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -38,7 +38,7 @@ public static class MfgAddon {
  static string InstalledFile(string root){string config=DlssCore.Safe(root,ConfigName(root));return DlssCore.Safe(root,AddonName(root,File.Exists(config)?File.ReadAllText(config):""));}
  public static string EarlyLoad(string ini,bool enable){var entries=Entries(Core.Get(ini,"ADDON","LoadFromDllMain"));if(enable){if(entries.Any(IsOurs))return ini;entries.Add(Name);}else{if(!entries.Any(IsOurs))return ini;entries.RemoveAll(IsOurs);}return Core.Set(ini,"ADDON","LoadFromDllMain",String.Join(",",entries.Select(x=>x.Replace(",",",,"))));}
  static byte[] Encode(string path,string text){Encoding enc=new UTF8Encoding(false);if(File.Exists(path)){var b=File.ReadAllBytes(path);if(b.Length>1&&b[0]==255&&b[1]==254)enc=Encoding.Unicode;else if(b.Length>1&&b[0]==254&&b[1]==255)enc=Encoding.BigEndianUnicode;else if(b.Length>2&&b[0]==239&&b[1]==187&&b[2]==191)enc=new UTF8Encoding(true);}return enc.GetPreamble().Concat(enc.GetBytes(text)).ToArray();}
- public static string State(Game game){string root=Path.GetDirectoryName(game.Exe),file;try{file=InstalledFile(root);}catch(Exception ex){return ex.Message;}if(!File.Exists(file))return "MFG Unlock · not installed";if(!DlssCore.Pe64(file))return "MFG Unlock · invalid file";try{var m=DlssCore.ReadManifest(root,Marker);if(m.Files.Any(f=>IsOurs(f.Name)&&f.After==DlssCore.Hash(file)))return "MFG Unlock · "+m.Release+" · "+Appearance.Localize("Installed files; verify activation in game.");}catch{}return "MFG Unlock · "+Appearance.Localize("External installation; version not verified.");}
+ public static string State(Game game){string root=Path.GetDirectoryName(game.Exe),file;try{file=InstalledFile(root);}catch(Exception ex){return ex.Message;}if(!File.Exists(file))return "MFG Unlock · "+Appearance.Localize("Not installed");if(!DlssCore.Pe64(file))return "MFG Unlock · "+RenoNr.T("file non valido","invalid file","archivo no válido","fichier invalide","ungültige Datei","ficheiro inválido");try{var m=DlssCore.ReadManifest(root,Marker);if(m.Files.Any(f=>IsOurs(f.Name)&&f.After==DlssCore.Hash(file)))return "MFG Unlock · "+m.Release+" · "+Appearance.Localize("Installed files; verify activation in game.");}catch{}return "MFG Unlock · "+Appearance.Localize("External installation; version not verified.");}
  public static bool Installed(Game game){try{return DlssCore.Pe64(InstalledFile(Path.GetDirectoryName(game.Exe)));}catch{return false;}}
  public static bool HasRecord(Game game){return File.Exists(DlssCore.Safe(Path.GetDirectoryName(game.Exe),Marker));}
  public static DlssPlan Prepare(Game game,string source,Release release){
