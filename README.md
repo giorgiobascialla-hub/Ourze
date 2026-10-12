@@ -8,15 +8,18 @@ HDLSS5 was created to help configure DLSS 5 and Neural Rendering in compatible g
 
 <img src="assets/brand-logo.png" alt="HDLSS5" width="420">
 
-## App screenshots
+## App screenshots — version 1.2
 
-Library and DLSS views from earlier releases. Version 1.0.5 replaces the UE5 HDR editor with the HDR / MFG mod-management page.
+Current interface, rendered from the released 1.2 build using a demonstration game profile. Installed components and available actions depend on the selected game.
 
-### Game library
-![HDLSS5 game library](assets/library.jpg)
+### OptiScaler and game settings
+![HDLSS5 1.2 — OptiScaler, Frame Generation and customization](assets/optiscaler-1.2.png)
 
-### DLSS components
-![HDLSS5 DLSS components](assets/dlss.jpg)
+### ReShade and add-ons
+![HDLSS5 1.2 — ReShade and add-on management](assets/reshade-1.2.png)
+
+### DLL and Streamline versions
+![HDLSS5 1.2 — DLL and Streamline destination and version selection](assets/dll-streamline-1.2.png)
 
 ## Changes in 1.2
 
