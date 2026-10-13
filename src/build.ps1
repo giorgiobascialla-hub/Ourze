@@ -1,4 +1,4 @@
-﻿param([string]$Output=(Join-Path $PSScriptRoot '..\HDLSS.exe'))
+﻿param([string]$Output=(Join-Path $PSScriptRoot '..\HDLSS5.exe'))
 $ErrorActionPreference='Stop'
 $fx=Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319'
 $wpf=Join-Path $fx 'WPF'

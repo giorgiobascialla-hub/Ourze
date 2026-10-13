@@ -1,3 +1,9 @@
+## 13 October 2026 — documentation and naming
+- Rewrite the feature overview without game-specific examples.
+- Add the cover-library screenshot.
+- Update build output and instance detection for HDLSS5.exe, preserving legacy names and saved data.
+- Renamed binary publication held for investigation of a Windows Defender detection; existing 1.2 assets unchanged.
+
 # HDLSS5 1.2
 
 - Unified OptiScaler, ReShade and DLL/Streamline workspace with consistent cards, responsive columns and visible primary actions.

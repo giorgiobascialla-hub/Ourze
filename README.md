@@ -1,91 +1,92 @@
 # HDLSS5
 
-**DLSS 5 & Neural Rendering for compatible games.**
+**Portable Windows manager for OptiScaler, ReShade, Neural Rendering, HDR add-ons and graphics DLLs.**
 
-[Download HDLSS5 1.2](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.2)
-
-HDLSS5 was created to help configure DLSS 5 and Neural Rendering in compatible games. It brings supported community OptiScaler builds, component checks, backups and recovery into a portable Windows app, with additional HDR tools. It is an independent project; the integrated community injector builds are not official NVIDIA releases.
+[Download HDLSS5 1.2](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.2) · [Changelog](CHANGELOG.md)
 
 <img src="assets/brand-logo.png" alt="HDLSS5" width="420">
 
-## App screenshots — version 1.2
+HDLSS5 brings component installation, version selection, update checks and recovery into one interface. Select a game from the cover library, verify its executable and manage supported graphics components from three consistent categories. This is an independent community project; community Neural Rendering injectors are not official NVIDIA integrations.
 
-Current interface, rendered from the released 1.2 build using a demonstration game profile. Installed components and available actions depend on the selected game.
+## Features
 
-### OptiScaler and game settings
-![HDLSS5 1.2 — OptiScaler, Frame Generation and customization](assets/optiscaler-1.2.png)
+### Library and workspace
+- Discover Steam and Xbox / Game Pass installations or add an executable manually.
+- Browse game covers in the side library, search and select a game without leaving the workspace.
+- Keep the selected category and detail sections when switching games.
+- Responsive component cards, visible primary actions, smooth library scrolling, themes and six interface languages: Italian, English, Spanish, French, German and Portuguese.
+- Internal help, changelog, activity log and technical details.
+
+### OptiScaler
+- Install official OptiScaler Standard without Neural Rendering, or choose supported community builds including NeuRotic.
+- Configure available Neural Rendering quality, style and build-specific parameters.
+- Configure supported Frame Generation modes and multipliers, with hardware/build limitations shown in the app.
+- Keep installation, apply-settings, removal and Neural Rendering cleanup actions accessible.
 
 ### ReShade and add-ons
-![HDLSS5 1.2 — ReShade and add-on management](assets/reshade-1.2.png)
+- Install supported ReShade builds with add-on support.
+- Manage RenoDX HDR and ReShade Neural Rendering, including recognized manual installations and local imports.
+- Component-specific update and removal controls.
+- Lilium HDR tools and CAS sharpening packages.
+- MFG Unlock management, ASI Loader and conditional UE4SS tools.
+- REFramework installation for recognized RE Engine executables, with supported legacy variants and loader conflict checks.
+- Conditional HDR configuration where a supported profile exists.
 
-### DLL and Streamline versions
-![HDLSS5 1.2 — DLL and Streamline destination and version selection](assets/dll-streamline-1.2.png)
+### DLL and Streamline management
+- Separate Super Resolution, Ray Reconstruction, Frame Generation and Neural Rendering model selection.
+- Show the full update destination and the installed version of the selected copy.
+- Manage Streamline per detected folder; multiple locations are not silently treated as one installation.
+- Online catalogs, local imports and cached downloads where supported.
+- Compare files and preserve backups; detecting a file does not prove the game loads it.
+- Save a working DLL configuration and restore it manually after testing.
 
-## Changes in 1.2
+### Updates and recovery
+- Verify package identity and published hashes where available.
+- Preserve supported managed backups and recovery information.
+- Distinguish unavailable update checks from confirmed updates.
+- Verify large RenoDX downloads with bounded size/time checks and x64/hash validation.
 
-Consistent responsive interface, larger logo, clear DLL destinations, ReShade Neural Rendering, OptiScaler Standard, REFramework support and corrected RenoDX update checks. See [changelog](CHANGELOG.md).
+## Screenshots — version 1.2
 
-## Changes in 1.1
+Rendered from the application using a demonstration profile. Components and available actions depend on the selected installation.
 
-Adds inline DLL version menus and bundled catalogs, improves download reliability, fixes large RenoDX metadata and strengthens transaction checks. Adds ASI Loader and Streamline management, startup update checks, direct per-component removal, separate manual add-ons and Nexus assisted updates. Restores larger game thumbnails and clarifies installed versus update states. See the [changelog](CHANGELOG.md).
+### Cover library and game workspace
+![HDLSS5 cover library and workspace](assets/library-1.2.png)
 
-## What you can do
+### OptiScaler
+![HDLSS5 OptiScaler configuration](assets/optiscaler-1.2.png)
 
-- Browse detected Steam and Xbox / Game Pass titles, or add a game executable.
-- Manage ReShade, compatible RenoDX HDR mods and MFG Unlock separately.
-- Download the latest stable MFG Unlock release with SHA-256 verification; restore it without discarding later ReShade settings.
-- Install UE4SS for supported Unreal game mods without the retired HDLSS5 telemetry reader.
-- Work with the three supported community OptiScaler forks and their available options.
-- Inspect Super Resolution, Ray Reconstruction and Frame Generation DLLs independently from the Neural Rendering model.
-- Compare files across game folders, inspect their paths, and update a selected component with verification and backup.
-- Restore supported managed installations and inspect the activity log.
-- Choose English, Italian, Spanish, French, German or Portuguese. Some legacy technical messages remain untranslated.
+### ReShade and add-ons
+![HDLSS5 ReShade components](assets/reshade-1.2.png)
 
-## Start
+### DLLs and Streamline
+![HDLSS5 DLL and Streamline management](assets/dll-streamline-1.2.png)
 
-Extract the portable archive into a writable folder and launch `HDLSS5.exe`. Windows x64 and .NET Framework 4.8 are required. No Python or developer SDK is needed to run it.
+## Start and update
 
-Select a game, check the executable, then choose HDR / MFG or DLSS 5. Close the game before applying changes. Choose the component and version on the main page; installation progress and recovery information appear inline.
+Windows x64 and .NET Framework 4.8 are required. The currently published 1.2 archive still contains **HDLSS.exe**. The source build now targets **HDLSS5.exe**; publication of the renamed binary is pending investigation of a Windows Defender detection. Extract the current portable ZIP into a writable folder and use its included executable. No Python or developer SDK is required.
 
-## Updating an existing installation
+When the renamed package becomes available: close the app, extract the updated package into its folder, preserve `data`, `data-location.txt` and all backups, and remove the old `HDLSS.exe` from that application folder. Update any shortcuts to `HDLSS5.exe`. The name change does not require migrating your saved data. Do not run old and new copies together.
 
-Close HDLSS5 and replace the executable with the new build. Keep `data`, any `data-location.txt`, and all existing backups. Legacy HDR Unlock component records remain supported. Do not delete the old data directory when a data-location link points to it.
-
-## Why are there multiple DLL locations?
-
-A game can ship the same component in an engine/plugin folder and beside its executable. HDLSS5 compares their SHA-256 hashes and distinguishes identical files, different files and unreadable comparisons. Use **Check files and paths** to refresh the inventory. It does not automatically delete duplicates or claim that every detected file is loaded.
+Select a game, verify its executable, then choose **OptiScaler**, **ReShade** or **DLL and Streamline**. Close the game before changing its files.
 
 ## Compatibility
 
-Features depend on the game, GPU, driver, display and selected component. Updating a DLL does not add a feature the game does not implement. Installed files do not prove an effect is active: verify the result in game. Protected installations may prevent modifications. Experimental community features are identified in the app.
+Support depends on the game integration, GPU, driver, display and component. Replacing DLLs does not add features an application does not implement. Protected installations and anti-cheat may block modifications. Verify effects and performance in game. MFG Unlock requires compatible native Frame Generation and full add-on ReShade; it does not add native FG support. Community features may be experimental.
 
-MFG Unlock requires full add-on ReShade and native DLSS Frame Generation in the game. It does not add FG to a game that lacks it. No automatic NVIDIA/Streamline replacement is performed. MFG activation has not been verified in a running game across RTX 2000/3000/4000 hardware. Consult the [author's compatibility notes](https://github.com/nefh/MFGAmpereUnlock-RenoDx).
+The application does not prevent drivers or launchers from changing game files and does not automatically reapply saved files. Real-time game-text translation is not included.
 
-This release is version 1.1. Broad hardware certification and complete localization remain in progress. See [validation](docs/VALIDATION.md) and [release notes](docs/RELEASE-NOTES.md).
-
-## Build from source
-
-On Windows with the .NET Framework compiler installed:
+## Build
 
 ```powershell
 New-Item -ItemType Directory -Force dist | Out-Null
 powershell -ExecutionPolicy Bypass -File ./src/build.ps1 -Output ./dist/HDLSS5.exe
 ```
 
-## Support development
+## Support and credits
 
-If HDLSS5 is useful to you, you can support its development with an optional [donation via PayPal](https://paypal.me/Ourze). Thank you for your support!
+Report app version, Windows version, GPU/driver, selected component and expected versus actual behavior. Remove private paths from logs before sharing; do not upload game files or backups.
 
-## Support
+HDLSS5 is not affiliated with NVIDIA, Valve, Microsoft, ReShade, RenoDX or OptiScaler authors. Third-party components retain their authors’ terms. The package includes the RenoDX Neural Rendering add-on resource used by its installer; other component downloads are obtained separately. Public source availability alone does not grant a reuse license. Third-party trademarks and artwork belong to their owners.
 
-Include the app version, Windows version, GPU/driver, game and selected component. Describe expected and actual behavior. Review logs before sharing them and remove personal paths or other private data. Never upload game files, saved games or your backup directory to an issue.
-
-## Credits and licensing
-
-HDLSS5 is independent and is not affiliated with NVIDIA, Valve, Microsoft, Epic Games, ReShade, RenoDX or the OptiScaler authors. Component downloads retain their authors' terms. See [component sources](docs/SOURCES.txt). Third-party injectors, models and game files are not bundled.
-
-No open-source license has been selected for HDLSS5 in this package. Public source availability alone does not grant a reuse license. Third-party trademarks and game artwork belong to their respective owners.
-
-
-### RenoDX HDR configuration
-Dawnwalker now has Configure HDR with backup and selective restoration. Other games are not automatically configured.
+[Component sources](docs/SOURCES.txt) · [Optional donation](https://paypal.me/Ourze)
