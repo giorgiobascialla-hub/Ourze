@@ -1,3 +1,15 @@
+# HDLSS5 1.2 — revision 3 (14 October 2026)
+
+- Recognize protected Game Pass Unreal Shipping targets through matching x64 package manifests and launcher names; protected WindowsApps remain excluded.
+- Place removal actions below installation actions for Neural Rendering, effects, REFramework and OptiScaler.
+- Offer opt-in Engine.ini HDR configuration for detected UE5 games using RenoDX UE Extended, with backup and restore. Enabled native HDR is distinguished from unverified support; missing settings do not prove absent native support. HDR output must be checked in game.
+- Update internal help and change notes in six languages, and refresh interface screenshots.
+
+
+## 13 October 2026 — revision 2 package
+- Publish the restored HDLSS5.exe under its new name, with data and backup compatibility retained.
+- Functional checks passed; previous Defender detection remains disclosed in release notes.
+
 ## 13 October 2026 — documentation and naming
 - Rewrite the feature overview without game-specific examples.
 - Add the cover-library screenshot.

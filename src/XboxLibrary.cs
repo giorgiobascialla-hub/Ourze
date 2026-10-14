@@ -66,9 +66,22 @@ public static class XboxLibrary {
    foreach(XmlNode exe in doc.SelectNodes("//*[local-name()='ExecutableList']/*[local-name()='Executable']")){
     string relative=Attr(exe,"Name");if(String.IsNullOrEmpty(relative)||Path.IsPathRooted(relative))continue;
     string candidate=DlssCore.Safe(g.Root,relative);
-    if(String.Equals(candidate,Path.GetFullPath(file),StringComparison.OrdinalIgnoreCase)&&!Attr(exe,"IsDevOnly").Equals("true",StringComparison.OrdinalIgnoreCase))return true;
+    if(Attr(exe,"IsDevOnly").Equals("true",StringComparison.OrdinalIgnoreCase))continue;
+    if(String.Equals(candidate,Path.GetFullPath(file),StringComparison.OrdinalIgnoreCase))return true;
+    // GDK lists the Unreal bootstrap executable, not its protected Shipping target.
+    // Require the same declared basename and the exact Unreal Win64 directory layout.
+    if(MatchesUnrealTarget(g.Root,relative,file))return true;
    }
   }catch{}return false;
+ }
+ public static bool MatchesUnrealTarget(string root,string declared,string file){
+  try{
+   if(Path.IsPathRooted(declared)||Path.GetDirectoryName(declared)!=""||!declared.EndsWith(".exe",StringComparison.OrdinalIgnoreCase))return false;
+   string top=Path.GetFullPath(root).TrimEnd('\\')+"\\",target=Path.GetFullPath(file);
+   if(!target.StartsWith(top,StringComparison.OrdinalIgnoreCase))return false;
+   string[] parts=target.Substring(top.Length).Split('\\');
+   return parts.Length==4&&!String.IsNullOrWhiteSpace(parts[0])&&parts[1].Equals("Binaries",StringComparison.OrdinalIgnoreCase)&&parts[2].Equals("Win64",StringComparison.OrdinalIgnoreCase)&&parts[3].Equals(Path.GetFileNameWithoutExtension(declared)+"-Win64-Shipping.exe",StringComparison.OrdinalIgnoreCase)&&String.Equals(DlssCore.Safe(root,target.Substring(top.Length)),target,StringComparison.OrdinalIgnoreCase);
+  }catch{return false;}
  }
  public static string LaunchArgument(Game g){if(!Regex.IsMatch(g.LaunchId??"",@"^[A-Za-z0-9.\-_]+![A-Za-z0-9.\-_]+$"))throw new Exception("Avvio Xbox non disponibile: apri il gioco dall’app Xbox.");return "shell:AppsFolder\\"+g.LaunchId;}
 }

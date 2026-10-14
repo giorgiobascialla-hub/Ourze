@@ -64,9 +64,9 @@ Rendered from the application using a demonstration profile. Components and avai
 
 ## Start and update
 
-Windows x64 and .NET Framework 4.8 are required. The currently published 1.2 archive still contains **HDLSS.exe**. The source build now targets **HDLSS5.exe**; publication of the renamed binary is pending investigation of a Windows Defender detection. Extract the current portable ZIP into a writable folder and use its included executable. No Python or developer SDK is required.
+Windows x64 and .NET Framework 4.8 are required. Download **HDLSS5-Portable-1.2-r3.zip**, extract it into a writable folder and run **HDLSS5.exe**. Revision 3 includes the Game Pass target, removal layout and UE5 HDR configuration updates. No Python or developer SDK is required.
 
-When the renamed package becomes available: close the app, extract the updated package into its folder, preserve `data`, `data-location.txt` and all backups, and remove the old `HDLSS.exe` from that application folder. Update any shortcuts to `HDLSS5.exe`. The name change does not require migrating your saved data. Do not run old and new copies together.
+For an existing installation: close the app, extract the updated package into its folder, preserve `data`, `data-location.txt` and all backups, and remove the old `HDLSS.exe` from that application folder. Update any shortcuts to `HDLSS5.exe`. The name change does not require migrating your saved data. Do not run old and new copies together.
 
 Select a game, verify its executable, then choose **OptiScaler**, **ReShade** or **DLL and Streamline**. Close the game before changing its files.
 
@@ -90,3 +90,6 @@ Report app version, Windows version, GPU/driver, selected component and expected
 HDLSS5 is not affiliated with NVIDIA, Valve, Microsoft, ReShade, RenoDX or OptiScaler authors. Third-party components retain their authors’ terms. The package includes the RenoDX Neural Rendering add-on resource used by its installer; other component downloads are obtained separately. Public source availability alone does not grant a reuse license. Third-party trademarks and artwork belong to their owners.
 
 [Component sources](docs/SOURCES.txt) · [Optional donation](https://paypal.me/Ourze)
+
+### Antivirus report
+Windows Defender reported `Trojan:Win32/Bearfoos.A!ml` on an earlier renamed build and its unchanged rebuild. Revision 3 has not received Microsoft clearance. The owner restored the file and functional checks passed. This does not independently establish a false positive. No antivirus exclusions or protection changes are included in HDLSS5.
