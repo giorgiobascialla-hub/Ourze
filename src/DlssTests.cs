@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -64,7 +64,7 @@ public static class DlssTests {
   var lockPlan=DlssCore.Prepare(game,options,package,"locked");using(var locked=new FileStream(Path.Combine(game.Root,"version.dll"),FileMode.Open,FileAccess.Read,FileShare.None)){lockPlan.Changes.Add(new DlssChange{Name="version.dll",Expected=DlssCore.Hash(Path.Combine(package,"OptiScaler.dll")),Bytes=new byte[]{1}});Reject(()=>DlssCore.Apply(game,lockPlan),"locked file accepted");}Check(!File.Exists(Path.Combine(game.Root,"dxgi.dll")),"locked preflight caused partial write");
   File.WriteAllText(Path.Combine(game.Root,"dlss5-autopilot.json"),"{\"path\":\"optiscaler\",\"files\":[\"Game.exe\"]}");Reject(()=>DlssCore.PrepareUninstall(game),"foreign game executable accepted");
   string release="[{\"tag_name\":\"wrong\",\"assets\":[{\"name\":\"display-filter.zip\"}]},{\"tag_name\":\"v0.8.5\",\"assets\":[{\"name\":\"OptiScaler-rtx40-mfg.zip\"},{\"name\":\"OptiScaler.zip\",\"browser_download_url\":\"https://github.com/wilsjo2/OptiScaler-DLSSNR-PreSR-Multipass/releases/download/v0.8.5/OptiScaler.zip\"}]}]";
-  Check(DlssCore.PickRelease(release,DlssBuild.All[1]).Tag=="v0.8.5","wrong release/variant selected");Reject(()=>DlssLibraries.Validate(game.Exe,"nvngx_dlss.dll"),"invalid NVIDIA DLL accepted");
+  Check(DlssCore.PickRelease(release,DlssBuild.All.Single(b=>b.Id=="wilsjo2")).Tag=="v0.8.5","wrong release/variant selected");Reject(()=>DlssCore.PickRelease(release,DlssBuild.All.Single(b=>b.Id=="dagherbou")),"release from another repository accepted");Reject(()=>DlssLibraries.Validate(game.Exe,"nvngx_dlss.dll"),"invalid NVIDIA DLL accepted");
   var h=new DlssHardware{Series=40,Driver="615.00"};Reject(()=>h.Validate(40,"missing"),"old driver accepted");h.Driver="616.92";h.Validate(40,"missing");Reject(()=>h.Validate(50,"missing"),"GPU mismatch accepted");
   if(controlOverlay!=null)Check(DlssCore.Hash(overlay)==overlayHash&&DlssCore.Hash(controlOverlay)==overlayHash,"install/update/uninstall/recovery modified control overlay");
   File.WriteAllText(Path.Combine(folder,"tests.txt"),"PASS: third-party NR cleanup without manifest and recovery; preserved separate MFG/HDR/native DLSS; unknown and modified overlays blocked; separate NR renderer detected; verified overlay preserved when supplied; confined paths/ADS/device names; x64 fixtures; install/update and original baseline restore; readonly; preserved HDR/FG/UE4SS/ReShade; stale preview rejection; external Autopilot detection and reversible uninstall; original backup restore; protected game executable rejection; release filtering; invalid component rejection; GPU/driver checks; source mutation and locked-file rejection; recovery of foreign removal. No real game files changed.");
