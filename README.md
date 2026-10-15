@@ -2,7 +2,7 @@
 
 **Portable Windows manager for OptiScaler, ReShade, Neural Rendering, HDR add-ons and graphics DLLs.**
 
-[Download HDLSS5 1.2](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.2) · [Changelog](CHANGELOG.md)
+[Download HDLSS5 1.3](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.3) · [Changelog](CHANGELOG.md)
 
 <img src="assets/brand-logo.png" alt="HDLSS5" width="420">
 
@@ -54,17 +54,17 @@ Rendered from the application using a demonstration profile. Components and avai
 ![HDLSS5 cover library and workspace](assets/library-1.2.png)
 
 ### OptiScaler
-![HDLSS5 OptiScaler configuration](assets/optiscaler-1.2.png)
+![HDLSS5 OptiScaler configuration](assets/optiscaler-1.3.png)
 
 ### ReShade and add-ons
-![HDLSS5 ReShade components](assets/reshade-1.2.png)
+![HDLSS5 ReShade components](assets/reshade-1.3.png)
 
 ### DLLs and Streamline
-![HDLSS5 DLL and Streamline management](assets/dll-streamline-1.2.png)
+![HDLSS5 DLL and Streamline management](assets/dll-streamline-1.3.png)
 
 ## Start and update
 
-Windows x64 and .NET Framework 4.8 are required. Download **HDLSS5-Portable-1.2-r3.zip**, extract it into a writable folder and run **HDLSS5.exe**. Revision 3 includes the Game Pass target, removal layout and UE5 HDR configuration updates. No Python or developer SDK is required.
+Windows x64 and .NET Framework 4.8 are required. Download **HDLSS5-Portable-1.3.zip**, extract it into a writable folder and run **HDLSS5.exe**. Version 1.3 includes the Game Pass target, removal layout and UE5 HDR configuration updates. No Python or developer SDK is required.
 
 For an existing installation: close the app, extract the updated package into its folder, preserve `data`, `data-location.txt` and all backups, and remove the old `HDLSS.exe` from that application folder. Update any shortcuts to `HDLSS5.exe`. The name change does not require migrating your saved data. Do not run old and new copies together.
 
@@ -92,4 +92,4 @@ HDLSS5 is not affiliated with NVIDIA, Valve, Microsoft, ReShade, RenoDX or OptiS
 [Component sources](docs/SOURCES.txt) · [Optional donation](https://paypal.me/Ourze)
 
 ### Antivirus report
-Windows Defender reported `Trojan:Win32/Bearfoos.A!ml` on an earlier renamed build and its unchanged rebuild. Revision 3 has not received Microsoft clearance. The owner restored the file and functional checks passed. This does not independently establish a false positive. No antivirus exclusions or protection changes are included in HDLSS5.
+Windows Defender reported `Trojan:Win32/Bearfoos.A!ml` on an earlier renamed build and its unchanged rebuild. Version 1.3 has not received Microsoft clearance. The owner restored the file and functional checks passed. This does not independently establish a false positive. No antivirus exclusions or protection changes are included in HDLSS5.
