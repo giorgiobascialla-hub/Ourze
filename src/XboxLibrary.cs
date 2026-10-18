@@ -29,8 +29,8 @@ public static class XboxLibrary {
     var decoder=System.Windows.Media.Imaging.BitmapDecoder.Create(stream,System.Windows.Media.Imaging.BitmapCreateOptions.DelayCreation,System.Windows.Media.Imaging.BitmapCacheOption.None);
     var frame=decoder.Frames[0];double width=frame.PixelWidth,height=frame.PixelHeight;
     // Resolution remaining after filling a portrait card. Prefer portrait art at comparable quality.
-    double usable=Math.Min(height,width/.75);
-    double score=Math.Min(usable,1200)*(width/height<.95?1.2:1);
+    double usable=Math.Min(height,width/(75.0/112.0));
+    double score=Math.Min(usable,600)*(width/height<.95?1.6:1);
     if(score>bestScore){bestScore=score;best=file;}
    }
   }catch{}

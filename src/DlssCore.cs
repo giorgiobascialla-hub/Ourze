@@ -51,7 +51,10 @@ public static class DlssCore {
   string cursor=path;while(cursor!=null){if((File.Exists(cursor)||Directory.Exists(cursor))&&(File.GetAttributes(cursor)&FileAttributes.ReparsePoint)!=0)throw new Exception("Collegamento filesystem non supportato: "+cursor);if(String.Equals(cursor.TrimEnd('\\'),top.TrimEnd('\\'),StringComparison.OrdinalIgnoreCase))break;cursor=Path.GetDirectoryName(cursor);}return path;
  }
  public static bool Pe64(string file){try{using(var r=new BinaryReader(File.OpenRead(file))){if(r.ReadUInt16()!=0x5a4d)return false;r.BaseStream.Position=60;int offset=r.ReadInt32();if(offset<64||offset>r.BaseStream.Length-6)return false;r.BaseStream.Position=offset;return r.ReadUInt32()==0x4550&&r.ReadUInt16()==0x8664;}}catch{return false;}}
- public static bool IsOpti(string file){if(!File.Exists(file))return false;try{var v=FileVersionInfo.GetVersionInfo(file);if(((v.ProductName??"")+" "+(v.FileDescription??"")).IndexOf("OptiScaler",StringComparison.OrdinalIgnoreCase)>=0)return true;
+ public static bool IsOpti(string file){if(!File.Exists(file))return false;try{var v=FileVersionInfo.GetVersionInfo(file);string identity=(v.ProductName??"")+" "+(v.FileDescription??"");
+ // Other proxies can contain OptiScaler compatibility strings; those do not identify the loader.
+ if(identity.IndexOf("SCSKiller",StringComparison.OrdinalIgnoreCase)>=0||identity.IndexOf("ReShade",StringComparison.OrdinalIgnoreCase)>=0||identity.IndexOf("Ultimate ASI Loader",StringComparison.OrdinalIgnoreCase)>=0||identity.IndexOf("Ultimate-ASI-Loader",StringComparison.OrdinalIgnoreCase)>=0)return false;
+ if(identity.IndexOf("OptiScaler",StringComparison.OrdinalIgnoreCase)>=0)return true;
  if(new FileInfo(file).Length>80000000)return false;byte[] bytes=File.ReadAllBytes(file);string t=Encoding.ASCII.GetString(bytes);return Pe64(file)&&t.Contains("OptiScaler.ini")&&t.Contains("OptiScaler");}catch{return false;}}
  // This exact DLSS 5 Swapper UI overlay is not the separate RenoDX NR renderer.
  // Source: rakanki911/DLSS5-Swapper overlay/README.md and overlay/overlay.cpp.
@@ -90,9 +93,11 @@ protected override WebResponse GetWebResponse(WebRequest request){try{var respon
  static DownloadClient Client(){ServicePointManager.SecurityProtocol|=SecurityProtocolType.Tls12;var w=new DownloadClient();w.Headers[HttpRequestHeader.UserAgent]="HDR-Unlock/0.1";return w;}
  public static string Fetch(DlssBuild b,Action<string> progress,out DlssRelease release){
   progress("Cerco la release sul repository dell’autore…");using(var w=Client())release=PickRelease(w.DownloadString("https://api.github.com/repos/"+b.Repo+"/releases?per_page=10"),b);
-  string dir=Path.Combine(Core.Data,"packages",b.Id,Guid.NewGuid().ToString("N"));Directory.CreateDirectory(dir);string archive=Safe(dir,release.Asset);progress("Scarico "+release.Tag+" · "+release.Asset+"…");using(var w=Client())w.DownloadFile(release.Url,archive);
-  string hash=Hash(archive);if(!String.IsNullOrEmpty(release.Digest)&&!String.Equals(release.Digest,"sha256:"+hash,StringComparison.OrdinalIgnoreCase))throw new Exception("SHA-256 diverso da quello pubblicato: pacchetto non utilizzato.");
-  File.WriteAllText(Path.Combine(dir,"origine.txt"),release.Url+"\nSHA256 "+hash+"\n");progress("Verifico ed estraggo il pacchetto…");return Unpack(archive,Path.Combine(dir,"files"));
+  var chosen=release;Func<string,string> fetch=dir=>{  string archive=Safe(dir,chosen.Asset);progress("Scarico "+chosen.Tag+" · "+chosen.Asset+"…");using(var w=Client())w.DownloadFile(chosen.Url,archive);
+  string hash=Hash(archive);if(!String.IsNullOrEmpty(chosen.Digest)&&!String.Equals(chosen.Digest,"sha256:"+hash,StringComparison.OrdinalIgnoreCase))throw new Exception("SHA-256 diverso da quello pubblicato: pacchetto non utilizzato.");
+  File.WriteAllText(Path.Combine(dir,"origine.txt"),chosen.Url+"\nSHA256 "+hash+"\n");progress("Verifico ed estraggo il pacchetto…");return Unpack(archive,Path.Combine(dir,"files"));};
+  if(Regex.IsMatch(chosen.Digest??"", @"^sha256:[a-fA-F0-9]{64}$"))return DownloadCache.Get("packages",chosen.Digest.Substring(7),fetch);
+  string uncached=Path.Combine(Core.Data,"packages",b.Id,Guid.NewGuid().ToString("N"));Directory.CreateDirectory(uncached);return fetch(uncached);
  }
  static string Tar(string args){var psi=new ProcessStartInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System),"tar.exe"),args){UseShellExecute=false,CreateNoWindow=true,RedirectStandardOutput=true,RedirectStandardError=true};using(var p=Process.Start(psi)){var err=p.StandardError.ReadToEndAsync();string text=p.StandardOutput.ReadToEnd();p.WaitForExit();if(p.ExitCode!=0)throw new Exception("Estrazione non riuscita: "+err.Result);return text;}}
  static string Q(string text){if(text.Contains("\""))throw new Exception("Percorso non valido");return "\""+text+"\"";}

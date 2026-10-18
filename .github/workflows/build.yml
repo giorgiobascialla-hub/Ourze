@@ -11,14 +11,14 @@ jobs:
         shell: powershell
         run: |
           New-Item -ItemType Directory -Force dist | Out-Null
-          ./src/build.ps1 -Output "$pwd/dist/HDLSS.exe"
+          ./src/build.ps1 -Output "$pwd/dist/HDLSS5.exe"
       - name: Installation and third-party cleanup regression tests
         shell: powershell
         run: |
-          $testProcess = Start-Process -FilePath "$pwd/dist/HDLSS.exe" -ArgumentList @('--dlss-test', "$pwd/dist/tests") -Wait -PassThru
+          $testProcess = Start-Process -FilePath "$pwd/dist/HDLSS5.exe" -ArgumentList @('--dlss-test', "$pwd/dist/tests") -Wait -PassThru
           if ($testProcess.ExitCode -ne 0) { Get-Content "$pwd/dist/HDR-Unlock-error.txt" -ErrorAction Continue; throw 'Regression tests failed' }
           Get-Content "$pwd/dist/tests/tests.txt"
       - uses: actions/upload-artifact@v4
         with:
-          name: HDLSS-Windows-x64
-          path: dist/HDLSS.exe
+          name: HDLSS5-Windows-x64
+          path: dist/HDLSS5.exe

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -16,7 +16,22 @@ public static class InjectionSetup {
  public static InjectionProfile Profile(Game g){if(Core.Pref.InjectionProfiles==null)Core.Pref.InjectionProfiles=new Dictionary<string,InjectionProfile>();InjectionProfile p;return Core.Pref.InjectionProfiles.TryGetValue(g.Id,out p)&&p!=null?p:new InjectionProfile();}
  public static string Target(Game g,string relative){if(g.ProtectedInstall)throw new Exception(g.Evidence);string file=DlssCore.Safe(g.Root,relative);if(!file.EndsWith(".exe",StringComparison.OrdinalIgnoreCase)||!XboxLibrary.IsGameX64(g,file)||Path.GetFileName(file).IndexOf("crash",StringComparison.OrdinalIgnoreCase)>=0||Path.GetFileName(file).IndexOf("unins",StringComparison.OrdinalIgnoreCase)>=0)throw new Exception("Scegli un eseguibile del gioco x64 valido, non un programma di servizio.");return file;}
  public static string Relative(Game g,string file){string root=Path.GetFullPath(g.Root).TrimEnd('\\')+"\\";file=Path.GetFullPath(file);if(!file.StartsWith(root,StringComparison.OrdinalIgnoreCase))throw new Exception("L’eseguibile deve appartenere alla cartella del gioco.");return file.Substring(root.Length);}
+ public static void AutoSelect(Game g){
+  if(g==null||g.ProtectedInstall||!Directory.Exists(g.Root))return;
+  var candidates=new List<string>();var queue=new Queue<Tuple<string,int>>();queue.Enqueue(Tuple.Create(g.Root,0));
+  while(queue.Count>0){var item=queue.Dequeue();foreach(string file in Core.Files(item.Item1,"*.exe")){if(System.Text.RegularExpressions.Regex.IsMatch(Path.GetFileName(file),"crash|unins|redist|setup|report|helper|prereq|launcher|anticheat",System.Text.RegularExpressions.RegexOptions.IgnoreCase))continue;try{Target(g,Relative(g,file));candidates.Add(file);}catch{}}
+   if(item.Item2<6)foreach(string dir in Core.Dirs(item.Item1)){if((File.GetAttributes(dir)&FileAttributes.ReparsePoint)!=0||System.Text.RegularExpressions.Regex.IsMatch(Path.GetFileName(dir),"^(_CommonRedist|Engine|Support|Installer|EasyAntiCheat|BattlEye|backup|_storage_)$",System.Text.RegularExpressions.RegexOptions.IgnoreCase))continue;queue.Enqueue(Tuple.Create(dir,item.Item2+1));}}
+  var shipping=candidates.Where(f=>f.IndexOf("\\Binaries\\Win64\\",StringComparison.OrdinalIgnoreCase)>=0).ToList();
+  string selected=shipping.Count==1?shipping[0]:candidates.Count==1?candidates[0]:null;
+  if(selected!=null)g.Exe=selected;
+ }
  public static void RestoreTarget(Game g){var p=Profile(g);if(!String.IsNullOrEmpty(p.Target))g.Exe=Target(g,p.Target);}
+ public static string EffectiveApi(Game g){
+  string configured=Profile(g).Api;if(configured!="auto"&&!String.IsNullOrEmpty(configured))return configured;
+  // Infer only from imports when the executable identifies a single graphics API.
+  try{using(var r=new BinaryReader(File.OpenRead(g.Exe))){r.BaseStream.Position=60;int pe=r.ReadInt32();r.BaseStream.Position=pe+6;int count=r.ReadUInt16();r.BaseStream.Position=pe+20;int size=r.ReadUInt16();long optional=pe+24;r.BaseStream.Position=optional;int magic=r.ReadUInt16();r.BaseStream.Position=optional+(magic==0x20b?120:104);uint imports=r.ReadUInt32();var sections=new List<uint[]>();r.BaseStream.Position=optional+size;for(int i=0;i<count;i++){r.ReadBytes(8);uint vs=r.ReadUInt32(),va=r.ReadUInt32(),rs=r.ReadUInt32(),off=r.ReadUInt32();r.ReadBytes(16);sections.Add(new[]{va,Math.Max(vs,rs),off});}Func<uint,long> offset=v=>{foreach(var sec in sections)if(v>=sec[0]&&v-sec[0]<sec[1])return sec[2]+v-sec[0];throw new IOException();};var names=new List<string>();long table=offset(imports);for(int i=0;i<512;i++){r.BaseStream.Position=table+i*20+12;uint name=r.ReadUInt32();if(name==0)break;r.BaseStream.Position=offset(name);var bytes=new List<byte>();for(int n=0;n<256;n++){byte c=r.ReadByte();if(c==0)break;bytes.Add(c);}names.Add(System.Text.Encoding.ASCII.GetString(bytes.ToArray()).ToLowerInvariant());}bool dx12=names.Contains("d3d12.dll"),dx11=names.Contains("d3d11.dll"),vk=names.Contains("vulkan-1.dll");if(dx12&&!dx11&&!vk)return "dx12";if(dx11&&!dx12&&!vk)return "dx11";if(vk&&!dx11&&!dx12)return "vulkan";}}catch{}
+  return "auto";
+ }
  static IEnumerable<string> Executables(string folder){foreach(string f in Directory.GetFiles(folder,"*.exe"))yield return f;foreach(string d in Directory.GetDirectories(folder)){if((File.GetAttributes(d)&FileAttributes.ReparsePoint)!=0)continue;foreach(string f in Executables(d))yield return f;}}
  public static string LaunchArguments(Game g){if(!System.Text.RegularExpressions.Regex.IsMatch(g.Id??"",@"^\d+$"))throw new Exception("ID Steam non valido.");string api=Profile(g).Api??"auto";if(!new[]{"auto","dx11","dx12","vulkan"}.Contains(api))throw new Exception("API non valida.");return "-applaunch "+g.Id+(api=="auto"||String.IsNullOrEmpty(g.EngineLabel)||!g.EngineLabel.StartsWith("UNREAL")?"":" -"+api);}
  public static void Launch(Game g){LegacyHdr.Disable(g);if(g.Store=="Manual"){if(!File.Exists(g.Exe))throw new Exception("Game executable not found.");Process.Start(new ProcessStartInfo(g.Exe){WorkingDirectory=Path.GetDirectoryName(g.Exe),UseShellExecute=true});return;}if(g.IsXbox){string arg=XboxLibrary.LaunchArgument(g);ActivityLog.Write("Avvio Xbox: "+g.Name);Process.Start(new ProcessStartInfo("explorer.exe",arg){UseShellExecute=true});return;}var args=LaunchArguments(g);string steam=Path.Combine(Core.SteamRoot(),"steam.exe");if(!File.Exists(steam))throw new Exception("Steam non trovato.");ActivityLog.Write("Avvio Steam: "+args);Process.Start(new ProcessStartInfo(steam,args){UseShellExecute=true});}

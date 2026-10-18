@@ -193,7 +193,7 @@ public static class RenoDxUi {
   renodxInstall=actions.Children.OfType<Button>().Last();refreshState();
   button("Install MFG Unlock",async()=>{IsBusy=true;actions.IsEnabled=channels.IsEnabled=false;try{Core.Closed(game);if(RenoDx.Loaders(Path.GetDirectoryName(game.Exe)).Count!=1)throw new Exception("Install one ReShade loader with full add-on support first.");info.Text=Appearance.Localize("Checking the latest stable MFG Unlock release…");MfgAddon.Release release=null;string file=await Task.Run(()=>MfgAddon.Fetch(out release));var plan=MfgAddon.Prepare(game,file,release);review(plan);}catch(Exception ex){info.Text=Appearance.Localize(ex.Message);}finally{IsBusy=false;actions.IsEnabled=channels.IsEnabled=true;Appearance.Refresh();}});
   mfgInstall=actions.Children.OfType<Button>().Last();mfgInstall.Name="MfgInstall";HdrChoices.Help(mfgInstall,MfgAddon.Requirements);refreshState();
-  var mfgInfo=Dialogs.Text("MFG Unlock · RTX 2000 / 3000 / 4000. Native DLSS FG required.",13);body.Children.Insert(body.Children.IndexOf(info)+1,mfgInfo);
+  var mfgInfo=Dialogs.Text("MFG Unlock · RTX 4000. Native DLSS FG required.",13);body.Children.Insert(body.Children.IndexOf(info)+1,mfgInfo);
   
   button("MFG Unlock · compatibility",()=>Process.Start(new ProcessStartInfo("https://github.com/"+MfgAddon.Repo+"#game-compatibility"){UseShellExecute=true}));
   button("Install UE4SS for mods",async()=>{if(IsBusy||ModCenter.Busy)return;IsBusy=true;try{Core.Closed(game);var plan=await Task.Run(()=>Ue4ssInstaller.DownloadAndPrepare(game,false));review(plan);}catch(Exception ex){info.Text=Appearance.Localize(ex.Message);}finally{IsBusy=false;Appearance.Refresh();}});

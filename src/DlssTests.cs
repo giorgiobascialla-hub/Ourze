@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -63,6 +63,12 @@ public static class DlssTests {
   var staleSource=DlssCore.Prepare(game,options,package,"source test");File.AppendAllText(Path.Combine(package,"OptiScaler","backend.bin"),"changed");Reject(()=>DlssCore.Apply(game,staleSource),"changed source accepted");Check(!File.Exists(Path.Combine(game.Root,"dxgi.dll")),"changed source caused partial write");
   var lockPlan=DlssCore.Prepare(game,options,package,"locked");using(var locked=new FileStream(Path.Combine(game.Root,"version.dll"),FileMode.Open,FileAccess.Read,FileShare.None)){lockPlan.Changes.Add(new DlssChange{Name="version.dll",Expected=DlssCore.Hash(Path.Combine(package,"OptiScaler.dll")),Bytes=new byte[]{1}});Reject(()=>DlssCore.Apply(game,lockPlan),"locked file accepted");}Check(!File.Exists(Path.Combine(game.Root,"dxgi.dll")),"locked preflight caused partial write");
   File.WriteAllText(Path.Combine(game.Root,"dlss5-autopilot.json"),"{\"path\":\"optiscaler\",\"files\":[\"Game.exe\"]}");Reject(()=>DlssCore.PrepareUninstall(game),"foreign game executable accepted");
+  var autoFiles=new[]{new DlssLibrary{Path=Path.Combine(game.Root,"nvngx_dlss.dll")},new DlssLibrary{Path=Path.Combine(game.Root,"_storage_","nvngx_dlss.dll")}};
+  Check(DlssLibraries.AutoTarget(game,autoFiles)==autoFiles[0],"automatic target chose storage copy");
+  Check(DlssLibraries.AutoTarget(game,autoFiles.Skip(1))==null,"storage-only copy selected");
+  var nested=new[]{Path.Combine(game.Root,"Engine","Plugins","DLSS"),Path.Combine(game.Root,"Other")};
+  Check(DlssLibraries.AutoFolder(game,nested)==null,"ambiguous target guessed");
+  Check(DlssLibraries.AutoFolder(game,nested.Take(1))==nested[0],"unique plugin destination missed");
   string release="[{\"tag_name\":\"wrong\",\"assets\":[{\"name\":\"display-filter.zip\"}]},{\"tag_name\":\"v0.8.5\",\"assets\":[{\"name\":\"OptiScaler-rtx40-mfg.zip\"},{\"name\":\"OptiScaler.zip\",\"browser_download_url\":\"https://github.com/wilsjo2/OptiScaler-DLSSNR-PreSR-Multipass/releases/download/v0.8.5/OptiScaler.zip\"}]}]";
   Check(DlssCore.PickRelease(release,DlssBuild.All.Single(b=>b.Id=="wilsjo2")).Tag=="v0.8.5","wrong release/variant selected");Reject(()=>DlssCore.PickRelease(release,DlssBuild.All.Single(b=>b.Id=="dagherbou")),"release from another repository accepted");Reject(()=>DlssLibraries.Validate(game.Exe,"nvngx_dlss.dll"),"invalid NVIDIA DLL accepted");
   var h=new DlssHardware{Series=40,Driver="615.00"};Reject(()=>h.Validate(40,"missing"),"old driver accepted");h.Driver="616.92";h.Validate(40,"missing");Reject(()=>h.Validate(50,"missing"),"GPU mismatch accepted");

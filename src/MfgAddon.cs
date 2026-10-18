@@ -8,8 +8,8 @@ using System.Collections.Generic;
 namespace HdrPilot {
 // MFG Unlock is independent of RenoDX HDR and OptiScaler's frame-generation settings.
 public static class MfgAddon {
- public const string Repo="nefh/MFGAmpereUnlock-RenoDx",Name="renodx-mfgunlock.addon64",Marker="hdlss-mfg-unlock.json";
- public const string Requirements="RTX 2000 / 3000 / 4000. Requires ReShade with full add-on support and native DLSS Frame Generation in the game. Enable FG and choose the multiplier in the game or in ReShade > MFG Unlock. Compatibility depends on the game, driver and DLSS-G / Streamline versions.";
+ public const string Repo="mavismmg/MFGAdaUnlock-RenoDx",Name="renodx-mfgunlock.addon64",Marker="hdlss-mfg-unlock.json";
+ public const string Requirements="RTX 4000. Requires ReShade with full add-on support and native DLSS Frame Generation in the game. Enable FG and choose the multiplier in the game or in ReShade > MFG Unlock. Compatibility depends on the game, driver and DLSS-G / Streamline versions.";
  public sealed class Release {public string Tag,Url,Digest;public long Size;}
  public static Release ParseRelease(string json){
   var r=Core.Json.Deserialize<Dictionary<string,object>>(json);
