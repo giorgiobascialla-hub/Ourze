@@ -35,7 +35,7 @@ public static class Streamline {
   using(var file=File.OpenRead(zip))using(var archive=new ZipArchive(file,ZipArchiveMode.Read)){
    var entries=archive.Entries.Where(e=>Regex.IsMatch(e.FullName.Replace('\\','/'),@"^(?:[^/]+/)?bin/x64/sl\.[^/]+\.dll$",RegexOptions.IgnoreCase)).ToList();
    if(entries.Count==0||entries.Any(e=>!Names.Contains(e.Name,StringComparer.OrdinalIgnoreCase))||entries.Select(e=>e.Name).Distinct(StringComparer.OrdinalIgnoreCase).Count()!=entries.Count)throw new Exception(L("Unsupported or ambiguous Streamline production package."));
-   foreach(var e in entries){if(e.Length<1024||e.Length>64*1024*1024)throw new Exception(L("Invalid Streamline package size."));string dest=DlssCore.Safe(dir,e.Name);using(var input=e.Open())using(var output=File.Create(dest))input.CopyTo(output);Validate(dest,e.Name);}
+   foreach(var e in entries){if(e.Length<1024||e.Length>64*1024*1024)throw new Exception(L("Invalid Streamline package size."));string dest=DlssCore.Safe(dir,e.Name);using(var input=LimitedStream.Open(e,1000000000))using(var output=File.Create(dest))input.CopyTo(output);Validate(dest,e.Name);}
   }
   string main=Path.Combine(dir,"sl.interposer.dll");if(!File.Exists(main)||!File.Exists(Path.Combine(dir,"sl.common.dll")))throw new Exception(L("Incomplete Streamline package."));
   var version=VersionOf(main);if(version.Major!=2||Directory.GetFiles(dir,"*.dll").Any(p=>VersionOf(p)!=version))throw new Exception(L("Mixed or unsupported Streamline versions."));return dir;
@@ -50,7 +50,7 @@ public static class Streamline {
   if(selectedTag!=null&&!Regex.IsMatch(selectedTag,@"^v2\.\d+\.\d+$"))throw new Exception("Invalid Streamline version.");
   ServicePointManager.SecurityProtocol|=SecurityProtocolType.Tls12;
   using(var web=new DlssCore.DownloadClient()){
-   web.Headers[HttpRequestHeader.UserAgent]="HDLSS";web.Headers[HttpRequestHeader.CacheControl]="no-cache";progress(L("Checking the latest NVIDIA Streamline release…"));
+   web.Headers[HttpRequestHeader.UserAgent]=AppIdentity.UserAgent;web.Headers[HttpRequestHeader.CacheControl]="no-cache";progress(L("Checking the latest NVIDIA Streamline release…"));
    var r=Core.Json.Deserialize<Dictionary<string,object>>(web.DownloadString("https://api.github.com/repos/"+Repo+"/releases/"+(selectedTag==null?"latest":"tags/"+selectedTag)));string tag=Convert.ToString(r["tag_name"]);
    if(selectedTag!=null&&tag!=selectedTag)throw new Exception("Streamline release version mismatch.");
    if(!Regex.IsMatch(tag,@"^v2\.\d+\.\d+$")||Convert.ToBoolean(r["prerelease"])||Convert.ToBoolean(r["draft"]))throw new Exception(L("Unsupported Streamline release."));
@@ -58,7 +58,7 @@ public static class Streamline {
    var a=assets[0];string url=Convert.ToString(a["browser_download_url"]),digest=a.ContainsKey("digest")?Convert.ToString(a["digest"]):"";long size=Convert.ToInt64(a["size"]);
    if(url!="https://github.com/"+Repo+"/releases/download/"+tag+"/streamline-sdk-"+tag+".zip"||!Regex.IsMatch(digest,@"^sha256:[0-9a-fA-F]{64}$")||size<1024||size>1024L*1024*1024)throw new Exception(L("Streamline release integrity metadata is invalid."));
    string cache=Path.Combine(Core.Data,"streamline");Directory.CreateDirectory(cache);string zip=Path.Combine(cache,Guid.NewGuid().ToString("N")+".zip");
-   try{progress(L("Downloading and verifying NVIDIA Streamline…"));web.DownloadFile(url,zip);if(new FileInfo(zip).Length!=size||!String.Equals(DlssCore.Hash(zip),digest.Substring(7),StringComparison.OrdinalIgnoreCase))throw new Exception(L("Streamline package checksum mismatch."));string folder=Extract(zip);if(VersionOf(Path.Combine(folder,"sl.interposer.dll")).ToString(3)!=tag.Substring(1))throw new Exception(L("Streamline release version mismatch."));return folder;}finally{if(File.Exists(zip))File.Delete(zip);}
+   try{progress(L("Downloading and verifying NVIDIA Streamline…"));web.MaxDownloadBytes=1024L*1024*1024;web.DownloadFile(url,zip);if(new FileInfo(zip).Length!=size||!String.Equals(DlssCore.Hash(zip),digest.Substring(7),StringComparison.OrdinalIgnoreCase))throw new Exception(L("Streamline package checksum mismatch."));string folder=Extract(zip);if(VersionOf(Path.Combine(folder,"sl.interposer.dll")).ToString(3)!=tag.Substring(1))throw new Exception(L("Streamline release version mismatch."));return folder;}finally{if(File.Exists(zip))File.Delete(zip);}
   }
  }
  public static void ValidateBackup(DlssFile managed){if(managed!=null&&managed.Before!=null&&(!File.Exists(DlssCore.Safe(Core.Data,managed.Backup))||DlssCore.Hash(DlssCore.Safe(Core.Data,managed.Backup))!=managed.Before))throw new Exception(L("Streamline original backup missing or changed. Keep the original HDLSS data folder.")+" "+managed.Name);}

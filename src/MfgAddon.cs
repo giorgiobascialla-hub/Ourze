@@ -24,7 +24,7 @@ public static class MfgAddon {
  public static string Fetch(out Release release){
   ServicePointManager.SecurityProtocol|=SecurityProtocolType.Tls12;
   using(var web=new DlssCore.DownloadClient()){
-   web.Headers[HttpRequestHeader.UserAgent]="HDLSS";web.Headers[HttpRequestHeader.CacheControl]="no-cache";
+   web.Headers[HttpRequestHeader.UserAgent]=AppIdentity.UserAgent;web.Headers[HttpRequestHeader.CacheControl]="no-cache";
    release=ParseRelease(web.DownloadString("https://api.github.com/repos/"+Repo+"/releases/latest"));
    string dir=Path.Combine(Core.Data,"mfg-packages",Guid.NewGuid().ToString("N"));Directory.CreateDirectory(dir);string file=Path.Combine(dir,Name);
    web.DownloadFile(release.Url,file);Verify(file,release);File.WriteAllText(Path.Combine(dir,"source.json"),Core.Json.Serialize(release));return file;
@@ -45,7 +45,7 @@ public static class MfgAddon {
   Core.Closed(game);Verify(source,release);string root=Path.GetDirectoryName(Path.GetFullPath(game.Exe));
   var scan=DlssCore.Inspect(game,true,false);if(scan.Blockers.Count>0)throw new Exception(String.Join("\n",scan.Blockers));
   var loaders=RenoDx.Loaders(root);if(loaders.Count!=1)throw new Exception("Install one ReShade loader with full add-on support first.");
-  if(!Encoding.ASCII.GetString(File.ReadAllBytes(DlssCore.Safe(root,loaders[0]))).Contains("LoadFromDllMain"))throw new Exception("Install one ReShade loader with full add-on support first.");
+  if(!DlssCore.ContainsAscii(DlssCore.Safe(root,loaders[0]),"LoadFromDllMain"))throw new Exception("Install one ReShade loader with full add-on support first.");
   if(loaders[0]=="ReShade64.dll"&&(scan.Proxy==""||Core.Get(scan.Ini,"Plugins","LoadReshade")!="true"))throw new Exception("ReShade64.dll is not connected to OptiScaler. Configure ReShade first.");
   string config=ConfigName(root),path=DlssCore.Safe(root,config),ini=File.Exists(path)?File.ReadAllText(path):"",addonName=AddonName(root,ini),addonFolder=Path.GetDirectoryName(DlssCore.Safe(root,addonName));
   if(Entries(Core.Get(ini,"ADDON","LoadFromDllMain")).Where(IsOurs).Any(x=>!Path.GetFullPath(Path.Combine(addonFolder,x)).Equals(DlssCore.Safe(root,addonName),StringComparison.OrdinalIgnoreCase)))throw new Exception("MFG: early-load entry points to another installation. Resolve the duplicate first.");

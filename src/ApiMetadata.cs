@@ -10,9 +10,9 @@ public static class ApiMetadata {
  static string Cache(string url){using(var hash=SHA256.Create())return Path.Combine(Core.Data,"api-cache",BitConverter.ToString(hash.ComputeHash(Encoding.UTF8.GetBytes(url))).Replace("-","")+".json");}
  static string PauseFile {get{return Path.Combine(Core.Data,"api-cache","github-pause.txt");}}
  public static bool Handles(string url){Uri u;return Uri.TryCreate(url,UriKind.Absolute,out u)&&u.Scheme=="https"&&u.Host=="api.github.com";}
- static Reply Fetch(string url){var request=(HttpWebRequest)WebRequest.Create(url);request.UserAgent="HDLSS/1.0.8";request.Accept="application/vnd.github+json";request.Timeout=10000;request.ReadWriteTimeout=10000;HttpWebResponse response;
+ static Reply Fetch(string url){var request=(HttpWebRequest)WebRequest.Create(url);request.UserAgent=AppIdentity.UserAgent;request.Accept="application/vnd.github+json";request.Timeout=10000;request.ReadWriteTimeout=10000;HttpWebResponse response;
   try{response=(HttpWebResponse)request.GetResponse();}catch(WebException ex){response=ex.Response as HttpWebResponse;if(response==null)throw;}
-  using(response)using(var reader=new StreamReader(response.GetResponseStream()))return new Reply{Status=(int)response.StatusCode,Text=reader.ReadToEnd(),Remaining=response.Headers["x-ratelimit-remaining"],Reset=response.Headers["x-ratelimit-reset"],Retry=response.Headers["retry-after"]};
+  using(response)using(var reader=new StreamReader(new LimitedStream(response.GetResponseStream(),32L*1024*1024)))return new Reply{Status=(int)response.StatusCode,Text=reader.ReadToEnd(),Remaining=response.Headers["x-ratelimit-remaining"],Reset=response.Headers["x-ratelimit-reset"],Retry=response.Headers["retry-after"]};
  }
  public static string Get(string url){if(!Handles(url))throw new ArgumentException("Not a GitHub API URL.");lock(Gate){
   long now=Seconds(Clock());string path=Cache(url);Entry cached=null;

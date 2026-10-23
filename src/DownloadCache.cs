@@ -2,7 +2,7 @@ using System;using System.IO;using System.Linq;using System.Collections.Generic;
 namespace HdrPilot {
 public static class DownloadCache {
  static readonly object Gate=new object();
- static readonly string[] Areas={"nr-models","packages","hdr-packages","dll-library","streamline","ue4ss-downloads","reframework-packages","asi-packages","effect-packages","mfg-packages"};
+ static readonly string[] Areas={"nr-models","packages","hdr-packages","dll-library","streamline","ue4ss-downloads","reframework-packages","asi-packages","effect-packages","mfg-packages","feeder-packages"};
  public static string Get(string area,string key,Func<string,string> create){lock(Gate){
   if(!Areas.Contains(area)||!System.Text.RegularExpressions.Regex.IsMatch(key,"^[a-fA-F0-9]{64}$"))throw new Exception("Invalid cache key.");
   string root=Path.Combine(Core.Data,area,"verified-"+key.ToLowerInvariant()),record=Path.Combine(root,"cache.json");
@@ -20,7 +20,7 @@ public static class DownloadCache {
  // Runs only before the interactive app starts, never while an installation plan uses these files.
  public static long Trim(bool clear){lock(Gate){long removed=0;var candidates=new List<Tuple<string,long,DateTime>>();
   var protectedPaths=Core.Pref.DlssChoices.Values.SelectMany(v=>new[]{v.Package,v.Runtime}).Where(p=>!String.IsNullOrWhiteSpace(p)).Select(Path.GetFullPath).ToArray();
-  foreach(string area in Areas){string root=Path.Combine(Core.Data,area);if(!Directory.Exists(root))continue;try{if((File.GetAttributes(root)&FileAttributes.ReparsePoint)!=0)continue;foreach(string dir in Directory.GetDirectories(root)){try{string prefix=Path.GetFullPath(dir)+Path.DirectorySeparatorChar;if(protectedPaths.Any(p=>p.Equals(prefix.TrimEnd(Path.DirectorySeparatorChar),StringComparison.OrdinalIgnoreCase)||p.StartsWith(prefix,StringComparison.OrdinalIgnoreCase)))continue;var files=Files(dir).ToArray();candidates.Add(Tuple.Create(dir,files.Sum(f=>new FileInfo(f).Length),files.Length==0?Directory.GetLastWriteTimeUtc(dir):files.Select(f=>File.GetLastWriteTimeUtc(f)).Max()));}catch{}}}catch{}}
+  foreach(string area in Areas){string root=Path.Combine(Core.Data,area);if(!Directory.Exists(root))continue;try{if((File.GetAttributes(root)&FileAttributes.ReparsePoint)!=0)continue;foreach(string dir in Directory.GetDirectories(root)){try{string prefix=Path.GetFullPath(dir)+Path.DirectorySeparatorChar;if(protectedPaths.Any(p=>p.Equals(prefix.TrimEnd(Path.DirectorySeparatorChar),StringComparison.OrdinalIgnoreCase)||p.StartsWith(prefix,StringComparison.OrdinalIgnoreCase)))continue;var files=Files(dir).ToArray();candidates.Add(Tuple.Create(dir,files.Sum(f=>new FileInfo(f).Length),files.Length==0?Directory.GetLastWriteTimeUtc(dir):files.Select(f=>File.GetLastWriteTimeUtc(f)).Concat(new[]{Directory.GetLastWriteTimeUtc(dir)}).Max()));}catch{}}}catch{}}
   long total=candidates.Sum(c=>c.Item2);foreach(var c in candidates.OrderBy(c=>c.Item3)){if(!clear&&total<=2L*1024*1024*1024)break;try{Remove(c.Item1);removed+=c.Item2;total-=c.Item2;}catch{}}
   return removed;
  }}

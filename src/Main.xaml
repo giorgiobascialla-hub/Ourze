@@ -36,7 +36,7 @@
         <Setter TargetName="B" Property="BorderBrush" Value="#E6AC50" />
        </Trigger>
        <Trigger Property="IsEnabled" Value="False">
-        <Setter Property="Opacity" Value="0.55" />
+        <Setter Property="Opacity" Value="0.70" />
        </Trigger>
       </ControlTemplate.Triggers>
      </ControlTemplate>
@@ -189,7 +189,7 @@
         <Setter TargetName="Rail" Property="BorderThickness" Value="2" />
        </Trigger>
        <Trigger Property="IsEnabled" Value="False">
-        <Setter Property="Opacity" Value="0.55" />
+        <Setter Property="Opacity" Value="0.70" />
        </Trigger>
       </ControlTemplate.Triggers>
      </ControlTemplate>
@@ -197,45 +197,30 @@
    </Setter>
   </Style>
   <Style TargetType="Expander">
-   <Setter Property="Foreground" Value="#BBC4D0" />
-   <Setter Property="Template">
-    <Setter.Value>
-     <ControlTemplate TargetType="Expander">
-      <StackPanel>
-       <ToggleButton IsChecked="{Binding IsExpanded,RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}" HorizontalContentAlignment="Stretch" Background="Transparent" BorderThickness="0" Foreground="{TemplateBinding Foreground}" Padding="0,8">
-        <ToggleButton.Template>
-         <ControlTemplate TargetType="ToggleButton">
-          <Border Padding="{TemplateBinding Padding}" Background="Transparent">
-           <DockPanel>
-            <TextBlock x:Name="Arrow" Text="›" Foreground="#E6AC50" FontSize="17" Width="20" />
-            <ContentPresenter VerticalAlignment="Center" />
-           </DockPanel>
-          </Border>
-          <ControlTemplate.Triggers>
-           <Trigger Property="IsChecked" Value="True">
-            <Setter TargetName="Arrow" Property="Text" Value="⌄" />
-           </Trigger>
-           <Trigger Property="IsKeyboardFocused" Value="True">
-            <Setter Property="Foreground" Value="#E6AC50" />
-           </Trigger>
-          </ControlTemplate.Triggers>
-         </ControlTemplate>
-        </ToggleButton.Template>
-        <ContentPresenter Content="{TemplateBinding Header}" />
-       </ToggleButton>
-       <ContentPresenter x:Name="Body" ContentSource="Content" Visibility="Collapsed" />
-      </StackPanel>
+   <Setter Property="Foreground" Value="#E3EAF2" />
+   <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Expander"><StackPanel>
+    <ToggleButton IsChecked="{Binding IsExpanded,RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}" HorizontalContentAlignment="Stretch" Foreground="{TemplateBinding Foreground}" Padding="12,10" MinHeight="48" Cursor="Hand">
+     <ToggleButton.Template><ControlTemplate TargetType="ToggleButton">
+      <Border x:Name="HeaderBox" Padding="{TemplateBinding Padding}" Background="#253342" BorderBrush="#52677D" BorderThickness="1" CornerRadius="7">
+       <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+        <TextBlock x:Name="Arrow" Text="+" Foreground="#F0B851" FontSize="22" FontWeight="Bold" VerticalAlignment="Center" />
+        <ContentPresenter Grid.Column="1" VerticalAlignment="Center" Margin="0,0,16,0" />
+        <TextBlock Grid.Column="2" x:Name="ActionLabel" Text="Mostra opzioni" Foreground="#F0B851" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" />
+       </Grid>
+      </Border>
       <ControlTemplate.Triggers>
-       <Trigger Property="IsExpanded" Value="True">
-        <Setter TargetName="Body" Property="Visibility" Value="Visible" />
-       </Trigger>
+       <Trigger Property="IsChecked" Value="True"><Setter TargetName="Arrow" Property="Text" Value="−"/><Setter TargetName="ActionLabel" Property="Text" Value="Nascondi opzioni"/><Setter TargetName="HeaderBox" Property="BorderBrush" Value="#E6AC50"/></Trigger>
+       <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="HeaderBox" Property="Background" Value="#34485C"/></Trigger>
+       <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="HeaderBox" Property="BorderBrush" Value="#F0B851"/><Setter TargetName="HeaderBox" Property="BorderThickness" Value="2"/></Trigger>
       </ControlTemplate.Triggers>
-     </ControlTemplate>
-    </Setter.Value>
-   </Setter>
+     </ControlTemplate></ToggleButton.Template>
+     <ContentPresenter Content="{TemplateBinding Header}" TextBlock.FontSize="15" TextBlock.FontWeight="SemiBold" />
+    </ToggleButton>
+    <ContentPresenter x:Name="Body" ContentSource="Content" Visibility="Collapsed" Margin="0,10,0,0" />
+   </StackPanel><ControlTemplate.Triggers><Trigger Property="IsExpanded" Value="True"><Setter TargetName="Body" Property="Visibility" Value="Visible"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
   </Style>
   <Style TargetType="ScrollBar">
-   <Setter Property="Width" Value="9" />
+   <Setter Property="Width" Value="14" />
    <Setter Property="Background" Value="#141A22" />
    <Setter Property="Template">
     <Setter.Value>

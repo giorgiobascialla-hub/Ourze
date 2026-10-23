@@ -11,6 +11,7 @@ using Microsoft.Win32;
 
 namespace HdrPilot {
 public class Game {
+ public Game CopyForInspection(){return (Game)MemberwiseClone();}
  public override string ToString(){return Name??"Gioco";}
  public string Id {get;set;} public string Name {get;set;} public string Root {get;set;}
  public string Exe {get;set;} public string Project {get;set;} public string EngineLabel {get;set;}
@@ -87,7 +88,7 @@ public static class Core {
   if(advanced!=null){foreach(var pair in advanced.Values())values[pair.Key]=pair.Value;}else{string output=Get(engine,"SystemSettings","r.HDR.Display.OutputDevice");if(new[]{"3","4","5","6"}.Contains(output)){values.Remove("r.HDR.Display.OutputDevice");values["r.HDR.Display.ColorGamut"]=(output=="3"||output=="4")?"2":"0";}if(Get(engine,"SystemSettings","r.HDR.UI.CompositeMode")!=null)values.Remove("r.HDR.UI.CompositeMode");}
   if(black!=null)values["r.HDR.Display.MinLuminanceLog10"]=black;foreach(var kv in values)engine=Set(engine,"SystemSettings",kv.Key,kv.Value);user=Set(user,section,"bUseHDRDisplayOutput","True");user=Set(user,section,"HDRDisplayOutputNits",peak.ToString(CultureInfo.InvariantCulture));var legacy=LegacyHdr.Prepare(g);string saved=WritePair(g,EncodeLike(ep,engine),EncodeLike(up,user));try{if(legacy.Changes.Count>0)DlssCore.Apply(g,legacy);}catch{Restore(g,saved);throw;}return saved;
  }
- static byte[] EncodeLike(string path,string text){Encoding enc=new UTF8Encoding(false);if(File.Exists(path)){byte[] b=File.ReadAllBytes(path);if(b.Length>=2&&b[0]==255&&b[1]==254)enc=Encoding.Unicode;else if(b.Length>=2&&b[0]==254&&b[1]==255)enc=Encoding.BigEndianUnicode;else if(b.Length>=3&&b[0]==239&&b[1]==187&&b[2]==191)enc=new UTF8Encoding(true);}return enc.GetPreamble().Concat(enc.GetBytes(text)).ToArray();}
+ public static byte[] EncodeLike(string path,string text){Encoding enc=new UTF8Encoding(false);if(File.Exists(path)){byte[] b=File.ReadAllBytes(path);if(b.Length>=2&&b[0]==255&&b[1]==254)enc=Encoding.Unicode;else if(b.Length>=2&&b[0]==254&&b[1]==255)enc=Encoding.BigEndianUnicode;else if(b.Length>=3&&b[0]==239&&b[1]==187&&b[2]==191)enc=new UTF8Encoding(true);}return enc.GetPreamble().Concat(enc.GetBytes(text)).ToArray();}
  public static string WritePair(Game g,byte[] engine,byte[] user){try{return WritePairImpl(g,engine,user);}catch(Exception ex){ActivityLog.Write("ERRORE HDR: "+ex.Message);throw;}}
  static string WritePairImpl(Game g,byte[] engine,byte[] user){
   ActivityLog.Write("HDR · lettura originali e attributi");

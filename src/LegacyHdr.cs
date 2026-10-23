@@ -2,6 +2,7 @@ using System;using System.IO;using System.Linq;using System.Text;using System.Co
 namespace HdrPilot {
 // Remove only activation of the retired HDLSS shader, not the user's ReShade installation.
 public static class LegacyHdr {
+ public static bool Present(Game g){if(g==null||String.IsNullOrWhiteSpace(g.Exe))return false;string root=Path.GetDirectoryName(Path.GetFullPath(g.Exe));return File.Exists(DlssCore.Safe(root,"hdlss-peak-limit.json"))||File.Exists(DlssCore.Safe(root,"reshade-shaders/HDLSS/HDLSS_PeakLimit.fx"));}
  public static string Strip(string list){return String.Join(",",(list??"").Split(',').Where(t=>!String.Equals(t.Trim(),"HDLSS_PeakLimit",StringComparison.OrdinalIgnoreCase)&&!String.Equals(t.Trim(),"HDLSS_PeakLimit@HDLSS_PeakLimit.fx",StringComparison.OrdinalIgnoreCase)));}
  static string Get(string text,string key){return Core.Get("[root]\n"+text,"root",key);}
  static string Set(string text,string key,string value){string s=Core.Set("[root]\n"+text,"root",key,value);return s.Substring(s.IndexOf('\n')+1);}

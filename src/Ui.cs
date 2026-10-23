@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System;
 
 using System.Windows;
@@ -61,7 +61,7 @@ public static class Dialogs {
 
  public static Window Create(Window owner,string title,out StackPanel body){var w=new Window{Title=title,Owner=owner,Width=650,SizeToContent=SizeToContent.Height,MaxHeight=850,WindowStartupLocation=WindowStartupLocation.CenterOwner,ResizeMode=ResizeMode.NoResize,WindowStyle=WindowStyle.None,Background=B("#141A22"),Foreground=B("#F0F3F5"),FontFamily=new FontFamily("Cascadia Mono, Consolas"),FontSize=13};if(owner!=null)w.Resources=owner.Resources;var border=new Border{BorderBrush=B("#35404D"),BorderThickness=new Thickness(1),Padding=new Thickness(26)};body=new StackPanel();var heading=new DockPanel();var close=new Button{Content="×",Padding=new Thickness(10,4,10,4),HorizontalAlignment=HorizontalAlignment.Right};DockPanel.SetDock(close,Dock.Right);close.Click+=(s,e)=>w.Close();heading.Children.Add(close);var h=Text(title,23);h.Foreground=B("#E6AC50");h.FontWeight=FontWeights.SemiBold;heading.Children.Add(h);heading.MouseLeftButtonDown+=(s,e)=>{if(e.ButtonState==System.Windows.Input.MouseButtonState.Pressed)w.DragMove();};body.Children.Add(heading);border.Child=body;w.Content=border;w.PreviewKeyDown+=(s,e)=>{if(e.Key==System.Windows.Input.Key.Escape)w.Close();};return w;}
 
- public static Window Notice(Window owner,string title,string message,string backup){StackPanel body;var w=Create(owner,title,out body);body.Children.Add(Text(message,14));if(backup!=null){body.Children.Add(Text("BACKUP CREATO · SOLA LETTURA RIPRISTINATA",10));var path=Text(backup,11);body.Children.Add(path);var open=new Button{Content="Apri backup",Margin=new Thickness(0,0,0,12)};open.Click+=(s,e)=>{try{System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(backup){UseShellExecute=true});}catch(Exception ex){path.Text=ex.Message;}};body.Children.Add(open);}var ok=new Button{Content="Ho capito",IsDefault=true};if(owner!=null)ok.Style=owner.TryFindResource("Primary") as Style;ok.Click+=(s,e)=>w.Close();body.Children.Add(ok);return w;}
+ public static Window Notice(Window owner,string title,string message,string backup){StackPanel body;var w=Create(owner,title,out body);body.Children.Add(Text(message,14));if(backup!=null){body.Children.Add(Text("BACKUP CREATO · SOLA LETTURA RIPRISTINATA",10));var path=Text(backup,11);body.Children.Add(path);var open=new Button{Content="Apri backup",Margin=new Thickness(0,0,0,12)};open.Click+=(s,e)=>{try{System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(backup){UseShellExecute=true});}catch(Exception ex){StatusFeedback.Error(path,ex.Message);}};body.Children.Add(open);}var ok=new Button{Content="Ho capito",IsDefault=true};if(owner!=null)ok.Style=owner.TryFindResource("Primary") as Style;ok.Click+=(s,e)=>w.Close();body.Children.Add(ok);return w;}
 
 }
 
