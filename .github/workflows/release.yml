@@ -8,7 +8,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build and test version 1.5
+      - name: Build and test version 1.5.1
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force portable, testbin | Out-Null
@@ -18,7 +18,7 @@ jobs:
           if ($test.ExitCode -ne 0) { throw 'Regression failure' }
           $gate = Start-Process "$pwd/portable/HDLSS5.exe" -ArgumentList @('--scan', "$pwd/testbin/forbidden.json") -Wait -PassThru
           if ($gate.ExitCode -ne 2 -or (Test-Path testbin/forbidden.json)) { throw 'Production command gate failed' }
-          if ([Diagnostics.FileVersionInfo]::GetVersionInfo("$pwd/portable/HDLSS5.exe").FileVersion -ne '1.5.0.0') { throw 'Incorrect version' }
+          if ([Diagnostics.FileVersionInfo]::GetVersionInfo("$pwd/portable/HDLSS5.exe").FileVersion -ne '1.5.1.0') { throw 'Incorrect version' }
       - name: Reuse and verify previously published NR models
         env:
           GH_TOKEN: ${{ github.token }}
@@ -49,14 +49,16 @@ jobs:
         shell: pwsh
         run: |
           Copy-Item CHANGELOG.md portable/CHANGELOG.md
-          Copy-Item docs/LEGGIMI-1.5.txt portable/LEGGIMI.txt
+          Copy-Item docs/GUIDE-it.md portable/GUIDA.md
+          Copy-Item docs/GUIDE-en.md portable/GUIDE.md
+          Copy-Item docs/LEGGIMI-1.5.1.txt portable/LEGGIMI.txt
           $root = "$pwd/portable"
           Get-ChildItem $root -File -Recurse | ForEach-Object { (Get-FileHash $_.FullName).Hash.ToLower()+'  '+$_.FullName.Substring($root.Length+1).Replace('\','/') } | Set-Content portable/SHA256.txt
-          Compress-Archive -Path portable/* -DestinationPath HDLSS5-Portable-1.5.zip
-          ((Get-FileHash HDLSS5-Portable-1.5.zip).Hash.ToLower()+'  HDLSS5-Portable-1.5.zip') | Set-Content HDLSS5-Portable-1.5-SHA256.txt
-          $release = gh release view v1.5 --repo $env:GITHUB_REPOSITORY --json isDraft | ConvertFrom-Json
+          Compress-Archive -Path portable/* -DestinationPath HDLSS5-Portable-1.5.1.zip
+          ((Get-FileHash HDLSS5-Portable-1.5.1.zip).Hash.ToLower()+'  HDLSS5-Portable-1.5.1.zip') | Set-Content HDLSS5-Portable-1.5.1-SHA256.txt
+          $release = gh release view v1.5.1 --repo $env:GITHUB_REPOSITORY --json isDraft | ConvertFrom-Json
           if (!$release.isDraft) { throw 'Expected a draft release; refusing to replace public assets' }
-          gh release edit v1.5 --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA
+          gh release edit v1.5.1 --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA
           if ($LASTEXITCODE -ne 0) { throw 'Release target update failed' }
-          gh release upload v1.5 HDLSS5-Portable-1.5.zip HDLSS5-Portable-1.5-SHA256.txt --repo $env:GITHUB_REPOSITORY --clobber
+          gh release upload v1.5.1 HDLSS5-Portable-1.5.1.zip HDLSS5-Portable-1.5.1-SHA256.txt --repo $env:GITHUB_REPOSITORY --clobber
           if ($LASTEXITCODE -ne 0) { throw 'Release upload failed' }

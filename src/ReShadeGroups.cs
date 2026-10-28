@@ -1,5 +1,63 @@
 using System;using System.Linq;using System.Windows;using System.Windows.Controls;using System.Windows.Media;
 namespace HdrPilot {
+public static class CardAlignment {
+ // Align sibling cards in each responsive row using natural positions.
+ sealed class Anchor { public Border Card; public FrameworkElement Target; public Border Space; }
+ static System.Collections.Generic.IEnumerable<FrameworkElement> Walk(DependencyObject node) {
+  var f=node as FrameworkElement;if(f!=null)yield return f;
+  var p=node as Panel;if(p!=null)foreach(UIElement child in p.Children)foreach(var x in Walk(child))yield return x;
+  var b=node as Border;if(b!=null&&b.Child!=null)foreach(var x in Walk(b.Child))yield return x;
+ }
+ static bool Matches(Button b,int phase) {
+  string tag=Convert.ToString(b.Tag),label=Convert.ToString(b.Content);
+  if(phase==1)return tag.StartsWith("remove-")||tag=="effect-remove"||label.StartsWith("Rimuovi")||label.StartsWith("Remove ");
+  return tag.StartsWith("update-")||tag=="effect-install"||label.StartsWith("Installa")||label.StartsWith("Install ")||label.StartsWith("Aggiorna ")||label.StartsWith("Update ")||label.StartsWith("2. Installa")||label.StartsWith("2. Install")||label.StartsWith("ReShade ·");
+ }
+ public static void Attach(StackPanel root) {
+  var grids=root.Children.OfType<Grid>().Concat(root.Children.OfType<Expander>().Select(e=>e.Content).OfType<Grid>()).ToArray();
+  foreach(var grid in grids) {
+   var anchors=new System.Collections.Generic.Dictionary<FrameworkElement,Anchor>();
+   bool running=false;
+   grid.LayoutUpdated+=(s,e)=>{
+    if(running||!grid.IsVisible)return;running=true;
+    try {
+     var cards=grid.Children.OfType<Border>().ToArray();
+     foreach(var row in cards.GroupBy(c=>Grid.GetRow(c))) {
+      for(int phase=-1;phase<3;phase++) {
+       var active=new System.Collections.Generic.List<Anchor>();
+       foreach(var card in row) {
+        FrameworkElement target;
+        if(phase==-1)target=Walk(card).OfType<TextBlock>().FirstOrDefault(x=>x.IsVisible&&(x.Text.StartsWith("Versione installata")||x.Text.StartsWith("Installed version")));else if(phase==2)target=Walk(card).OfType<Expander>().FirstOrDefault(x=>x.IsVisible);
+        else {
+         var button=Walk(card).OfType<Button>().FirstOrDefault(x=>x.IsVisible&&Matches(x,phase));
+         target=button;
+         if(button!=null&&button.Parent is WrapPanel)target=(WrapPanel)button.Parent;
+        }
+        if(target==null||!(target.Parent is Panel))continue;
+        Anchor a;
+        if(!anchors.TryGetValue(target,out a)){
+         var parent=(Panel)target.Parent;
+         a=new Anchor{Card=card,Target=target,Space=new Border{Height=0,IsHitTestVisible=false}};
+         parent.Children.Insert(parent.Children.IndexOf(target),a.Space);anchors[target]=a;
+         return;
+        }
+        active.Add(a);
+       }
+       if(active.Count==0)continue;
+       var natural=active.Select(a=>(a.Target is WrapPanel ? ((WrapPanel)a.Target).Children.OfType<Button>().First() : a.Target).TranslatePoint(new Point(0,0),a.Card).Y-a.Space.ActualHeight).ToArray();
+       double max=natural.Max();
+       for(int i=0;i<active.Count;i++){
+        double height=active.Count==1?0:Math.Max(0,Math.Round(max-natural[i],2));
+        if(Math.Abs(active[i].Space.Height-height)>0.5){active[i].Space.Height=height;return;}
+       }
+      }
+     }
+     foreach(var key in anchors.Keys.Where(k=>!k.IsLoaded).ToArray())anchors.Remove(key);
+    } finally {running=false;}
+   };
+  }
+ }
+}
 public static class ReShadeGroups {
  public static string QuickHelp {get{return RenoNr.T("1. Installa ReShade. 2. Installa Neural Rendering: add-on e DLL NR per la GPU vengono installati insieme. Gli altri add-on sono opzionali.","1. Install ReShade. 2. Install Neural Rendering: the add-on and GPU-specific NR DLL are installed together. Other add-ons are optional.","1. Instala ReShade. 2. Instala Neural Rendering con la DLL para tu GPU. Otros complementos son opcionales.","1. Installez ReShade. 2. Installez Neural Rendering avec la DLL adaptée au GPU. Autres extensions facultatives.","1. ReShade installieren. 2. Neural Rendering mit passender GPU-DLL installieren. Andere Add-ons sind optional.","1. Instale ReShade. 2. Instale Neural Rendering com a DLL da GPU. Outros complementos são opcionais.");}}
 
@@ -17,26 +75,38 @@ public static class ReShadeGroups {
  public static StackPanel Card(Panel host,string key,string title){var content=new StackPanel();var label=Dialogs.Text(Appearance.Localize(title),17);label.Foreground=new SolidColorBrush(Color.FromRgb(230,172,80));label.Margin=new Thickness(0,0,0,10);content.Children.Add(label);var box=LayoutCards.Box(content);box.Tag=key;host.Children.Add(box);return content;}
  static StackPanel Advanced(StackPanel card){var content=new StackPanel();card.Children.Add(new Expander{Header=Appearance.Localize("Details"),Content=content,Margin=new Thickness(0,8,0,0)});return content;}
  static FrameworkElement CompactManagement(Window owner,Game game,string scope,Action refresh){var p=(StackPanel)ModCenter.Panel(owner,game,false,refresh,null,scope);foreach(var t in p.Children.OfType<TextBlock>().ToArray())if(t.Text==Appearance.Localize("Removal"))p.Children.Remove(t);foreach(var dock in p.Children.OfType<DockPanel>())foreach(var t in dock.Children.OfType<TextBlock>().ToArray())dock.Children.Remove(t);return p;}
+ static void UnifyInstall(StackPanel card,Game game,string scope){
+  var management=card.Children.OfType<StackPanel>().FirstOrDefault(p=>p.Name=="InlineModActions");
+  var primary=card.Children.OfType<Button>().FirstOrDefault();if(primary==null&&scope=="asi")primary=card.Children.OfType<StackPanel>().Where(p=>p!=management).SelectMany(p=>p.Children.OfType<Button>()).FirstOrDefault();if(management==null||primary==null)return;
+  var primaryParent=primary.Parent as Panel;if(primaryParent!=null)primaryParent.Children.Remove(primary);var slot=new WrapPanel();slot.Children.Add(primary);
+  int removeIndex=management.Children.Cast<FrameworkElement>().ToList().FindIndex(e=>e.Name=="InlineRemovalButtons");management.Children.Insert(removeIndex<0?management.Children.Count:removeIndex,slot);
+  var updates=management.Children.OfType<StackPanel>().First(p=>p.Name=="InlineUpdates");
+  var heading=management.Children.OfType<DockPanel>().FirstOrDefault();if(heading!=null){var check=heading.Children.OfType<Button>().FirstOrDefault();if(check!=null){heading.Children.Remove(check);slot.Children.Add(check);}}
+  Action refresh=()=>{slot.Visibility=updates.Children.OfType<StackPanel>().Any()?Visibility.Collapsed:Visibility.Visible;if(heading!=null)heading.Visibility=Visibility.Collapsed;};
+  bool subscribed=false;Action changed=()=>management.Dispatcher.BeginInvoke(refresh);
+  management.Loaded+=(s,e)=>{if(!subscribed){ModUpdates.Changed+=changed;subscribed=true;}refresh();};management.Unloaded+=(s,e)=>{if(subscribed){ModUpdates.Changed-=changed;subscribed=false;}};refresh();
+ }
  static void SizeButtons(DependencyObject element){var panel=element as Panel;if(panel!=null)foreach(UIElement c in panel.Children)SizeButtons(c);var border=element as Border;if(border!=null&&border.Child!=null)SizeButtons(border.Child);var exp=element as Expander;if(exp!=null&&exp.Content is DependencyObject)SizeButtons((DependencyObject)exp.Content);var text=element as TextBlock;if(text!=null){text.Margin=new Thickness(0,3,0,6);var style=new Style(typeof(TextBlock),text.Style);style.Triggers.Add(new Trigger{Property=TextBlock.TextProperty,Value="",Setters={new Setter(UIElement.VisibilityProperty,Visibility.Collapsed)}});text.Style=style;}var button=element as Button;if(button!=null){button.HorizontalAlignment=HorizontalAlignment.Left;button.HorizontalContentAlignment=HorizontalAlignment.Left;button.MinWidth=90;}}
  public static FrameworkElement Build(Window owner,Game game,WrapPanel actions,StackPanel details,WrapPanel channels,ComboBox menu,Button map,FrameworkElement asi,TextBlock info,Action<DlssPlan> review,Action refresh){var root=new StackPanel();root.Children.Add(Dialogs.Text(QuickHelp,14));Move(root,info);var grid=new Grid();root.Children.Add(grid);Action arrange=()=>{int columns=grid.ActualWidth>=1100?2:1;grid.ColumnDefinitions.Clear();for(int n=0;n<columns;n++)grid.ColumnDefinitions.Add(new ColumnDefinition());grid.RowDefinitions.Clear();int count=grid.Children.Count;for(int n=0;n<(count+columns-1)/columns;n++)grid.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});for(int n=0;n<count;n++){Grid.SetRow(grid.Children[n],n/columns);Grid.SetColumn(grid.Children[n],n%columns);}};int lastColumns=0;grid.SizeChanged+=(s,e)=>{int columns=grid.ActualWidth>=1100?2:1;if(columns!=lastColumns){lastColumns=columns;arrange();}};
  var re=Card(grid,"reshade","ReShade");var hdr=Card(grid,"hdr","RenoDX HDR");var nr=Card(grid,"nr","DLSS 5 · Neural Rendering");var mfg=Card(grid,"mfg","MFG Unlock");var shaders=Card(grid,"effects",Appearance.Localize("Shader ReShade"));
  var reAdvanced=Advanced(re);var retired=new Button{Content=Appearance.Localize("Disattiva vecchio filtro HDR HDLSS")};retired.ToolTip="Disattiva HDLSS_PeakLimit nei preset ReShade con una copia di recupero. Conserva ReShade, RenoDX, Neural Rendering e gli altri effetti.";retired.Visibility=LegacyHdr.Present(game)?Visibility.Visible:Visibility.Collapsed;retired.Click+=(s,e)=>{try{var plan=LegacyHdr.Prepare(game);if(plan.Changes.Count==0){info.Text="Il vecchio filtro HDR HDLSS è già disattivato.";retired.Visibility=Visibility.Collapsed;return;}if(plan.Changes.Count>0&&MessageBox.Show(owner,plan.Summary,"HDLSS5",MessageBoxButton.YesNo,MessageBoxImage.Question,MessageBoxResult.No)==MessageBoxResult.Yes)review(plan);}catch(Exception ex){StatusFeedback.Error(info,ex.Message);}};reAdvanced.Children.Add(retired);Move(reAdvanced,channels);reAdvanced.Children.Add(Dialogs.Text(Appearance.Localize("Tasto overlay ReShade · senza modificatori"),14));Move(reAdvanced,menu);Move(reAdvanced,map);var hdrAdvanced=Advanced(hdr);var mfgAdvanced=Advanced(mfg);
  foreach(var b in actions.Children.OfType<Button>().Concat(details.Children.OfType<Button>()).ToArray()){string tag=Convert.ToString(b.Tag);if(tag=="Installa ReShade selezionato")Move(re,b);else if(tag=="Importa pacchetto ReShade…")Move(reAdvanced,b);else if(tag=="Installa / aggiorna RenoDX"){b.Content=Appearance.Localize("Installa RenoDX");Move(hdr,b);}else if(tag=="Importa mod RenoDX locale…"||tag=="Catalogo mod RenoDX")Move(hdrAdvanced,b);else if(tag=="Install MFG Unlock")Move(mfg,b);else if(tag=="MFG Unlock · compatibility")Move(mfgAdvanced,b);}
  foreach(var pair in new[]{new{Panel=re,Scope="reshade"},new{Panel=hdr,Scope="renodx"},new{Panel=mfg,Scope="mfg"}})pair.Panel.Children.Add(CompactManagement(owner,game,pair.Scope,refresh));
- var hdrInstall=hdr.Children.OfType<Button>().First(b=>Convert.ToString(b.Tag)=="Installa / aggiorna RenoDX");hdr.Children.Insert(1,RenoAvailability.Panel(game,hdrInstall,hdr));
- var nrBody=(StackPanel)RenoNr.Panel(owner,game,refresh,false);var nrAdvanced=Advanced(nr);foreach(var child in nrBody.Children.Cast<UIElement>().ToArray()){var text=child as TextBlock;var exp=child as Expander;if(exp!=null){if(exp.Content is UIElement){var c=(UIElement)exp.Content;exp.Content=null;nrAdvanced.Children.Add(c);}nrBody.Children.Remove(exp);}else if(text!=null&&(text.Text==RenoNr.Intro||text.Text==RenoNr.Policy))nrBody.Children.Remove(child);}nrBody.Margin=new Thickness(0);nr.Children.Insert(1,nrBody);var nrActions=nrBody.Children.OfType<StackPanel>().FirstOrDefault(p=>p.Children.OfType<Button>().Any());if(nrActions!=null){nrBody.Children.Remove(nrActions);nrBody.Children.Insert(0,nrActions);}foreach(var row in nrBody.Children.OfType<Panel>())foreach(var button in row.Children.OfType<Button>().ToArray())if(button.Style==owner.TryFindResource("InfoAction")||Convert.ToString(button.Content)==RenoNr.T("Apri download RenoDX","Open RenoDX downloads","Abrir descargas RenoDX","Ouvrir les téléchargements RenoDX","RenoDX-Downloads öffnen","Abrir downloads RenoDX"))Move(nrAdvanced,button);
- shaders.Children.Add(EffectCatalog.Panel(game,owner,review,info));shaders.Children.Add(CompactManagement(owner,game,"effect",refresh));
+ var hdrInstall=hdr.Children.OfType<Button>().First(b=>Convert.ToString(b.Tag)=="Installa / aggiorna RenoDX");var availability=RenoAvailability.Panel(game,hdrInstall,hdr);hdr.Children.Add(availability);
+ var nrBody=(StackPanel)RenoNr.Panel(owner,game,refresh,false);var nrAdvanced=Advanced(nr);foreach(var child in nrBody.Children.Cast<UIElement>().ToArray()){var text=child as TextBlock;var exp=child as Expander;if(exp!=null){if(exp.Content is UIElement){var c=(UIElement)exp.Content;exp.Content=null;nrAdvanced.Children.Add(c);}nrBody.Children.Remove(exp);}else if(text!=null&&(text.Text==RenoNr.Intro||text.Text==RenoNr.Policy))nrBody.Children.Remove(child);}nrBody.Margin=new Thickness(0);nr.Children.Insert(1,nrBody);var nrActions=nrBody.Children.OfType<StackPanel>().FirstOrDefault(p=>p.Children.OfType<Button>().Any());if(nrActions!=null){nrBody.Children.Remove(nrActions);nrBody.Children.Add(nrActions);}foreach(var row in nrBody.Children.OfType<Panel>())foreach(var button in row.Children.OfType<Button>().ToArray())if(button.Style==owner.TryFindResource("InfoAction")||Convert.ToString(button.Content)==RenoNr.T("Apri download RenoDX","Open RenoDX downloads","Abrir descargas RenoDX","Ouvrir les téléchargements RenoDX","RenoDX-Downloads öffnen","Abrir downloads RenoDX"))Move(nrAdvanced,button);
+ shaders.Children.Add(EffectCatalog.Panel(game,owner,review,info));
  if(ReFramework.Identify(game)!=null)Card(grid,"reframework","REFramework · RE Engine").Children.Add(ReFramework.Panel(owner,game));
  var loader=Card(grid,"asi","ASI Loader");asi.Visibility=Visibility.Visible;Move(loader,asi);loader.Children.Add(CompactManagement(owner,game,"asi",refresh));
  if(ReFramework.Identify(game)==null&&(game.Confirmed||(game.EngineLabel??"").StartsWith("UNREAL")||ModInventory.Scan(game).Any(i=>i.Id=="ue4ss"))){var ue=Card(grid,"ue4ss","UE4SS");foreach(var b in details.Children.OfType<Button>().Where(b=>Convert.ToString(b.Tag)=="Install UE4SS for mods").ToArray())Move(ue,b);ue.Children.Add(CompactManagement(owner,game,"ue4ss",refresh));}
  if(ModInventory.Scan(game).Any(i=>i.Id=="addon"&&!RenoNr.Detected(game).Contains(i.File,StringComparer.OrdinalIgnoreCase)))Card(grid,"other","Other ReShade add-ons").Children.Add(CompactManagement(owner,game,"addon",refresh));
  foreach(var card in grid.Children.OfType<Border>()){var p=(StackPanel)card.Child;foreach(var exp in p.Children.OfType<Expander>().ToArray()){p.Children.Remove(exp);p.Children.Add(exp);}}
+ UnifyInstall(re,game,"reshade");UnifyInstall(hdr,game,"renodx");UnifyInstall(mfg,game,"mfg");UnifyInstall(loader,game,"asi");
  var cards=grid.Children.Cast<Border>().ToArray();grid.Children.Clear();root.Children.Remove(grid);
  foreach(var card in cards){var title=((StackPanel)card.Child).Children.OfType<TextBlock>().First();if((string)card.Tag=="reshade")title.Text="1. "+Appearance.Localize("Install ReShade");if((string)card.Tag=="nr")title.Text="2. "+RenoNr.T("Installa Neural Rendering","Install Neural Rendering","Instalar Neural Rendering","Installer Neural Rendering","Neural Rendering installieren","Instalar Neural Rendering");}
  root.Children.Add(LayoutCards.GridFor(cards.Where(c=>(string)c.Tag=="reshade"||(string)c.Tag=="nr").Cast<UIElement>().ToArray()));
  root.Children.Add(NavigationSession.Track("reshade-optional",new Expander{Header=RenoNr.T("Add-on opzionali · RenoDX HDR, MFG e shader","Optional add-ons · RenoDX HDR, MFG and shaders","Complementos opcionales · RenoDX HDR, MFG y shaders","Extensions facultatives · RenoDX HDR, MFG et shaders","Optionale Add-ons · RenoDX HDR, MFG und Shader","Complementos opcionais · RenoDX HDR, MFG e shaders"),Content=LayoutCards.GridFor(cards.Where(c=>new[]{"hdr","mfg","effects","other"}.Contains((string)c.Tag)).Cast<UIElement>().ToArray()),Margin=new Thickness(0,12,0,0)}));
  root.Children.Add(NavigationSession.Track("reshade-loaders",new Expander{Header=RenoNr.T("Loader per altre mod · avanzato","Loaders for other mods · advanced","Cargadores para otras mods · avanzado","Chargeurs pour autres mods · avancé","Loader für andere Mods · erweitert","Loaders para outras mods · avançado"),Content=LayoutCards.GridFor(cards.Where(c=>new[]{"asi","reframework","ue4ss"}.Contains((string)c.Tag)).Cast<UIElement>().ToArray()),Margin=new Thickness(0,12,0,0)}));
- LayoutCards.Style(root);foreach(var action in re.Children.OfType<Button>().Concat(nrActions==null?Enumerable.Empty<Button>():nrActions.Children.OfType<Button>())){action.MinHeight=38;action.Padding=new Thickness(12,9,12,9);action.Margin=new Thickness(0,0,8,8);}return root;
+ LayoutCards.Style(root);foreach(var t in nrBody.Children.OfType<TextBlock>()){if(t.Text.StartsWith("Versione installata"))t.Margin=new Thickness(0,4,0,0);else if(t.Text.StartsWith("Versione inclusa"))t.Margin=new Thickness(0,0,0,8);}CardAlignment.Attach(root);foreach(var action in re.Children.OfType<Button>().Concat(nrActions==null?Enumerable.Empty<Button>():nrActions.Children.OfType<Button>())){action.MinHeight=34;action.Padding=new Thickness(12,8,12,8);action.Margin=new Thickness(0,4,8,4);}return root;
  }
 }
 }

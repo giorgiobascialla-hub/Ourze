@@ -1,4 +1,4 @@
-<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="HDLSS5 1.4" Width="1450" Height="920" MinWidth="1180" MinHeight="740" WindowStartupLocation="CenterScreen" Background="#0C0F13" Foreground="#F0F3F5" FontFamily="Cascadia Mono, Consolas" FontSize="14" WindowStyle="None" ResizeMode="CanResize">
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="HDLSS5 1.5.1" Width="1450" Height="920" MinWidth="1180" MinHeight="740" WindowStartupLocation="CenterScreen" Background="#0C0F13" Foreground="#F0F3F5" FontFamily="Cascadia Mono, Consolas" FontSize="14" WindowStyle="None" ResizeMode="CanResize">
  <shell:WindowChrome.WindowChrome>
   <shell:WindowChrome CaptionHeight="64" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False" />
  </shell:WindowChrome.WindowChrome>
@@ -20,6 +20,7 @@
   </Style>
   <SolidColorBrush x:Key="Muted" Color="#919BAA" />
   <Style TargetType="Button">
+   <Setter Property="FontSize" Value="14" />
    <Setter Property="Foreground" Value="#BAC4D0" />
    <Setter Property="Background" Value="#232A34" />
    <Setter Property="BorderBrush" Value="#35404D" />
@@ -55,6 +56,22 @@
    <Setter Property="BorderBrush" Value="#435D75" />
    <Setter Property="FontWeight" Value="SemiBold" />
   </Style>
+  <Style x:Key="UpdateAction" TargetType="Button" BasedOn="{StaticResource Primary}">
+   <Style.Triggers>
+    <Trigger Property="IsEnabled" Value="False">
+     <Setter Property="Background" Value="#1B222C"/>
+     <Setter Property="BorderBrush" Value="#35404D"/>
+     <Setter Property="Foreground" Value="#919BAA"/>
+     <Setter Property="Opacity" Value="0.50"/>
+     <Setter Property="Cursor" Value="Arrow"/>
+    </Trigger>
+   </Style.Triggers>
+  </Style>
+  <Style x:Key="UpdateAvailable" TargetType="Button" BasedOn="{StaticResource UpdateAction}">
+   <Setter Property="Background" Value="#A82685"/>
+   <Setter Property="BorderBrush" Value="#D65DB5"/>
+   <Setter Property="Foreground" Value="#FFFFFF"/>
+  </Style>
   <Style x:Key="RestoreAction" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
    <Setter Property="Foreground" Value="#E2AD8F" />
    <Setter Property="BorderBrush" Value="#674E41" />
@@ -63,6 +80,7 @@
    <Setter Property="Foreground" Value="#A9C3DC" />
   </Style>
   <Style TargetType="TextBox">
+   <Setter Property="FontSize" Value="14" />
    <Setter Property="Background" Value="#0D1118" />
    <Setter Property="Foreground" Value="#F1F4F7" />
    <Setter Property="CaretBrush" Value="#E6AC50" />
@@ -86,6 +104,7 @@
    </Setter>
   </Style>
   <Style TargetType="ComboBox">
+   <Setter Property="FontSize" Value="14" />
    <Setter Property="Foreground" Value="#F0F3F5" />
    <Setter Property="Background" Value="#202833" />
    <Setter Property="Padding" Value="9" />
@@ -205,7 +224,7 @@
        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
         <TextBlock x:Name="Arrow" Text="+" Foreground="#F0B851" FontSize="22" FontWeight="Bold" VerticalAlignment="Center" />
         <ContentPresenter Grid.Column="1" VerticalAlignment="Center" Margin="0,0,16,0" />
-        <TextBlock Grid.Column="2" x:Name="ActionLabel" Text="Mostra opzioni" Foreground="#F0B851" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" />
+        <TextBlock Grid.Column="2" x:Name="ActionLabel" Text="Mostra opzioni" Foreground="#F0B851" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center" />
        </Grid>
       </Border>
       <ControlTemplate.Triggers>
@@ -214,7 +233,7 @@
        <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="HeaderBox" Property="BorderBrush" Value="#F0B851"/><Setter TargetName="HeaderBox" Property="BorderThickness" Value="2"/></Trigger>
       </ControlTemplate.Triggers>
      </ControlTemplate></ToggleButton.Template>
-     <ContentPresenter Content="{TemplateBinding Header}" TextBlock.FontSize="15" TextBlock.FontWeight="SemiBold" />
+     <ContentPresenter Content="{TemplateBinding Header}" TextBlock.FontSize="14" TextBlock.FontWeight="SemiBold" />
     </ToggleButton>
     <ContentPresenter x:Name="Body" ContentSource="Content" Visibility="Collapsed" Margin="0,10,0,0" />
    </StackPanel><ControlTemplate.Triggers><Trigger Property="IsExpanded" Value="True"><Setter TargetName="Body" Property="Visibility" Value="Visible"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
@@ -282,7 +301,7 @@
       <Button x:Name="MaximizeWindow" Content="□" Width="44" Padding="0" ToolTip="Ingrandisci / ripristina" />
       <Button x:Name="CloseWindow" Content="×" Width="48" Padding="0" ToolTip="Chiudi" />
      </StackPanel>
-     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0"><Image x:Name="BrandLogo" Width="230" Height="60" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" /><TextBlock Text="1.4" Foreground="#E6AC50" VerticalAlignment="Center" Margin="10,0" FontSize="14" /></StackPanel>
+     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0"><Image x:Name="BrandLogo" Width="230" Height="60" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" /><TextBlock Text="1.5" Foreground="#E6AC50" VerticalAlignment="Center" Margin="10,0" FontSize="14" /></StackPanel>
     </DockPanel>
    </Border>
    <Grid Grid.Row="1">
@@ -314,11 +333,11 @@
           <Grid Height="{DynamicResource LibraryPosterHeight}" Background="#242D3A" ClipToBounds="True">
            <Rectangle RenderOptions.BitmapScalingMode="HighQuality"><Rectangle.Fill><ImageBrush ImageSource="{Binding Cover}" Stretch="UniformToFill" AlignmentX="Center" AlignmentY="Center" /></Rectangle.Fill></Rectangle>
            <Border Background="#DA11171E" VerticalAlignment="Bottom" Padding="7">
-            <TextBlock Text="{Binding ArtworkLabel}" Foreground="#E6AC50" FontSize="11" />
+            <TextBlock Text="{Binding ArtworkLabel}" Foreground="#E6AC50" FontSize="14" />
            </Border>
           </Grid>
-          <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Height="54" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}" FontSize="12" FontWeight="SemiBold" Margin="7,7,7,0" Foreground="#F0F3F5" />
-          <TextBlock Visibility="Collapsed" Text="{Binding ConfigLabel}" Foreground="#939FAE" FontSize="11" Margin="7,5,7,8" />
+          <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Height="54" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}" FontSize="14" FontWeight="SemiBold" Margin="7,7,7,0" Foreground="#F0F3F5" />
+          <TextBlock Visibility="Collapsed" Text="{Binding ConfigLabel}" Foreground="#939FAE" FontSize="14" Margin="7,5,7,8" />
          </StackPanel>
         </DataTemplate>
        </ListBox.ItemTemplate>
@@ -326,12 +345,12 @@
       <TextBlock x:Name="Empty" Text="Nessun gioco corrispondente.&#10;Scansiona Steam e Xbox / Game Pass o aggiungi una cartella." TextAlignment="Center" Foreground="{StaticResource Muted}" VerticalAlignment="Center" Visibility="Collapsed" />
      </Grid>
      <Border Visibility="Collapsed" Grid.Row="3" BorderBrush="#293340" BorderThickness="0,1,0,0" Padding="0,12,0,0">
-      <TextBlock x:Name="Status" Text="Pronto." TextWrapping="Wrap" Foreground="{StaticResource Muted}" FontSize="12" />
+      <TextBlock x:Name="Status" Text="Pronto." TextWrapping="Wrap" Foreground="{StaticResource Muted}" FontSize="14" />
      </Border>
     </Grid>
     <Border Grid.Column="1" Grid.Row="1" Margin="24,12,24,0" Background="#1B2530" BorderBrush="#374958" BorderThickness="1" CornerRadius="10" Padding="12">
      <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="300" /><ColumnDefinition Width="25" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-     <DockPanel><Border Width="75" Height="112" Background="#10161D" Margin="0,0,16,0"><Image x:Name="SelectedGameCover" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><StackPanel VerticalAlignment="Center"><TextBlock x:Name="SelectedGameName" FontSize="20" FontWeight="SemiBold" Foreground="#E6AC50" TextWrapping="Wrap" /><TextBlock x:Name="SelectedGamePlatform" Foreground="#BAC4D0" Margin="0,5,0,0" /></StackPanel></DockPanel>
+     <DockPanel><Border Width="75" Height="112" Background="#10161D" Margin="0,0,16,0"><Image x:Name="SelectedGameCover" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><StackPanel VerticalAlignment="Center"><TextBlock x:Name="SelectedGameName" FontSize="22" FontWeight="SemiBold" Foreground="#E6AC50" TextWrapping="Wrap" /><TextBlock x:Name="SelectedGamePlatform" Foreground="#BAC4D0" Margin="0,5,0,0" /></StackPanel></DockPanel>
 <Border Grid.Column="1" Width="1" Background="#374958" Margin="12,4" />     <StackPanel Grid.Column="2" VerticalAlignment="Center">
       <DockPanel x:Name="LibraryHeading" HorizontalAlignment="Right" Margin="0,0,0,6">
        <Button x:Name="SettingsButton" Width="48" Height="44" Padding="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Opzioni" AutomationProperties.Name="Opzioni">
@@ -362,16 +381,16 @@
       <Button x:Name="Overview" Content="Back" Visibility="Collapsed" Width="115" />
      </StackPanel>
      <Button x:Name="InjectionSetup" Content="Eseguibile e grafica…" DockPanel.Dock="Right" Margin="12,0,0,0" VerticalAlignment="Center" IsEnabled="False" />
-     <StackPanel><TextBlock Text="ESEGUIBILE DEL GIOCO · dove verranno installati i componenti" FontSize="11" Foreground="#E6AC50" Margin="0,0,0,3" />
-      <TextBox x:Name="TargetPath" Text="Seleziona un gioco" IsReadOnly="True" TextWrapping="Wrap" FontSize="12" Padding="7,5" /></StackPanel>
+     <StackPanel><TextBlock Text="ESEGUIBILE DEL GIOCO · dove verranno installati i componenti" FontSize="14" Foreground="#E6AC50" Margin="0,0,0,3" />
+      <TextBox x:Name="TargetPath" Text="Seleziona un gioco" IsReadOnly="True" TextWrapping="Wrap" FontSize="14" Padding="7,5" /></StackPanel>
     </DockPanel>
     <ScrollViewer x:Name="FeatureHome" Visibility="Collapsed" Grid.Column="1" Grid.Row="3" Margin="24,0,24,0" VerticalScrollBarVisibility="Auto">
      <Grid Margin="0,4,0,12">
       <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="16" /><ColumnDefinition /></Grid.ColumnDefinitions>
       <Border Background="#151D26" BorderBrush="#303E4B" BorderThickness="1" CornerRadius="10" Padding="20">
        <StackPanel>
-        <DockPanel><Button x:Name="HdrSection" Content="HDR / MFG" Style="{StaticResource Primary}" DockPanel.Dock="Right" Margin="12,0,0,0" Padding="18,10" IsEnabled="False" /><TextBlock Text="ReShade" FontSize="25" Foreground="#E6AC50" FontWeight="SemiBold" /></DockPanel><TextBlock x:Name="HdrCardStatus" Text="Select a game" TextWrapping="Wrap" FontSize="12" Margin="0,8,0,0" Foreground="#ADBACA" />
-        <TextBlock Text="HDR · Multi Frame Generation · Mods" Foreground="#ADBACA" FontSize="13" Margin="0,5,0,14" TextWrapping="Wrap" />
+        <DockPanel><Button x:Name="HdrSection" Content="HDR / MFG" Style="{StaticResource Primary}" DockPanel.Dock="Right" Margin="12,0,0,0" Padding="18,10" IsEnabled="False" /><TextBlock Text="ReShade" FontSize="22" Foreground="#E6AC50" FontWeight="SemiBold" /></DockPanel><TextBlock x:Name="HdrCardStatus" Text="Select a game" TextWrapping="Wrap" FontSize="14" Margin="0,8,0,0" Foreground="#ADBACA" />
+        <TextBlock Text="HDR · Multi Frame Generation · Mods" Foreground="#ADBACA" FontSize="14" Margin="0,5,0,14" TextWrapping="Wrap" />
         <TextBlock x:Name="HdrCardMethod" Text="ReShade · RenoDX · MFG Unlock" TextWrapping="Wrap" Margin="0,0,0,12" />
         
         
@@ -379,10 +398,10 @@
       </Border>
       <Border Grid.Column="2" Background="#151D26" BorderBrush="#303E4B" BorderThickness="1" CornerRadius="10" Padding="20">
        <StackPanel>
-        <DockPanel><Button x:Name="Dlss" Content="Set up DLSS 5" Style="{StaticResource Primary}" DockPanel.Dock="Right" Margin="12,0,0,0" Padding="18,10" IsEnabled="False" /><TextBlock Text="DLSS 5" FontSize="25" Foreground="#E6AC50" FontWeight="SemiBold" /></DockPanel><TextBlock x:Name="DlssCardStatus" Text="Select a game" TextWrapping="Wrap" FontSize="12" Margin="0,8,0,0" Foreground="#ADBACA" />
-        <TextBlock Text="Neural Rendering through OptiScaler." Foreground="#ADBACA" FontSize="13" Margin="0,5,0,14" TextWrapping="Wrap" />
+        <DockPanel><Button x:Name="Dlss" Content="Set up DLSS 5" Style="{StaticResource Primary}" DockPanel.Dock="Right" Margin="12,0,0,0" Padding="18,10" IsEnabled="False" /><TextBlock Text="DLSS 5" FontSize="22" Foreground="#E6AC50" FontWeight="SemiBold" /></DockPanel><TextBlock x:Name="DlssCardStatus" Text="Select a game" TextWrapping="Wrap" FontSize="14" Margin="0,8,0,0" Foreground="#ADBACA" />
+        <TextBlock Text="Neural Rendering through OptiScaler." Foreground="#ADBACA" FontSize="14" Margin="0,5,0,14" TextWrapping="Wrap" />
         <TextBlock x:Name="DlssCardMethod" Text="Choose a game to check its components." TextWrapping="Wrap" Margin="0,0,0,12" />
-        <Border Background="#202A35" CornerRadius="6" Padding="12" Margin="0,0,0,14"><TextBlock Text="Choose the build and picture settings. Existing frame generation is preserved by default." TextWrapping="Wrap" FontSize="13" Foreground="#ADBACA" /></Border>
+        <Border Background="#202A35" CornerRadius="6" Padding="12" Margin="0,0,0,14"><TextBlock Text="Choose the build and picture settings. Existing frame generation is preserved by default." TextWrapping="Wrap" FontSize="14" Foreground="#ADBACA" /></Border>
         
        </StackPanel>
       </Border>
@@ -391,10 +410,10 @@
     <Border x:Name="HdrSettings" Visibility="Collapsed" Grid.Column="1" Grid.Row="3" Margin="24,0,24,0" Background="#141A22" BorderBrush="#2A3541" BorderThickness="1,0,0,0">
  <ScrollViewer x:Name="HdrScroll" VerticalScrollBarVisibility="Auto"><StackPanel Margin="18,16">
  <TextBlock Text="ReShade · RenoDX · MFG Unlock" FontSize="22" Foreground="#E6AC50" TextWrapping="Wrap" />
- <TextBlock x:Name="GameTitle" Text="Seleziona un gioco" FontSize="17" Margin="0,10,0,14" TextWrapping="Wrap" />
+ <TextBlock x:Name="GameTitle" Text="Seleziona un gioco" FontSize="18" Margin="0,10,0,14" TextWrapping="Wrap" />
  <Grid x:Name="RenoInline" />
  </StackPanel></ScrollViewer></Border>
-    <Grid x:Name="DlssSection" Grid.Column="1" Grid.Row="3" Background="#141A22" Margin="24,0,24,0"><TextBlock Text="Caricamento della libreria…" Margin="18" FontSize="16" /></Grid>
+    <Grid x:Name="DlssSection" Grid.Column="1" Grid.Row="3" Background="#141A22" Margin="24,0,24,0"><TextBlock Text="Caricamento della libreria…" Margin="18" FontSize="18" /></Grid>
    </Grid>
    <Border Grid.Row="2" Background="#11161D" BorderBrush="#303844" BorderThickness="0,1,0,0" Padding="22,6">
     <ContentControl x:Name="ActivityLogHost" />
@@ -406,8 +425,8 @@
       <ColumnDefinition Width="Auto" />
      </Grid.ColumnDefinitions>
      <StackPanel VerticalAlignment="Center" Margin="0,0,18,0">
-      <TextBlock Text="GIOCO SELEZIONATO" FontSize="10" Foreground="#8F9BAB" />
-      <TextBlock Text="{Binding Text,ElementName=GameTitle}" FontSize="13" FontWeight="SemiBold" Foreground="#EDF0F4" TextTrimming="CharacterEllipsis" Margin="0,5,0,0" />
+      <TextBlock Text="GIOCO SELEZIONATO" FontSize="14" Foreground="#8F9BAB" />
+      <TextBlock Text="{Binding Text,ElementName=GameTitle}" FontSize="14" FontWeight="SemiBold" Foreground="#EDF0F4" TextTrimming="CharacterEllipsis" Margin="0,5,0,0" />
      </StackPanel>
      <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
       

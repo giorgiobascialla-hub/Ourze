@@ -2,7 +2,7 @@
 
 **Portable Windows manager for OptiScaler, ReShade, Neural Rendering, HDR add-ons and graphics DLLs.**
 
-[Download HDLSS5 1.5](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.5) · [Changelog](CHANGELOG.md)
+[Download HDLSS5 1.5.1](https://github.com/giorgiobascialla-hub/Ourze/releases/tag/v1.5.1) · [Changelog](CHANGELOG.md)
 
 <img src="assets/brand-logo.png" alt="HDLSS5" width="420">
 
@@ -22,7 +22,7 @@ OptiScaler F5 replaces NeuRotic Alpha. ASI Loader 10 is recognized correctly. An
 - Internal help, changelog, activity log and technical details.
 
 ### OptiScaler
-- Install official OptiScaler Standard without Neural Rendering, or choose supported community builds including F5 (NR Multipass / HDR).
+- Install official OptiScaler Standard without Neural Rendering, or choose F5 · Janblade (NR Multipass / HDR).
 - Configure available Neural Rendering quality, style and build-specific parameters.
 - Configure supported Frame Generation modes and multipliers, with hardware/build limitations shown in the app.
 - Keep installation, apply-settings, removal and Neural Rendering cleanup actions accessible.
@@ -38,7 +38,7 @@ OptiScaler F5 replaces NeuRotic Alpha. ASI Loader 10 is recognized correctly. An
 
 ### DLL and Streamline management
 - Separate Super Resolution, Ray Reconstruction, Frame Generation and Neural Rendering model selection.
-- Show the full update destination and the installed version of the selected copy.
+- Select the version; the app determines the DLL destination and provides one restore action per component.
 - Manage Streamline per detected folder; multiple locations are not silently treated as one installation.
 - Online catalogs, local imports and cached downloads where supported.
 - Compare files and preserve backups; detecting a file does not prove the game loads it.
@@ -50,28 +50,18 @@ OptiScaler F5 replaces NeuRotic Alpha. ASI Loader 10 is recognized correctly. An
 - Distinguish unavailable update checks from confirmed updates.
 - Verify large RenoDX downloads with bounded size/time checks and x64/hash validation.
 
-## Interface — version 1.5
+## Interface 1.5.1
 
-Actual WPF controls rendered from the 1.5 candidate in an isolated test window.
+Current WPF interface using demonstration profiles and simulated update versions.
 
-![HDLSS5 1.5 expandable optional sections](assets/optional-sections-1.5.png)
+![Aligned component cards and magenta updates](assets/components-1.5.1.png)
+![Rewritten internal guide](assets/guide-1.5.1.png)
 
-![HDLSS5 1.5 button progress and error feedback](assets/button-progress-1.5.png)
-
-<details><summary>Previous full-workspace gallery (version 1.4)</summary>
-
-These older images show the cover library and overall categories; the controls above reflect version 1.5.
-
-![Cover library](assets/library-1.4.png)
-![OptiScaler workspace](assets/optiscaler-1.4.png)
-![ReShade workspace](assets/reshade-1.4.png)
-![DLL and Streamline workspace](assets/dll-streamline-1.4.png)
-
-</details>
-
+[Guida italiana](docs/GUIDE-it.md) · [English guide](docs/GUIDE-en.md).
+The rewritten handbook is Italian/English; other UI languages currently use the English handbook.
 ## Start and update
 
-Windows x64 and .NET Framework 4.8 are required. Download **HDLSS5-Portable-1.5.zip**, extract it into a writable folder and run **HDLSS5.exe**. Version 1.5 includes guided GPU-specific Neural Rendering installation, verified cache management and the reorganized interface. No Python or developer SDK is required.
+Windows x64 and .NET Framework 4.8 are required. Download **HDLSS5-Portable-1.5.1.zip**, extract it into a writable folder and run **HDLSS5.exe**. Version 1.5 includes guided GPU-specific Neural Rendering installation, verified cache management and the reorganized interface. No Python or developer SDK is required.
 
 For an existing installation: close the app, extract the updated package into its folder, preserve `data`, `data-location.txt` and all backups, and remove the old `HDLSS.exe` from that application folder. Update any shortcuts to `HDLSS5.exe`. The name change does not require migrating your saved data. Do not run old and new copies together.
 

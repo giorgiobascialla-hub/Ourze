@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -152,7 +152,7 @@ public class Pilot {
  }finally{loading=false;}}
 
  static void Open(string target){System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(target){UseShellExecute=true});}
- void ShowText(string title,string text){var d=new Window{Owner=window,Title=title,Width=790,Height=600,WindowStartupLocation=WindowStartupLocation.CenterOwner};d.Content=new TextBox{Text=text,IsReadOnly=true,TextWrapping=TextWrapping.Wrap,VerticalScrollBarVisibility=ScrollBarVisibility.Auto,Padding=new Thickness(20),Background=new SolidColorBrush(Color.FromRgb(20,26,34)),Foreground=Brushes.White,FontFamily=new FontFamily("Consolas"),FontSize=13};d.ShowDialog();}
+ void ShowText(string title,string text){var d=new Window{Owner=window,Title=title,Width=790,Height=600,WindowStartupLocation=WindowStartupLocation.CenterOwner};d.Content=new TextBox{Text=text,IsReadOnly=true,TextWrapping=TextWrapping.Wrap,VerticalScrollBarVisibility=ScrollBarVisibility.Auto,Padding=new Thickness(20),Background=new SolidColorBrush(Color.FromRgb(20,26,34)),Foreground=Brushes.White,FontFamily=new FontFamily("Consolas"),FontSize=14};d.ShowDialog();}
 
 }
 public static class Test {

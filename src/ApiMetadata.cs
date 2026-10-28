@@ -1,4 +1,4 @@
-﻿using System;using System.IO;using System.Net;using System.Security.Cryptography;using System.Text;using System.Collections.Generic;
+using System;using System.IO;using System.Net;using System.Security.Cryptography;using System.Text;using System.Collections.Generic;
 namespace HdrPilot {
 public static class ApiMetadata {
  public sealed class Reply {public int Status;public string Text,Remaining,Reset,Retry;}
@@ -14,10 +14,10 @@ public static class ApiMetadata {
   try{response=(HttpWebResponse)request.GetResponse();}catch(WebException ex){response=ex.Response as HttpWebResponse;if(response==null)throw;}
   using(response)using(var reader=new StreamReader(new LimitedStream(response.GetResponseStream(),32L*1024*1024)))return new Reply{Status=(int)response.StatusCode,Text=reader.ReadToEnd(),Remaining=response.Headers["x-ratelimit-remaining"],Reset=response.Headers["x-ratelimit-reset"],Retry=response.Headers["retry-after"]};
  }
- public static string Get(string url){if(!Handles(url))throw new ArgumentException("Not a GitHub API URL.");lock(Gate){
+ public static string Get(string url,bool force=false){if(!Handles(url))throw new ArgumentException("Not a GitHub API URL.");lock(Gate){
   long now=Seconds(Clock());string path=Cache(url);Entry cached=null;
   try{if(File.Exists(path))cached=Core.Json.Deserialize<Entry>(File.ReadAllText(path));}catch{}
-  if(cached!=null&&cached.Url==url&&ValidJson(cached.Text)&&now>=cached.Checked&&now-cached.Checked<1800)return cached.Text;
+  if(!force&&cached!=null&&cached.Url==url&&ValidJson(cached.Text)&&now>=cached.Checked&&now-cached.Checked<1800)return cached.Text;
   long pause=0;try{if(File.Exists(PauseFile))Int64.TryParse(File.ReadAllText(PauseFile),out pause);}catch{}
   if(pause>now)throw new IOException(PauseMessage(pause));
   ServicePointManager.SecurityProtocol|=SecurityProtocolType.Tls12;Reply reply=Transport==null?Fetch(url):Transport(url);
